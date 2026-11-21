@@ -1,0 +1,1481 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Write Your Name | Boston English Center</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<script>
+  let initialTheme;
+
+  try {
+    if (window.parent !== window) {
+      initialTheme =
+        window.parent.document.documentElement.classList.contains("dark")
+          ? "dark" : "light";
+    }
+  } catch {}
+
+  if (!initialTheme) {
+    try {
+      initialTheme = localStorage.getItem("editor-theme-preference");
+    } catch {}
+  }
+
+  if (!initialTheme) {
+    initialTheme = matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark" : "light";
+  }
+
+  document.documentElement.classList.toggle(
+    "dark", initialTheme === "dark"
+  );
+
+  window.setTheme = theme => {
+    document.documentElement.classList.toggle(
+      "dark", theme === "dark"
+    );
+  };
+</script>
+
+<style>
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  :root {
+    color-scheme: light;
+    --page: #f8fafc;
+    --surface: #ffffff;
+    --card: #f1f5f9;
+    --text: #172b52;
+    --muted: #64748b;
+    --border: #d9e0ed;
+    --heading-start: #384fc7;
+    --heading-end: #2769cd;
+    --accent: #4f46e5;
+    --slot: #f8fafc;
+    --slot-border: #cbd5e1;
+    --keyboard: #e9edf6;
+    --keyboard-text: #172b52;
+    --highlight: #fff0d0;
+    --teal: #159f9f;
+    --purple: #7045ca;
+    --danger: #ef4444;
+    --danger-bg: #fff1f2;
+    --success: #047857;
+    --success-bg: #ecfdf5;
+  }
+
+  :root.dark {
+    color-scheme: dark;
+    --page: #0f172a;
+    --surface: #111b30;
+    --card: #1e293b;
+    --text: #f8fafc;
+    --muted: #cbd5e1;
+    --border: #34405f;
+    --heading-start: #6861f4;
+    --heading-end: #3c79f4;
+    --accent: #a5b4fc;
+    --slot: #1e293b;
+    --slot-border: #405071;
+    --keyboard: #25334b;
+    --keyboard-text: #f8fafc;
+    --highlight: #554126;
+    --teal: #159f9f;
+    --purple: #7045ca;
+    --danger: #fb7185;
+    --danger-bg: #4c1d2b;
+    --success: #6ee7b7;
+    --success-bg: #123e39;
+  }
+
+  html, body {
+    margin: 0;
+    min-height: 100%;
+  }
+
+  body {
+    background: var(--page);
+    color: var(--text);
+    font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+  }
+
+  button, input {
+    font: inherit;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:focus-visible,
+  input:focus-visible {
+    outline: 3px solid #f59e0b;
+    outline-offset: 3px;
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+
+  /* Main lesson */
+
+  .slide {
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(18px, 3vh, 34px) clamp(14px, 3vw, 42px);
+    background:
+      radial-gradient(circle at 5% 5%, rgba(79,70,229,.08), transparent 33%),
+      var(--page);
+  }
+
+  .dark .slide {
+    background:
+      radial-gradient(circle at 5% 5%, rgba(99,102,241,.17), transparent 33%),
+      var(--page);
+  }
+
+  .content {
+    width: 100%;
+    max-width: 1080px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+
+  .header {
+    margin-bottom: 23px;
+    text-align: center;
+  }
+
+  .eyebrow {
+    margin: 0 0 8px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 800;
+    letter-spacing: .12em;
+  }
+
+  h1 {
+    margin: 0;
+    background: linear-gradient(
+      100deg,
+      var(--heading-start),
+      var(--heading-end)
+    );
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-size: clamp(34px, 4.8vw, 60px);
+    font-weight: 800;
+    letter-spacing: -.04em;
+    line-height: 1.15;
+  }
+
+  .subtitle {
+    margin: 10px auto 0;
+    font-size: clamp(15px, 1.5vw, 18px);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  /* Main name writing card */
+
+  .workspace {
+    padding: clamp(22px, 3vw, 36px);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    background: var(--surface);
+  }
+
+  .name-section + .name-section {
+    margin-top: 25px;
+  }
+
+  .name-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 13px;
+  }
+
+  .name-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 17px;
+    border-radius: 30px;
+    color: white;
+    font-size: 15px;
+    font-weight: 800;
+  }
+
+  .first .name-badge {
+    background: var(--teal);
+  }
+
+  .family .name-badge {
+    background: var(--purple);
+  }
+
+  /* Letter slots */
+
+  .letter-grid {
+    display: grid;
+    grid-template-columns: repeat(10, minmax(0, 1fr));
+    gap: clamp(6px, .9vw, 11px);
+  }
+
+  .letter-slot {
+    position: relative;
+    height: clamp(61px, 6vw, 83px);
+    min-width: 0;
+    border: 2px solid var(--slot-border);
+    border-radius: 12px;
+    background: var(--slot);
+    transition: border-color .15s, background .15s;
+  }
+
+  .letter-slot::after {
+    content: "";
+    position: absolute;
+    bottom: 11px;
+    left: 17%;
+    right: 17%;
+    height: 2px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--slot-border) 0 6px,
+      transparent 6px 10px
+    );
+    pointer-events: none;
+  }
+
+  .letter-slot.filled::after {
+    display: none;
+  }
+
+  .letter-slot:first-child {
+    background: rgba(21,159,159,.09);
+    border-color: rgba(21,159,159,.3);
+  }
+
+  .letter-slot.selected {
+    border-color: #f59e0b;
+    box-shadow: 0 0 0 3px rgba(245,158,11,.13);
+  }
+
+  .letter-slot.error {
+    border-color: var(--danger);
+    background: var(--danger-bg);
+  }
+
+  .letter-slot.speaking {
+    border-color: var(--purple);
+    background: rgba(112,69,202,.15);
+  }
+
+  .letter-input {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    padding: 5px 2px;
+    border: none;
+    border-radius: inherit;
+    background: transparent;
+    color: var(--text);
+    text-align: center;
+    font-size: clamp(24px, 3vw, 37px);
+    font-weight: 800;
+    caret-color: var(--accent);
+  }
+
+  .letter-input:focus-visible {
+    outline: none;
+  }
+
+  /* Capitalization feedback */
+
+  .capitalization-hint {
+    margin-top: 19px;
+    padding: 12px;
+    border-radius: 12px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .capitalization-hint strong {
+    color: var(--accent);
+  }
+
+  .capitalization-hint.error {
+    color: var(--danger);
+    background: var(--danger-bg);
+  }
+
+  .capitalization-hint.error strong {
+    color: var(--danger);
+  }
+
+  .capitalization-hint.success {
+    color: var(--success);
+    background: var(--success-bg);
+  }
+
+  /* Keyboard panel */
+
+  .keyboard-panel {
+    margin-top: 16px;
+    padding: clamp(15px, 2vw, 23px);
+    border: 1px solid var(--border);
+    border-radius: 22px;
+    background: var(--surface);
+  }
+
+  .keyboard-toggle {
+    display: flex;
+    width: fit-content;
+    margin: 0 auto 16px;
+    padding: 4px;
+    border-radius: 12px;
+    background: var(--card);
+  }
+
+  .case-button {
+    min-width: 68px;
+    height: 42px;
+    padding: 6px 15px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--text);
+    font-size: 19px;
+    font-weight: 700;
+  }
+
+  .case-button.active {
+    background: var(--teal);
+    color: white;
+  }
+
+  /* Alphabet keyboard */
+
+  .alphabet-keyboard {
+    display: grid;
+    grid-template-columns: repeat(13, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .letter-key {
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    height: clamp(47px, 4.5vw, 61px);
+    padding: 4px;
+    border: 1px solid var(--border);
+    border-bottom-width: 3px;
+    border-radius: 10px;
+    background: var(--keyboard);
+    color: var(--keyboard-text);
+    font-size: clamp(18px, 2.1vw, 25px);
+    font-weight: 800;
+    transition: background .12s, transform .12s;
+  }
+
+  .letter-key:nth-child(5n + 1) {
+    background: var(--highlight);
+  }
+
+  .letter-key:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+
+  .letter-key:active {
+    transform: translateY(1px);
+  }
+
+  .letter-key.speaking {
+    border-color: var(--purple);
+    background: rgba(112,69,202,.2);
+  }
+
+  /* Controls */
+
+  .controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 49px;
+    padding: 10px 17px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--card);
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .action:hover:not(:disabled) {
+    filter: brightness(.96);
+  }
+
+  .action:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+  }
+
+  .action svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .delete-action {
+    background: var(--highlight);
+    color: var(--text);
+  }
+
+  .spell-action {
+    background: var(--purple);
+    border-color: var(--purple);
+    color: white;
+  }
+
+  .check-action {
+    background: var(--teal);
+    border-color: var(--teal);
+    color: white;
+  }
+
+  /* Speaking practice */
+
+  .speaking-card {
+    margin-top: 16px;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+    border-radius: 17px;
+    background: var(--surface);
+    text-align: center;
+  }
+
+  .speaking-text {
+    margin: 0;
+    font-size: clamp(15px, 1.6vw, 19px);
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .speaking-text strong {
+    color: var(--accent);
+    font-weight: 800;
+  }
+
+  .status {
+    min-height: 1.5em;
+    margin: 10px 0 0;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  /* Responsive */
+
+  @media (max-width: 760px) {
+    .alphabet-keyboard {
+      grid-template-columns: repeat(9, minmax(0, 1fr));
+    }
+
+    .letter-grid {
+      gap: 5px;
+    }
+
+    .letter-slot {
+      height: 61px;
+    }
+
+    .workspace {
+      padding: 18px;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .slide {
+      align-items: flex-start;
+      padding: 17px 11px 30px;
+    }
+
+    .letter-grid {
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 8px;
+    }
+
+    .letter-slot {
+      height: 59px;
+    }
+
+    .letter-input {
+      font-size: 25px;
+    }
+
+    .alphabet-keyboard {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 5px;
+    }
+
+    .letter-key {
+      height: 47px;
+      font-size: 19px;
+    }
+
+    .action {
+      padding: 10px 12px;
+      font-size: 12px;
+    }
+
+    .keyboard-panel {
+      padding: 12px;
+    }
+
+    .name-section + .name-section {
+      margin-top: 20px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .letter-key,
+    .letter-slot {
+      transition: none;
+    }
+
+    .letter-key:hover {
+      transform: none;
+    }
+  }
+</style>
+</head>
+
+<body>
+<main class="slide">
+  <div class="content">
+
+    <!-- Header -->
+
+    <header class="header">
+      <p class="eyebrow">PRACTICE 11</p>
+
+      <h1>Now, Can You Write Your Name?</h1>
+
+      <p class="subtitle">
+        Write your first name and family name,
+        one letter in each box.
+      </p>
+
+    </header>
+
+    <!-- Writing workspace -->
+
+    <section class="workspace" aria-label="Name writing exercise">
+
+      <!-- First name -->
+
+      <section class="name-section first">
+        <div class="name-heading">
+          <span class="name-badge">First name</span>
+        </div>
+
+        <div
+          class="letter-grid"
+          id="first-grid"
+          role="group"
+          aria-label="First name letters"
+        ></div>
+      </section>
+
+      <!-- Family name -->
+
+      <section class="name-section family">
+        <div class="name-heading">
+          <span class="name-badge">Family name</span>
+        </div>
+
+        <div
+          class="letter-grid"
+          id="family-grid"
+          role="group"
+          aria-label="Family name letters"
+        ></div>
+      </section>
+
+      <!-- Capitalization guidance -->
+
+      <div
+        class="capitalization-hint"
+        id="capitalization-hint"
+        role="status"
+        aria-live="polite"
+      >
+        <strong>Capital letter first, then small letters: Ahmed</strong>
+      </div>
+
+    </section>
+
+    <!-- Alphabet keyboard -->
+
+    <section class="keyboard-panel" aria-label="Alphabet keyboard">
+
+      <div class="keyboard-toggle" role="group" aria-label="Letter case">
+        <button
+          id="uppercase-button"
+          class="case-button"
+          type="button"
+          aria-pressed="false"
+        >
+          ABC
+        </button>
+
+        <button
+          id="lowercase-button"
+          class="case-button active"
+          type="button"
+          aria-pressed="true"
+        >
+          abc
+        </button>
+      </div>
+
+      <div
+        class="alphabet-keyboard"
+        id="alphabet-keyboard"
+        aria-label="English alphabet letters"
+      ></div>
+
+      <!-- Actions -->
+
+      <div class="controls">
+
+        <button class="action delete-action" id="delete-button" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 4H9L2 12l7 8h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/>
+            <path d="m11 9 6 6m6-6-6 6"/>
+          </svg>
+          Delete
+        </button>
+
+        <button class="action" id="reset-button" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 11a9 9 0 1 1 2.6 6.4M3 4v7h7"/>
+          </svg>
+          Start Again
+        </button>
+
+        <button class="action spell-action" id="spell-button" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M11 5 6 9H3v6h3l5 4V5z"/>
+            <path d="M15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"/>
+          </svg>
+          Spell It
+        </button>
+
+        <button class="action check-action" id="check-button" type="button">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m5 12 4 4L19 6"/>
+          </svg>
+          Check
+        </button>
+
+      </div>
+
+      <p class="status" id="audio-status" role="status" aria-live="polite"></p>
+
+    </section>
+
+    <!-- Speaking instruction -->
+
+    <section class="speaking-card">
+      <p class="speaking-text">
+        Now say it!
+        <strong id="speaking-example">
+          "My name is ... How do you spell it?"
+        </strong>
+      </p>
+
+    </section>
+
+  </div>
+</main>
+
+<script>
+  const MAX = 10;
+  const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split("");
+
+  const grids = {
+    first: document.getElementById("first-grid"),
+    family: document.getElementById("family-grid")
+  };
+
+  const fields = {
+    first: [],
+    family: []
+  };
+
+  const keyboard = document.getElementById("alphabet-keyboard");
+
+  const uppercaseButton =
+    document.getElementById("uppercase-button");
+
+  const lowercaseButton =
+    document.getElementById("lowercase-button");
+
+  const deleteButton =
+    document.getElementById("delete-button");
+
+  const resetButton =
+    document.getElementById("reset-button");
+
+  const spellButton =
+    document.getElementById("spell-button");
+
+  const checkButton =
+    document.getElementById("check-button");
+
+  const capitalizationHint =
+    document.getElementById("capitalization-hint");
+
+  const speakingExample =
+    document.getElementById("speaking-example");
+
+  const audioStatus =
+    document.getElementById("audio-status");
+
+  let uppercase = false;
+  let active = { section: "first", index: 0 };
+  let history = [];
+  let speechToken = 0;
+  let keyFlashTimer = null;
+
+  /* British-English letter names */
+
+  const LETTER_SOUNDS = {
+    A: "ay",
+    B: "bee",
+    C: "see",
+    D: "dee",
+    E: "ee",
+    F: "eff",
+    G: "jee",
+    H: "aitch",
+    I: "eye",
+    J: "jay",
+    K: "kay",
+    L: "ell",
+    M: "em",
+    N: "en",
+    O: "oh",
+    P: "pee",
+    Q: "cue",
+    R: "ar",
+    S: "ess",
+    T: "tee",
+    U: "you",
+    V: "vee",
+    W: "double you",
+    X: "ex",
+    Y: "why",
+    Z: "zed"
+  };
+
+  function getVoice() {
+    if (!("speechSynthesis" in window)) return null;
+
+    const voices = speechSynthesis.getVoices();
+
+    return (
+      voices.find(v => v.lang.toLowerCase() === "en-gb") ||
+      voices.find(v => v.lang.toLowerCase().startsWith("en")) ||
+      null
+    );
+  }
+
+  function stopSpeech() {
+    speechToken++;
+
+    if ("speechSynthesis" in window) {
+      speechSynthesis.cancel();
+    }
+
+    document.querySelectorAll(".speaking").forEach(el => {
+      el.classList.remove("speaking");
+    });
+
+    if (keyFlashTimer) {
+      clearTimeout(keyFlashTimer);
+      keyFlashTimer = null;
+    }
+  }
+
+  function speakLetter(letter) {
+    stopSpeech();
+
+    if (!("speechSynthesis" in window)) {
+      audioStatus.textContent =
+        "Your browser does not support pronunciation.";
+      return;
+    }
+
+    const sound = LETTER_SOUNDS[letter.toUpperCase()];
+    if (!sound) return;
+
+    const utterance = new SpeechSynthesisUtterance(sound);
+    utterance.lang = "en-GB";
+    utterance.rate = 0.82;
+    utterance.pitch = 1;
+
+    const voice = getVoice();
+    if (voice) utterance.voice = voice;
+
+    audioStatus.textContent = `Letter ${letter.toUpperCase()}`;
+
+    speechSynthesis.speak(utterance);
+  }
+
+  /* Keyboard case */
+
+  function setKeyboardCase(value) {
+    uppercase = value;
+
+    uppercaseButton.classList.toggle("active", uppercase);
+    lowercaseButton.classList.toggle("active", !uppercase);
+
+    uppercaseButton.setAttribute("aria-pressed", String(uppercase));
+    lowercaseButton.setAttribute("aria-pressed", String(!uppercase));
+
+    renderKeyboard();
+  }
+
+  uppercaseButton.addEventListener("click", () => {
+    setKeyboardCase(true);
+  });
+
+  lowercaseButton.addEventListener("click", () => {
+    setKeyboardCase(false);
+  });
+
+  /* Input helpers */
+
+  function getInput(section, index) {
+    return fields[section]?.[index] || null;
+  }
+
+  function getName(section) {
+    return fields[section]
+      .map(input => input.value)
+      .join("");
+  }
+
+  function getSlot(section, index) {
+    return getInput(section, index)?.parentElement || null;
+  }
+
+  function updateSlot(section, index) {
+    const input = getInput(section, index);
+    const slot = getSlot(section, index);
+
+    if (!input || !slot) return;
+
+    slot.classList.toggle("filled", Boolean(input.value));
+  }
+
+  function selectSlot(section, index, focus = true) {
+    if (!getInput(section, index)) return;
+
+    active = { section, index };
+
+    document.querySelectorAll(".letter-slot.selected")
+      .forEach(slot => slot.classList.remove("selected"));
+
+    const slot = getSlot(section, index);
+    slot.classList.add("selected");
+
+    if (focus) {
+      getInput(section, index).focus();
+    }
+  }
+
+  function nextPosition(section, index) {
+    if (index < MAX - 1) {
+      return { section, index: index + 1 };
+    }
+
+    if (section === "first") {
+      return { section: "family", index: 0 };
+    }
+
+    return null;
+  }
+
+  function previousPosition(section, index) {
+    if (index > 0) {
+      return { section, index: index - 1 };
+    }
+
+    if (section === "family") {
+      return { section: "first", index: MAX - 1 };
+    }
+
+    return null;
+  }
+
+  function writeLetter(section, index, letter) {
+    const input = getInput(section, index);
+    if (!input || !/^[a-zA-Z]$/.test(letter)) return;
+
+    /*
+      Preserve EXACT capitalization.
+      Never automatically change lowercase to uppercase
+      or uppercase to lowercase.
+    */
+
+    input.value = letter;
+
+    history = history.filter(
+      item => !(item.section === section && item.index === index)
+    );
+
+    history.push({ section, index });
+
+    updateSlot(section, index);
+    updateSpeakingExample();
+    clearCapitalizationFeedback();
+  }
+
+  function clearLetter(section, index) {
+    const input = getInput(section, index);
+    if (!input) return;
+
+    input.value = "";
+
+    history = history.filter(
+      item => !(item.section === section && item.index === index)
+    );
+
+    updateSlot(section, index);
+    updateSpeakingExample();
+    clearCapitalizationFeedback();
+  }
+
+  function insertLetter(letter, pronounce = true) {
+    const { section, index } = active;
+
+    writeLetter(section, index, letter);
+
+    if (pronounce) {
+      speakLetter(letter);
+    }
+
+    const next = nextPosition(section, index);
+
+    if (next) {
+      selectSlot(next.section, next.index);
+    } else {
+      selectSlot(section, index);
+    }
+  }
+
+  /* Build the letter boxes */
+
+  function buildBoxes(section) {
+    for (let i = 0; i < MAX; i++) {
+      const slot = document.createElement("div");
+      slot.className = "letter-slot";
+
+      const input = document.createElement("input");
+      input.type = "text";
+      input.className = "letter-input";
+      input.maxLength = 20;
+      input.autocomplete = "off";
+      input.spellcheck = false;
+      input.autocorrect = "off";
+      input.autocapitalize = "off";
+      input.inputMode = "text";
+
+      input.setAttribute(
+        "aria-label",
+        `${section === "first" ? "First name" : "Family name"} letter ${i + 1}`
+      );
+
+      input.addEventListener("focus", () => {
+        selectSlot(section, i, false);
+        input.select();
+      });
+
+      input.addEventListener("keydown", event => {
+        handleKeydown(event, section, i);
+      });
+
+      input.addEventListener("input", event => {
+        handleMobileInput(event, section, i);
+      });
+
+      input.addEventListener("paste", event => {
+        event.preventDefault();
+
+        const text = event.clipboardData?.getData("text") || "";
+        distributeLetters(section, i, text);
+      });
+
+      slot.appendChild(input);
+      grids[section].appendChild(slot);
+      fields[section].push(input);
+    }
+  }
+
+  /* Physical keyboard */
+
+  function handleKeydown(event, section, index) {
+    if (event.ctrlKey || event.metaKey || event.altKey) {
+      return;
+    }
+
+    if (event.key === "Backspace") {
+      event.preventDefault();
+
+      const current = getInput(section, index);
+
+      if (current.value) {
+        clearLetter(section, index);
+        return;
+      }
+
+      let previous = previousPosition(section, index);
+
+      while (previous) {
+        const input = getInput(previous.section, previous.index);
+
+        if (input.value) {
+          clearLetter(previous.section, previous.index);
+          selectSlot(previous.section, previous.index);
+          return;
+        }
+
+        previous = previousPosition(previous.section, previous.index);
+      }
+
+      return;
+    }
+
+    if (event.key === "Delete") {
+      event.preventDefault();
+      clearLetter(section, index);
+      return;
+    }
+
+    if (event.key === "ArrowLeft") {
+      event.preventDefault();
+
+      const previous = previousPosition(section, index);
+      if (previous) selectSlot(previous.section, previous.index);
+      return;
+    }
+
+    if (event.key === "ArrowRight") {
+      event.preventDefault();
+
+      const next = nextPosition(section, index);
+      if (next) selectSlot(next.section, next.index);
+      return;
+    }
+
+    if (/^[a-zA-Z]$/.test(event.key)) {
+      event.preventDefault();
+
+      selectSlot(section, index, false);
+      insertLetter(event.key);
+      return;
+    }
+
+    if (event.key.length === 1) {
+      event.preventDefault();
+    }
+  }
+
+  /* Mobile keyboard and paste */
+
+  function distributeLetters(section, startIndex, text) {
+    const letters = [...text].filter(char => /^[a-zA-Z]$/.test(char));
+
+    let currentSection = section;
+    let currentIndex = startIndex;
+
+    for (const letter of letters) {
+      writeLetter(currentSection, currentIndex, letter);
+
+      const next = nextPosition(currentSection, currentIndex);
+
+      if (!next) break;
+
+      currentSection = next.section;
+      currentIndex = next.index;
+    }
+
+    selectSlot(currentSection, currentIndex);
+  }
+
+  function handleMobileInput(event, section, index) {
+    const input = event.currentTarget;
+    const value = input.value;
+    const letters = [...value].filter(char => /^[a-zA-Z]$/.test(char));
+
+    if (!letters.length) {
+      clearLetter(section, index);
+      return;
+    }
+
+    distributeLetters(section, index, letters.join(""));
+  }
+
+  /* Build clickable alphabet keyboard */
+
+  function renderKeyboard() {
+    keyboard.replaceChildren();
+
+    ALPHABET.forEach(letter => {
+      const value = uppercase ? letter.toUpperCase() : letter;
+
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "letter-key";
+      button.textContent = value;
+
+      button.setAttribute("aria-label", `Enter and hear ${value}`);
+
+      /*
+        Keep the currently selected input when
+        clicking the on-screen keyboard.
+      */
+      button.addEventListener("pointerdown", event => {
+        event.preventDefault();
+      });
+
+      button.addEventListener("click", () => {
+        insertLetter(value);
+
+        button.classList.add("speaking");
+
+        if (keyFlashTimer) clearTimeout(keyFlashTimer);
+
+        keyFlashTimer = setTimeout(() => {
+          button.classList.remove("speaking");
+          keyFlashTimer = null;
+        }, 450);
+      });
+
+      keyboard.appendChild(button);
+    });
+  }
+
+  /* Capitalization checking */
+
+  function getCapitalizationErrors() {
+    const errors = [];
+
+    for (const section of ["first", "family"]) {
+      fields[section].forEach((input, index) => {
+        const value = input.value;
+        if (!value) return;
+
+        if (index === 0 && !/^[A-Z]$/.test(value)) {
+          errors.push({
+            section,
+            index,
+            message:
+              `${section === "first" ? "First" : "Family"} name: ` +
+              "the first letter must be uppercase."
+          });
+        }
+
+        if (index > 0 && !/^[a-z]$/.test(value)) {
+          errors.push({
+            section,
+            index,
+            message:
+              `${section === "first" ? "First" : "Family"} name: ` +
+              `letter ${index + 1} must be lowercase.`
+          });
+        }
+      });
+    }
+
+    return errors;
+  }
+
+  function clearCapitalizationFeedback() {
+    document.querySelectorAll(".letter-slot.error")
+      .forEach(slot => slot.classList.remove("error"));
+    capitalizationHint.className = "capitalization-hint";
+    capitalizationHint.innerHTML =
+      "<strong>Capital letter first, then small letters: Ahmed</strong>";
+    audioStatus.textContent = "";
+  }
+
+  function updateCapitalizationFeedback() {
+    const errors = getCapitalizationErrors();
+
+    document.querySelectorAll(".letter-slot.error")
+      .forEach(slot => slot.classList.remove("error"));
+
+    errors.forEach(error => {
+      getSlot(error.section, error.index)?.classList.add("error");
+    });
+
+    capitalizationHint.className = "capitalization-hint";
+
+    const firstName = getName("first");
+    const familyName = getName("family");
+
+    if (errors.length) {
+      capitalizationHint.classList.add("error");
+
+      capitalizationHint.innerHTML = `
+        <strong>Capital letter first, then small letters: Ahmed</strong>
+      `;
+
+      // Describe the specific error without modifying the name.
+      audioStatus.textContent = errors[0].message;
+      return false;
+    }
+
+    if (!firstName || !familyName) {
+      capitalizationHint.classList.add("error");
+
+      capitalizationHint.innerHTML = `
+        <strong>Please write both your first name and family name.</strong>
+      `;
+
+      return false;
+    }
+
+    capitalizationHint.classList.add("success");
+    capitalizationHint.innerHTML = `
+      <strong>Great! Your capitalization follows the rule.</strong>
+    `;
+    audioStatus.textContent =
+      "Now press Spell It to practice pronunciation.";
+
+    return true;
+  }
+
+  checkButton.addEventListener("click", () => {
+    updateCapitalizationFeedback();
+  });
+
+  /* Speaking example */
+
+  function updateSpeakingExample() {
+    const first = getName("first");
+    const family = getName("family");
+
+    const fullName = [first, family].filter(Boolean).join(" ");
+
+    if (!fullName) {
+      speakingExample.textContent =
+        '"My name is ... How do you spell it?"';
+      return;
+    }
+
+    const spelled = [...fullName.replace(/\s/g, "")]
+      .map(letter => letter.toUpperCase())
+      .join("-");
+
+    speakingExample.textContent =
+      `"My name is ${fullName}. How do you spell it? ${spelled}."`;
+  }
+
+  /* Spell full name aloud */
+
+  function spellName() {
+    const first = getName("first");
+    const family = getName("family");
+
+    if (!first && !family) {
+      audioStatus.textContent = "Write your name first.";
+      return;
+    }
+
+    if (!("speechSynthesis" in window)) {
+      audioStatus.textContent =
+        "Speech synthesis is not available in this browser.";
+      return;
+    }
+
+    stopSpeech();
+
+    const token = speechToken;
+    const voice = getVoice();
+    const fullName = [first, family].filter(Boolean).join(" ");
+
+    /*
+      Speak the name, then spell the letters individually.
+      The original letter case remains unchanged.
+    */
+
+    const items = [
+      { text: `My name is ${fullName}` }
+    ];
+
+    for (const section of ["first", "family"]) {
+      fields[section].forEach((input, index) => {
+        if (!input.value) return;
+
+        items.push({
+          text: LETTER_SOUNDS[input.value.toUpperCase()],
+          section,
+          index
+        });
+      });
+    }
+
+    let position = 0;
+
+    function speakNext() {
+      if (token !== speechToken) return;
+
+      document.querySelectorAll(".letter-slot.speaking")
+        .forEach(slot => slot.classList.remove("speaking"));
+
+      if (position >= items.length) {
+        audioStatus.textContent = "Spelling finished.";
+        return;
+      }
+
+      const item = items[position++];
+
+      if (item.section) {
+        getSlot(item.section, item.index)?.classList.add("speaking");
+      }
+
+      const speech = new SpeechSynthesisUtterance(item.text);
+      speech.lang = "en-GB";
+      speech.rate = item.section ? 0.75 : 0.9;
+
+      if (voice) speech.voice = voice;
+
+      speech.onend = speakNext;
+      speech.onerror = event => {
+        if (token !== speechToken) return;
+
+        if (event.error === "canceled" ||
+            event.error === "interrupted") return;
+
+        speakNext();
+      };
+
+      speechSynthesis.speak(speech);
+    }
+
+    audioStatus.textContent = "Spelling your name...";
+    speakNext();
+  }
+
+  spellButton.addEventListener("click", spellName);
+
+  /* Delete last entered letter */
+
+  function deleteLastLetter() {
+    stopSpeech();
+
+    while (history.length) {
+      const last = history.pop();
+      const input = getInput(last.section, last.index);
+
+      if (!input?.value) continue;
+
+      clearLetter(last.section, last.index);
+      selectSlot(last.section, last.index);
+
+      audioStatus.textContent = "";
+      return;
+    }
+
+    audioStatus.textContent = "There are no letters to delete.";
+  }
+
+  deleteButton.addEventListener("click", deleteLastLetter);
+
+  /* Reset */
+
+  function resetActivity() {
+    stopSpeech();
+
+    for (const section of ["first", "family"]) {
+      fields[section].forEach((input, index) => {
+        input.value = "";
+        updateSlot(section, index);
+      });
+    }
+
+    history = [];
+
+    document.querySelectorAll(".letter-slot.error")
+      .forEach(slot => slot.classList.remove("error"));
+
+    setKeyboardCase(false);
+    clearCapitalizationFeedback();
+    updateSpeakingExample();
+
+    audioStatus.textContent = "";
+    selectSlot("first", 0);
+  }
+
+  resetButton.addEventListener("click", resetActivity);
+
+  /* Reader lifecycle */
+
+  window.stopSlideAudio = function () {
+    stopSpeech();
+  };
+
+  window.resetSlide = resetActivity;
+
+  window.addEventListener("pagehide", stopSpeech);
+
+  /* Initialization */
+
+  buildBoxes("first");
+  buildBoxes("family");
+  renderKeyboard();
+  updateSpeakingExample();
+  selectSlot("first", 0, false);
+</script>
+
+</body>
+</html>

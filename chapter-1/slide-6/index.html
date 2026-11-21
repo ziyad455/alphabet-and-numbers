@@ -1,0 +1,1237 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Practice 3 — Match the Letters | Boston English Center</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <script>
+    let initialTheme;
+    try {
+      if (window.parent !== window) {
+        initialTheme =
+          window.parent.document.documentElement.classList.contains("dark")
+            ? "dark" : "light";
+      }
+    } catch {}
+
+    if (!initialTheme) {
+      try {
+        initialTheme = localStorage.getItem("editor-theme-preference");
+      } catch {}
+    }
+    if (!initialTheme) {
+      initialTheme = matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark" : "light";
+    }
+
+    document.documentElement.classList.toggle(
+      "dark", initialTheme === "dark"
+    );
+
+    window.setTheme = theme => {
+      document.documentElement.classList.toggle(
+        "dark", theme === "dark"
+      );
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    :root {
+      color-scheme: light;
+      --page: #f8fafc;
+      --surface: #ffffff;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --accent: #394fc8;
+      --chosen: #e7e9ff;
+      --chosen-border: #4f46e5;
+      --correct: #065f46;
+      --correct-bg: #d1fae5;
+      --correct-border: #059669;
+      --wrong: #9f1239;
+      --wrong-bg: #fff1f2;
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+    }
+
+    :root.dark {
+      color-scheme: dark;
+      --page: #0f172a;
+      --surface: #111b30;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --border: #34405f;
+      --accent: #a5b4fc;
+      --chosen: #24274c;
+      --chosen-border: #818cf8;
+      --correct: #a7f3d0;
+      --correct-bg: #123e39;
+      --correct-border: #34d399;
+      --wrong: #fecdd3;
+      --wrong-bg: #4c1d2b;
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background: var(--page);
+      color: var(--text);
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 3px;
+    }
+
+    .slide {
+      min-height: 100dvh;
+      padding: clamp(18px, 3vh, 34px)
+               clamp(14px, 3.5vw, 42px);
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(79,70,229,.07),
+          transparent 32%
+        ),
+        var(--page);
+    }
+
+    .dark .slide {
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(99,102,241,.17),
+          transparent 32%
+        ),
+        var(--page);
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1130px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+
+    .heading {
+      text-align: center;
+    }
+
+    .activity {
+      margin: 0 0 7px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .11em;
+    }
+
+    h1.lesson-title {
+      margin: 0;
+      background: linear-gradient(
+        100deg,
+        var(--heading-start),
+        var(--heading-end)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: clamp(38px, 5.2vw, 60px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -.04em;
+    }
+
+    /* Redesigned instructions */
+
+    .instructions {
+      max-width: 840px;
+      margin: 14px auto 0;
+      text-align: center;
+    }
+
+    .instruction-question {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(16px, 1.55vw, 19px);
+      font-weight: 600;
+      line-height: 1.55;
+      letter-spacing: 0;
+    }
+
+    .methods {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px 12px;
+      margin-top: 13px;
+    }
+
+    .method {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 39px;
+      padding: 8px 13px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+
+    .method strong {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .method-number {
+      display: grid;
+      place-items: center;
+      flex: 0 0 23px;
+      width: 23px;
+      height: 23px;
+      border-radius: 7px;
+      background: linear-gradient(135deg, #5069f1, #7136d4);
+      color: white;
+      font-size: 11px;
+      font-weight: 800;
+    }
+
+    .method-or {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .08em;
+    }
+
+    /* Round progress */
+
+    .round-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin: 23px 0 11px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .round-line span:first-child {
+      color: var(--accent);
+    }
+
+    /* Main board */
+
+    .board {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(12px, 2vw, 24px);
+    }
+
+    .panel {
+      min-width: 0;
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+      letter-spacing: .035em;
+      line-height: 1.4;
+    }
+
+    .items {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 9px;
+    }
+
+    .card {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-width: 0;
+      min-height: 80px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--card);
+      color: var(--text);
+      transition:
+        border-color .15s ease,
+        background-color .15s ease,
+        transform .15s ease;
+    }
+
+    .card:not(:disabled):hover {
+      border-color: var(--chosen-border);
+    }
+
+    /* Lowercase: keep the original text design */
+
+    .source {
+      position: relative;
+      touch-action: none;
+      font-size: 34px;
+      font-weight: 800;
+      cursor: grab;
+    }
+
+    .source:active {
+      cursor: grabbing;
+    }
+
+    .source[aria-pressed="true"] {
+      border: 2px solid var(--chosen-border);
+      background: var(--chosen);
+    }
+
+    /* Matching states */
+
+    .source.matched,
+    .target.matched {
+      border-color: var(--correct-border);
+      background: var(--correct-bg);
+      color: var(--correct);
+      cursor: default;
+      opacity: 1;
+    }
+
+    .source.matched::after {
+      content: "✓";
+      position: absolute;
+      top: 6px;
+      right: 9px;
+      font-size: 16px;
+    }
+
+    .target {
+      flex-direction: column;
+      gap: 3px;
+      padding: 6px;
+    }
+
+    .target.hovered {
+      border: 2px solid var(--chosen-border);
+      background: var(--chosen);
+    }
+
+    .target.wrong {
+      border-color: var(--wrong);
+      background: var(--wrong-bg);
+    }
+
+    /* Uppercase icon artwork */
+
+    .target-art {
+      position: relative;
+      display: grid;
+      place-items: center;
+      flex: none;
+      width: clamp(58px, 5.2vw, 66px);
+      height: clamp(58px, 5.2vw, 66px);
+      border-radius: 12px;
+      overflow: hidden;
+      background: linear-gradient(
+        145deg,
+        #63b6fa 0%,
+        #1874db 70%,
+        #1459b6 100%
+      );
+    }
+
+    .target-art img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+
+    .target-art img.fontawesome {
+      width: 57%;
+      height: 57%;
+      filter: brightness(0) invert(1);
+    }
+
+    .target-art.magnific {
+      background: transparent;
+    }
+
+    .target-art.loading {
+      background: linear-gradient(
+        90deg,
+        var(--border),
+        var(--chosen),
+        var(--border)
+      );
+      background-size: 200% 100%;
+      animation: art-shimmer 1.2s linear infinite;
+    }
+
+    .target-art.failed {
+      padding: 5px;
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      line-height: 1.3;
+      text-align: center;
+    }
+
+    @keyframes art-shimmer {
+      from { background-position: 200% 0; }
+      to { background-position: -200% 0; }
+    }
+
+    .matched-label {
+      color: var(--correct);
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    /* Feedback */
+
+    .feedback {
+      min-height: 1.5em;
+      margin: 13px 0 9px;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .feedback.correct {
+      color: var(--correct);
+    }
+
+    .feedback.incorrect {
+      color: var(--wrong);
+    }
+
+    /* Footer */
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-top: 13px;
+      border-top: 1px solid var(--border);
+    }
+
+    .progress {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.45;
+    }
+
+    .progress strong {
+      color: var(--text);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .action {
+      min-height: 43px;
+      padding: 8px 18px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .action:hover {
+      border-color: var(--chosen-border);
+    }
+
+    .action.primary {
+      border-color: #4f46e5;
+      background: #4f46e5;
+      color: #fff;
+    }
+
+    .action.primary:hover {
+      background: #4338ca;
+    }
+
+    .credit {
+      margin: 14px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .credit a {
+      color: inherit;
+    }
+
+    /* Drag preview */
+
+    .drag-ghost {
+      position: fixed;
+      z-index: 20;
+      display: grid;
+      place-items: center;
+      width: 66px;
+      height: 66px;
+      transform: translate(-50%, -50%);
+      border: 2px solid var(--chosen-border);
+      border-radius: 12px;
+      background: var(--chosen);
+      color: var(--text);
+      box-shadow: 0 12px 25px rgba(0,0,0,.2);
+      font-size: 34px;
+      font-weight: 800;
+      pointer-events: none;
+    }
+
+    /* Responsive layout */
+
+    @media (max-width: 740px) {
+      .panel {
+        padding: 11px;
+      }
+
+      .card {
+        min-height: 65px;
+      }
+
+      .target-art {
+        width: 53px;
+        height: 53px;
+      }
+
+      .methods {
+        gap: 7px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .board {
+        grid-template-columns: 1fr;
+      }
+
+      .items {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .slide {
+        padding: 22px 12px 32px;
+      }
+
+      .round-line {
+        margin-top: 18px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .items {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .method {
+        font-size: 12px;
+      }
+
+      .source {
+        font-size: 30px;
+      }
+
+      .target-art {
+        width: 49px;
+        height: 49px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .card {
+        transition: none;
+      }
+
+      .target-art.loading {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="slide">
+    <div class="content">
+
+      <header class="heading">
+        <p class="activity">PRACTICE 3</p>
+
+        <h1 class="lesson-title">Match the Letters!</h1>
+
+        <div class="instructions">
+          <p class="instruction-question">
+            Can you match up these letters and pictures?
+          </p>
+
+          <div class="methods" aria-label="How to play">
+            <span class="method">
+              <span class="method-number" aria-hidden="true">1</span>
+              <span>
+                <strong>Drag</strong> a lowercase letter onto its picture
+              </span>
+            </span>
+
+            <span class="method-or" aria-hidden="true">OR</span>
+
+            <span class="method">
+              <span class="method-number" aria-hidden="true">2</span>
+              <span>
+                <strong>Select</strong> a letter, then choose its picture
+              </span>
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div class="round-line">
+        <span id="round-label">Round 1 of 4</span>
+        <span id="round-progress">0 of 7 matched</span>
+      </div>
+
+      <div class="board">
+
+        <section class="panel" aria-labelledby="sources-title">
+          <h2 id="sources-title">YOUR LETTERS</h2>
+          <div class="items" id="sources"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="targets-title">
+          <h2 id="targets-title">MATCHING PICTURES</h2>
+          <div class="items" id="targets"></div>
+        </section>
+
+      </div>
+
+      <p
+        class="feedback"
+        id="feedback"
+        role="status"
+        aria-live="polite"
+      ></p>
+
+      <div class="footer">
+        <div class="progress" id="overall-progress">
+          0 of 26 letters matched overall
+        </div>
+
+        <div class="actions">
+          <button class="action" id="reset-button" type="button">
+            Reset Activity
+          </button>
+
+          <button
+            class="action primary"
+            id="next-button"
+            type="button"
+            hidden
+          >
+            Next Round
+          </button>
+        </div>
+      </div>
+
+      <p class="credit">
+        Uppercase artwork:
+        <a
+          href="https://www.magnific.com/icon/letter_10149682"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Magnific / NajmunNahar</a>
+        and
+        <a
+          href="https://fontawesome.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Font Awesome</a>.
+      </p>
+
+    </div>
+  </main>
+
+  <script>
+    const LETTERS = "abcdefghijklmnopqrstuvwxyz".split("");
+
+    const ROUNDS = [
+      LETTERS.slice(0, 7),
+      LETTERS.slice(7, 14),
+      LETTERS.slice(14, 20),
+      LETTERS.slice(20, 26)
+    ];
+
+    /*
+      Same icon sources as Slide 5.
+
+      A and B use Magnific.
+      The remaining letters use Font Awesome.
+
+      The fallback for A/B is Font Awesome if the
+      Magnific image fails to load.
+    */
+    const magnificIcons = {
+      a: "https://cdn-icons-png.magnific.com/512/10149/10149682.png",
+      b: "https://cdn-icons-png.magnific.com/512/10149/10149683.png"
+    };
+
+    const FONT_AWESOME_BASE =
+      "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/svgs/solid";
+
+    function getImageSources(letter) {
+      const sources = [];
+
+      if (magnificIcons[letter]) {
+        sources.push({
+          url: magnificIcons[letter],
+          kind: "magnific"
+        });
+      }
+
+      sources.push({
+        url: `${FONT_AWESOME_BASE}/${letter}.svg`,
+        kind: "fontawesome"
+      });
+
+      return sources;
+    }
+
+    const sources = document.getElementById("sources");
+    const targets = document.getElementById("targets");
+    const feedback = document.getElementById("feedback");
+    const roundLabel = document.getElementById("round-label");
+    const roundProgress = document.getElementById("round-progress");
+    const overallProgress = document.getElementById("overall-progress");
+    const resetButton = document.getElementById("reset-button");
+    const nextButton = document.getElementById("next-button");
+
+    let roundIndex = 0;
+    let targetOrder = [];
+    let matched = new Set();
+    let selected = null;
+    let drag = null;
+    let wrongTimer = null;
+    let suppressClickUntil = 0;
+    let suppressClickSource = null;
+
+    /*
+      Shuffle image targets so they do not appear
+      in the same order as the lowercase letters.
+    */
+    function shuffleTargets(letters) {
+      let shuffled;
+
+      do {
+        shuffled = [...letters];
+
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+      } while (
+        shuffled.some((letter, index) => letter === letters[index])
+      );
+
+      return shuffled;
+    }
+
+    function setFeedback(message, kind = "") {
+      feedback.textContent = message;
+      feedback.className = `feedback ${kind}`;
+    }
+
+    function clearWrong() {
+      if (wrongTimer !== null) {
+        clearTimeout(wrongTimer);
+      }
+
+      wrongTimer = null;
+
+      targets.querySelectorAll(".wrong").forEach(target => {
+        target.classList.remove("wrong");
+      });
+    }
+
+    function clearSelection() {
+      selected = null;
+
+      sources.querySelectorAll(".source").forEach(source => {
+        source.setAttribute("aria-pressed", "false");
+      });
+    }
+
+    function updateProgress() {
+      const letters = ROUNDS[roundIndex];
+
+      const count = letters.filter(letter =>
+        matched.has(letter)
+      ).length;
+
+      roundLabel.textContent =
+        `Round ${roundIndex + 1} of ${ROUNDS.length}`;
+
+      roundProgress.textContent =
+        `${count} of ${letters.length} matched`;
+
+      overallProgress.innerHTML =
+        `<strong>${matched.size} of 26</strong> letters matched overall`;
+
+      const complete = count === letters.length;
+
+      nextButton.hidden = !complete;
+
+      nextButton.textContent =
+        roundIndex === ROUNDS.length - 1
+          ? "Practice Again"
+          : "Next Round";
+
+      if (complete) {
+        setFeedback(
+          roundIndex === ROUNDS.length - 1
+            ? "Excellent! You've completed the alphabet matching activity."
+            : "Great job! You matched all the letters.",
+          "correct"
+        );
+      }
+    }
+
+    /*
+      Create a real image-based uppercase letter tile.
+
+      We try the chosen Magnific image first when
+      available, then the matching Font Awesome icon.
+    */
+    function createPicture(button, letter) {
+      const art = document.createElement("span");
+      art.className = "target-art loading";
+      art.setAttribute("aria-hidden", "true");
+
+      const options = getImageSources(letter);
+      let index = 0;
+
+      function loadNextImage() {
+        if (index >= options.length) {
+          art.className = "target-art failed";
+          art.textContent = "Image unavailable";
+
+          if (!matched.has(letter)) {
+            button.setAttribute(
+              "aria-label",
+              `Match with uppercase ${letter.toUpperCase()} (picture unavailable)`
+            );
+          }
+          return;
+        }
+
+        const option = options[index++];
+        const image = new Image();
+
+        image.alt = "";
+        image.draggable = false;
+        image.decoding = "async";
+        image.referrerPolicy = "no-referrer";
+
+        if (option.kind === "fontawesome") {
+          image.className = "fontawesome";
+        }
+
+        image.addEventListener("load", () => {
+          if (!image.naturalWidth) {
+            loadNextImage();
+            return;
+          }
+
+          art.className = "target-art loaded";
+
+          if (option.kind === "magnific") {
+            art.classList.add("magnific");
+          }
+
+          art.replaceChildren(image);
+        });
+
+        image.addEventListener("error", loadNextImage);
+
+        image.src = option.url;
+      }
+
+      loadNextImage();
+      return art;
+    }
+
+    /*
+      Render lowercase letters and uppercase pictures.
+    */
+    function renderBoard() {
+      sources.replaceChildren();
+      targets.replaceChildren();
+
+      ROUNDS[roundIndex].forEach(letter => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className =
+          `card source${matched.has(letter) ? " matched" : ""}`;
+
+        button.dataset.letter = letter;
+        button.textContent = letter;
+        button.disabled = matched.has(letter);
+
+        button.setAttribute(
+          "aria-pressed",
+          selected === letter ? "true" : "false"
+        );
+
+        button.setAttribute(
+          "aria-label",
+          matched.has(letter)
+            ? `Lowercase ${letter}, matched`
+            : `Select or drag lowercase ${letter}`
+        );
+
+        button.addEventListener("click", () => {
+          if (
+            (button === suppressClickSource &&
+             performance.now() < suppressClickUntil) ||
+            matched.has(letter)
+          ) {
+            return;
+          }
+
+          selected = selected === letter ? null : letter;
+
+          sources.querySelectorAll(".source").forEach(source => {
+            source.setAttribute(
+              "aria-pressed",
+              source.dataset.letter === selected
+                ? "true"
+                : "false"
+            );
+          });
+
+          setFeedback(
+            selected
+              ? `Selected ${selected}. Choose its matching picture.`
+              : "Selection cleared."
+          );
+        });
+
+        button.addEventListener("pointerdown", event => {
+          startPointer(event, letter);
+        });
+
+        sources.appendChild(button);
+      });
+
+      targetOrder.forEach(letter => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className =
+          `card target${matched.has(letter) ? " matched" : ""}`;
+
+        button.dataset.letter = letter;
+        button.disabled = matched.has(letter);
+
+        button.setAttribute(
+          "aria-label",
+          matched.has(letter)
+            ? `Uppercase ${letter.toUpperCase()}, matched with lowercase ${letter}`
+            : `Match with uppercase ${letter.toUpperCase()}`
+        );
+
+        button.appendChild(createPicture(button, letter));
+
+        if (matched.has(letter)) {
+          const label = document.createElement("span");
+          label.className = "matched-label";
+          label.textContent = "Matched ✓";
+          button.appendChild(label);
+        }
+
+        button.addEventListener("click", () => {
+          if (selected) {
+            checkMatch(selected, letter);
+          } else {
+            setFeedback("Select a lowercase letter first.");
+          }
+        });
+
+        targets.appendChild(button);
+      });
+
+      updateProgress();
+    }
+
+    function checkMatch(sourceLetter, targetLetter) {
+      if (
+        !sourceLetter ||
+        matched.has(sourceLetter) ||
+        matched.has(targetLetter)
+      ) {
+        return;
+      }
+
+      clearWrong();
+
+      if (sourceLetter !== targetLetter) {
+        clearSelection();
+
+        const target = [...targets.children].find(
+          item => item.dataset.letter === targetLetter
+        );
+
+        if (target) {
+          target.classList.add("wrong");
+
+          wrongTimer = setTimeout(() => {
+            target.classList.remove("wrong");
+            wrongTimer = null;
+          }, 850);
+        }
+
+        setFeedback(
+          "Not a match. Try another picture.",
+          "incorrect"
+        );
+
+        return;
+      }
+
+      matched.add(sourceLetter);
+      selected = null;
+
+      setFeedback(
+        `${sourceLetter} matches ${targetLetter.toUpperCase()}.`,
+        "correct"
+      );
+
+      renderBoard();
+
+      const nextSource = sources.querySelector(
+        ".source:not(:disabled)"
+      );
+
+      (nextSource || nextButton).focus();
+    }
+
+    /* Pointer drag-and-drop */
+
+    function cancelDrag() {
+      if (!drag) return;
+
+      if (drag.source.hasPointerCapture(drag.pointerId)) {
+        drag.source.releasePointerCapture(drag.pointerId);
+      }
+
+      drag.ghost?.remove();
+
+      targets.querySelectorAll(".hovered").forEach(target => {
+        target.classList.remove("hovered");
+      });
+
+      drag = null;
+    }
+
+    function startPointer(event, letter) {
+      if (
+        (event.pointerType === "mouse" && event.button !== 0) ||
+        matched.has(letter) ||
+        drag
+      ) {
+        return;
+      }
+
+      drag = {
+        source: event.currentTarget,
+        pointerId: event.pointerId,
+        letter,
+        x: event.clientX,
+        y: event.clientY,
+        ghost: null
+      };
+
+      drag.source.setPointerCapture(event.pointerId);
+    }
+
+    function movePointer(event) {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+
+      const distance = Math.hypot(
+        event.clientX - drag.x,
+        event.clientY - drag.y
+      );
+
+      if (!drag.ghost && distance < 7) return;
+
+      if (!drag.ghost) {
+        drag.ghost = document.createElement("div");
+        drag.ghost.className = "drag-ghost";
+        drag.ghost.textContent = drag.letter;
+
+        document.body.appendChild(drag.ghost);
+        drag.source.setAttribute("aria-pressed", "true");
+      }
+
+      drag.ghost.style.left = `${event.clientX}px`;
+      drag.ghost.style.top = `${event.clientY}px`;
+
+      targets.querySelectorAll(".hovered").forEach(target => {
+        target.classList.remove("hovered");
+      });
+
+      const target = document
+        .elementFromPoint(event.clientX, event.clientY)
+        ?.closest(".target:not(:disabled)");
+
+      if (target) {
+        target.classList.add("hovered");
+      }
+    }
+
+    function endPointer(event) {
+      if (!drag || event.pointerId !== drag.pointerId) return;
+
+      const active = drag;
+      const wasDragging = !!active.ghost;
+
+      const target = wasDragging
+        ? document
+            .elementFromPoint(event.clientX, event.clientY)
+            ?.closest(".target:not(:disabled)")
+        : null;
+
+      cancelDrag();
+
+      if (wasDragging) {
+        suppressClickSource = active.source;
+        suppressClickUntil = performance.now() + 350;
+
+        clearSelection();
+
+        if (target) {
+          checkMatch(active.letter, target.dataset.letter);
+        } else {
+          setFeedback("Choose a picture to match the letter.");
+        }
+      }
+    }
+
+    /* Round management */
+
+    function startRound(index) {
+      cancelDrag();
+      clearWrong();
+
+      roundIndex = index;
+      selected = null;
+
+      targetOrder = shuffleTargets(ROUNDS[index]);
+
+      setFeedback("");
+      renderBoard();
+    }
+
+    resetButton.addEventListener("click", () => {
+      matched = new Set();
+      startRound(0);
+    });
+
+    nextButton.addEventListener("click", () => {
+      if (nextButton.hidden) return;
+
+      if (roundIndex === ROUNDS.length - 1) {
+        matched = new Set();
+        startRound(0);
+      } else {
+        startRound(roundIndex + 1);
+      }
+    });
+
+    document.addEventListener("pointermove", movePointer);
+    document.addEventListener("pointerup", endPointer);
+    document.addEventListener("pointercancel", cancelDrag);
+    window.addEventListener("resize", cancelDrag);
+
+    /* Simple Reader lifecycle hooks */
+
+    window.stopSlideAudio = function () {
+      cancelDrag();
+      clearWrong();
+      clearSelection();
+    };
+
+    window.resetSlide = function () {
+      cancelDrag();
+      clearWrong();
+      clearSelection();
+    };
+
+    startRound(0);
+  </script>
+</body>
+</html>

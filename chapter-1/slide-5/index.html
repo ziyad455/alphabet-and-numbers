@@ -1,0 +1,752 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>The English Alphabet | Boston English Center</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <script>
+    let initialTheme;
+
+    try {
+      if (window.parent !== window) {
+        initialTheme =
+          window.parent.document.documentElement.classList.contains("dark")
+            ? "dark"
+            : "light";
+      }
+    } catch {}
+
+    if (!initialTheme) {
+      try {
+        initialTheme = localStorage.getItem("editor-theme-preference");
+      } catch {}
+    }
+
+    if (!initialTheme) {
+      initialTheme = matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+
+    document.documentElement.classList.toggle(
+      "dark",
+      initialTheme === "dark"
+    );
+
+    window.setTheme = function (theme) {
+      document.documentElement.classList.toggle(
+        "dark",
+        theme === "dark"
+      );
+    };
+  </script>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      color-scheme: light;
+
+      --page: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --surface: #ffffff;
+      --border: #d9e0ed;
+
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+
+      --selected: #4f46e5;
+      --selected-bg: #eef2ff;
+    }
+
+    :root.dark {
+      color-scheme: dark;
+
+      --page: #0f172a;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --surface: #1e293b;
+      --border: #34405f;
+
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+
+      --selected: #818cf8;
+      --selected-bg: #252e50;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      background: var(--page);
+      color: var(--text);
+    }
+
+    .slide {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      padding:
+        clamp(20px, 4vh, 44px)
+        clamp(16px, 4vw, 48px);
+
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(79, 70, 229, 0.07),
+          transparent 32%
+        ),
+        var(--page);
+    }
+
+    .dark .slide {
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(99, 102, 241, 0.17),
+          transparent 32%
+        ),
+        var(--page);
+    }
+
+    .content {
+      width: 100%;
+      max-width: 830px;
+      margin: auto;
+    }
+
+    /* Header */
+
+    .intro {
+      text-align: center;
+      margin-bottom: clamp(20px, 3.5vh, 34px);
+    }
+
+    .practice-label {
+      margin: 0 0 10px;
+
+      color: #818cf8;
+
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+    }
+
+    h1 {
+      margin: 0;
+
+      background: linear-gradient(
+        100deg,
+        var(--heading-start),
+        var(--heading-end)
+      );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+
+      color: transparent;
+
+      font-size: clamp(38px, 5.4vw, 66px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+    }
+
+    .subtitle {
+      max-width: 760px;
+      margin: 14px auto 0;
+
+      font-size: clamp(16px, 1.65vw, 20px);
+      font-weight: 600;
+      line-height: 1.55;
+
+      color: var(--text);
+    }
+
+    /* Alphabet */
+
+    .alphabet-grid {
+      display: grid;
+
+      grid-template-columns:
+        repeat(7, minmax(0, 1fr));
+
+      gap: 11px;
+    }
+
+    .letter-card {
+      appearance: none;
+
+      position: relative;
+
+      width: 100%;
+      min-width: 0;
+      min-height: 110px;
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      gap: 7px;
+      padding: 10px 6px;
+
+      border: 1px solid var(--border);
+      border-radius: 16px;
+
+      background: var(--surface);
+
+      color: var(--text);
+      font-family: inherit;
+
+      cursor: pointer;
+
+      transition:
+        transform 160ms ease,
+        border-color 160ms ease,
+        background 160ms ease,
+        box-shadow 160ms ease;
+    }
+
+    .letter-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--selected);
+
+      box-shadow:
+        0 8px 22px rgba(59, 78, 180, 0.13);
+    }
+
+    .letter-card:active {
+      transform: scale(0.97);
+    }
+
+    .letter-card:focus-visible {
+      outline: 3px solid var(--selected);
+      outline-offset: 3px;
+    }
+
+    .letter-card.active {
+      border-color: var(--selected);
+      background: var(--selected-bg);
+
+      box-shadow:
+        0 0 0 2px rgba(99, 102, 241, 0.16);
+    }
+
+    /* Letter image */
+
+    .letter-icon {
+      width: 68px;
+      height: 68px;
+
+      flex-shrink: 0;
+
+      display: grid;
+      place-items: center;
+
+      border-radius: 15px;
+
+      overflow: hidden;
+
+      background: linear-gradient(
+        145deg,
+        #63b6fa 0%,
+        #1874db 70%,
+        #1459b6 100%
+      );
+    }
+
+    .letter-icon img {
+      display: block;
+
+      width: 100%;
+      height: 100%;
+
+      object-fit: contain;
+    }
+
+    .letter-icon img.fontawesome {
+      width: 55%;
+      height: 55%;
+
+      filter: brightness(0) invert(1);
+    }
+
+    .letter-fallback {
+      display: grid;
+      place-items: center;
+
+      width: 100%;
+      height: 100%;
+
+      color: #ffffff;
+      font-size: 39px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    /* Lowercase label */
+
+    .lowercase {
+      font-size: 16px;
+      font-weight: 700;
+      line-height: 1.1;
+      color: var(--text);
+    }
+
+    /* Status */
+
+    .letter-status {
+      min-height: 24px;
+
+      margin: 22px auto 0;
+
+      text-align: center;
+
+      color: var(--muted);
+
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .letter-status strong {
+      color: var(--heading-end);
+      font-weight: 800;
+    }
+
+    /* Attribution */
+
+    .attribution {
+      margin: 14px 0 0;
+      text-align: center;
+
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+
+    .attribution a {
+      color: inherit;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 700px) {
+      .alphabet-grid {
+        grid-template-columns:
+          repeat(5, minmax(0, 1fr));
+
+        gap: 9px;
+      }
+
+      .letter-card {
+        min-height: 96px;
+        padding: 8px 5px;
+      }
+
+      .letter-icon {
+        width: 59px;
+        height: 59px;
+      }
+    }
+
+    @media (max-width: 440px) {
+      .alphabet-grid {
+        grid-template-columns:
+          repeat(4, minmax(0, 1fr));
+
+        gap: 8px;
+      }
+
+      .letter-card {
+        min-height: 83px;
+      }
+
+      .letter-icon {
+        width: 49px;
+        height: 49px;
+        border-radius: 12px;
+      }
+
+      .lowercase {
+        font-size: 14px;
+      }
+
+      .practice-label {
+        font-size: 12px;
+      }
+    }
+
+    @media (max-height: 740px) and (min-width: 701px) {
+      .slide {
+        padding-block: 17px;
+      }
+
+      .intro {
+        margin-bottom: 17px;
+      }
+
+      .alphabet-grid {
+        gap: 8px;
+      }
+
+      .letter-card {
+        min-height: 88px;
+        padding-block: 7px;
+        gap: 4px;
+      }
+
+      .letter-icon {
+        width: 54px;
+        height: 54px;
+      }
+
+      .letter-status {
+        margin-top: 12px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .letter-card {
+        transition: none;
+      }
+
+      .letter-card:hover,
+      .letter-card:active {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="slide">
+    <div class="content">
+
+      <header class="intro">
+        <p class="practice-label">
+          PRACTICE 2
+        </p>
+
+        <h1>The English Alphabet</h1>
+
+        <p class="subtitle">
+          Click on the letters to hear the sounds.
+          Listen, read, and say the names of the letters.
+        </p>
+      </header>
+
+      <section
+        class="alphabet-activity"
+        aria-label="Interactive English alphabet"
+      >
+        <div
+          id="alphabet-grid"
+          class="alphabet-grid"
+        ></div>
+
+        <p
+          id="letter-status"
+          class="letter-status"
+          role="status"
+          aria-live="polite"
+        >
+          Select a letter to hear its name.
+        </p>
+      </section>
+
+      <p class="attribution">
+        Letter icons:
+        <a
+          href="https://www.magnific.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Magnific / NajmunNahar</a>
+        and
+        <a
+          href="https://fontawesome.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Font Awesome</a>.
+      </p>
+
+    </div>
+  </main>
+
+  <script>
+    const alphabet =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+    /*
+      Verified Magnific letter assets.
+      The remaining letters use Font Awesome SVG icons.
+    */
+    const magnificIcons = {
+      A: "https://cdn-icons-png.magnific.com/512/10149/10149682.png",
+      B: "https://cdn-icons-png.magnific.com/512/10149/10149683.png"
+    };
+
+    const fontAwesomeBase =
+      "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/svgs/solid";
+
+    function getLetterIcon(letter) {
+      if (magnificIcons[letter]) {
+        return {
+          url: magnificIcons[letter],
+          source: "magnific"
+        };
+      }
+
+      return {
+        url:
+          `${fontAwesomeBase}/${letter.toLowerCase()}.svg`,
+        source: "fontawesome"
+      };
+    }
+
+    const grid =
+      document.getElementById("alphabet-grid");
+
+    const status =
+      document.getElementById("letter-status");
+
+    let selectedLetter = null;
+
+    /*
+      British English letter-name pronunciation hints.
+
+      Browser text-to-speech voices vary.
+      For final educational use, verified audio recordings
+      are preferable.
+    */
+    const letterNames = {
+      A: "ay",
+      B: "bee",
+      C: "see",
+      D: "dee",
+      E: "ee",
+      F: "eff",
+      G: "jee",
+      H: "aitch",
+      I: "eye",
+      J: "jay",
+      K: "kay",
+      L: "ell",
+      M: "em",
+      N: "en",
+      O: "oh",
+      P: "pee",
+      Q: "cue",
+      R: "are",
+      S: "ess",
+      T: "tee",
+      U: "you",
+      V: "vee",
+      W: "double you",
+      X: "ex",
+      Y: "why",
+      Z: "zed"
+    };
+
+    function stopAudio() {
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    function getBritishVoice() {
+      if (!("speechSynthesis" in window)) {
+        return null;
+      }
+
+      const voices = window.speechSynthesis.getVoices();
+
+      return (
+        voices.find(v => v.lang.toLowerCase() === "en-gb") ||
+        voices.find(v => v.lang.toLowerCase().startsWith("en-gb")) ||
+        null
+      );
+    }
+
+    function speakLetter(letter) {
+      if (!("speechSynthesis" in window)) {
+        status.textContent =
+          "Speech playback is not available in this browser.";
+        return;
+      }
+
+      stopAudio();
+
+      const utterance =
+        new SpeechSynthesisUtterance(letterNames[letter]);
+
+      utterance.lang = "en-GB";
+      utterance.rate = 0.82;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+
+      const voice = getBritishVoice();
+
+      if (voice) {
+        utterance.voice = voice;
+      }
+
+      utterance.onerror = function () {
+        status.textContent =
+          "Audio could not be played. Please try again.";
+      };
+
+      window.speechSynthesis.speak(utterance);
+    }
+
+    function selectLetter(letter, button) {
+      selectedLetter = letter;
+
+      document
+        .querySelectorAll(".letter-card")
+        .forEach(card => {
+          card.classList.remove("active");
+          card.setAttribute("aria-pressed", "false");
+        });
+
+      button.classList.add("active");
+      button.setAttribute("aria-pressed", "true");
+
+      status.textContent =
+        `Letter ${letter.toUpperCase()} — ${letter.toLowerCase()}`;
+
+      speakLetter(letter);
+    }
+
+    function createLetterCard(letter) {
+      const icon = getLetterIcon(letter);
+
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "letter-card";
+      button.dataset.letter = letter;
+
+      button.setAttribute(
+        "aria-label",
+        `Hear the name of letter ${letter}`
+      );
+
+      button.setAttribute("aria-pressed", "false");
+
+      const frame = document.createElement("span");
+      frame.className = "letter-icon";
+      frame.setAttribute("aria-hidden", "true");
+
+      const image = document.createElement("img");
+
+      image.src = icon.url;
+      image.alt = "";
+      image.width = 68;
+      image.height = 68;
+      image.loading = "lazy";
+      image.decoding = "async";
+
+      if (icon.source === "fontawesome") {
+        image.className = "fontawesome";
+      }
+
+      /*
+        If an externally hosted icon fails to load,
+        retain a functional and readable letter tile.
+      */
+      image.addEventListener("error", () => {
+        image.remove();
+
+        const fallback = document.createElement("span");
+        fallback.className = "letter-fallback";
+        fallback.textContent = letter;
+
+        frame.appendChild(fallback);
+      });
+
+      const lowercase = document.createElement("span");
+      lowercase.className = "lowercase";
+      lowercase.textContent = letter.toLowerCase();
+
+      frame.appendChild(image);
+
+      button.appendChild(frame);
+      button.appendChild(lowercase);
+
+      button.addEventListener("click", () => {
+        selectLetter(letter, button);
+      });
+
+      return button;
+    }
+
+    function renderAlphabet() {
+      grid.replaceChildren();
+
+      const fragment = document.createDocumentFragment();
+
+      alphabet.forEach(letter => {
+        fragment.appendChild(createLetterCard(letter));
+      });
+
+      grid.appendChild(fragment);
+    }
+
+    /*
+      Existing Simple Reader lifecycle contract.
+    */
+    window.stopSlideAudio = function () {
+      stopAudio();
+    };
+
+    window.resetSlide = function () {
+      stopAudio();
+
+      selectedLetter = null;
+
+      document
+        .querySelectorAll(".letter-card")
+        .forEach(card => {
+          card.classList.remove("active");
+          card.setAttribute("aria-pressed", "false");
+        });
+
+      status.textContent =
+        "Select a letter to hear its name.";
+    };
+
+    window.addEventListener("pagehide", stopAudio);
+
+    renderAlphabet();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,1159 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Listening and Writing | Boston English Center</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    let initialTheme;
+
+    try {
+      if (window.parent !== window) {
+        initialTheme =
+          window.parent.document.documentElement.classList.contains("dark")
+            ? "dark" : "light";
+      }
+    } catch {}
+
+    if (!initialTheme) {
+      try {
+        initialTheme = localStorage.getItem("editor-theme-preference");
+      } catch {}
+    }
+
+    if (!initialTheme) {
+      initialTheme = matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark" : "light";
+    }
+
+    document.documentElement.classList.toggle(
+      "dark", initialTheme === "dark"
+    );
+
+    window.setTheme = function(theme) {
+      document.documentElement.classList.toggle(
+        "dark", theme === "dark"
+      );
+    };
+  </script>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    :root {
+      color-scheme: light;
+
+      --page: #f8fafc;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+      --accent: #4f46e5;
+      --accent-soft: #eef2ff;
+
+      --correct: #065f46;
+      --correct-bg: #d1fae5;
+      --correct-border: #059669;
+
+      --wrong: #9f1239;
+      --wrong-bg: #fff1f2;
+      --wrong-border: #e11d48;
+    }
+
+    :root.dark {
+      color-scheme: dark;
+
+      --page: #0f172a;
+      --surface: #111b30;
+      --surface-alt: #1e293b;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --border: #34405f;
+
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+      --accent: #a5b4fc;
+      --accent-soft: #252e50;
+
+      --correct: #a7f3d0;
+      --correct-bg: #123e39;
+      --correct-border: #34d399;
+
+      --wrong: #fecdd3;
+      --wrong-bg: #4c1d2b;
+      --wrong-border: #fb7185;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background: var(--page);
+      color: var(--text);
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 3px;
+    }
+
+    /* Slide layout */
+
+    .slide {
+      min-height: 100dvh;
+      padding:
+        clamp(22px, 3vh, 36px)
+        clamp(15px, 4vw, 48px);
+
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(79,70,229,.08),
+          transparent 33%
+        ),
+        var(--page);
+    }
+
+    .dark .slide {
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(99,102,241,.17),
+          transparent 33%
+        ),
+        var(--page);
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+
+    .header {
+      text-align: center;
+      margin-bottom: 23px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+
+    h1 {
+      margin: 0;
+
+      background: linear-gradient(
+        100deg,
+        var(--heading-start),
+        var(--heading-end)
+      );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+
+      font-size: clamp(36px, 5vw, 62px);
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1.13;
+      text-wrap: balance;
+    }
+
+    .subtitle {
+      max-width: 700px;
+      margin: 12px auto 0;
+
+      color: var(--text);
+      font-size: clamp(15px, 1.5vw, 18px);
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    /* Exercise sections */
+
+    .exercise {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .panel {
+      min-width: 0;
+      padding: clamp(16px, 2vw, 24px);
+
+      border: 1px solid var(--border);
+      border-radius: 19px;
+
+      background: var(--surface);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      margin-bottom: 16px;
+    }
+
+    .panel-heading {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      margin: 0;
+
+      color: var(--text);
+      font-size: 17px;
+      font-weight: 800;
+      line-height: 1.4;
+    }
+
+    .panel-heading::before {
+      content: "";
+      width: 5px;
+      height: 24px;
+      border-radius: 4px;
+
+      background: linear-gradient(
+        180deg,
+        #4b7af2,
+        #7136d4
+      );
+    }
+
+    .panel-hint {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Speakers */
+
+    .speakers {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 11px;
+    }
+
+    .speaker-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 13px;
+
+      min-width: 0;
+      min-height: 75px;
+      padding: 12px 9px;
+
+      border: 1px solid var(--border);
+      border-radius: 13px;
+
+      background: var(--surface-alt);
+      color: var(--text);
+
+      transition:
+        border-color .15s ease,
+        background .15s ease,
+        transform .15s ease;
+    }
+
+    .speaker-button:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    .speaker-button.playing {
+      border-color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .speaker-letter {
+      font-size: 20px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .speaker-icon {
+      display: grid;
+      place-items: center;
+
+      flex: 0 0 38px;
+      width: 38px;
+      height: 38px;
+
+      border-radius: 11px;
+
+      background: linear-gradient(
+        135deg,
+        #4b71ef,
+        #7136d4
+      );
+
+      color: #ffffff;
+    }
+
+    .speaker-icon svg {
+      width: 21px;
+      height: 21px;
+
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .speaker-button.playing .speaker-icon {
+      animation: speaker-pulse .8s ease-in-out infinite alternate;
+    }
+
+    @keyframes speaker-pulse {
+      from { transform: scale(1); }
+      to { transform: scale(1.1); }
+    }
+
+    .listen-status {
+      min-height: 1.5em;
+      margin: 13px 0 0;
+
+      color: var(--muted);
+      text-align: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    /* Answer grid */
+
+    .answers {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 20px;
+    }
+
+    .answer-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      min-width: 0;
+      min-height: 57px;
+      padding: 6px 9px;
+
+      border: 1px solid transparent;
+      border-radius: 11px;
+    }
+
+    .answer-label {
+      display: grid;
+      place-items: center;
+
+      flex: 0 0 37px;
+      width: 37px;
+      height: 37px;
+
+      border-radius: 10px;
+      background: var(--surface-alt);
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .answer-input {
+      flex: 1;
+      min-width: 0;
+      min-height: 46px;
+
+      padding: 10px 14px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface-alt);
+      color: var(--text);
+
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+
+      transition:
+        border-color .15s ease,
+        background .15s ease;
+    }
+
+    .answer-input::placeholder {
+      color: var(--muted);
+      opacity: .65;
+      font-weight: 500;
+    }
+
+    .answer-input:focus {
+      border-color: var(--accent);
+      outline-offset: 2px;
+    }
+
+    .answer-row.correct .answer-input {
+      border-color: var(--correct-border);
+      background: var(--correct-bg);
+      color: var(--correct);
+    }
+
+    .answer-row.incorrect .answer-input {
+      border-color: var(--wrong-border);
+      background: var(--wrong-bg);
+      color: var(--wrong);
+    }
+
+    .result-symbol {
+      flex: 0 0 22px;
+      width: 22px;
+
+      text-align: center;
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .answer-row.correct .result-symbol {
+      color: var(--correct);
+    }
+
+    .answer-row.incorrect .result-symbol {
+      color: var(--wrong);
+    }
+
+    /* Footer */
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 13px;
+
+      margin-top: 18px;
+      padding-top: 16px;
+
+      border-top: 1px solid var(--border);
+    }
+
+    .progress {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .progress strong {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .action {
+      min-height: 45px;
+      padding: 10px 20px;
+
+      border: 1px solid var(--border);
+      border-radius: 11px;
+
+      background: var(--surface);
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .action.primary {
+      border-color: #4f46e5;
+
+      background: linear-gradient(
+        110deg,
+        #496ef0,
+        #7136d4
+      );
+
+      color: #ffffff;
+    }
+
+    .action:hover {
+      filter: brightness(1.07);
+    }
+
+    .feedback {
+      min-height: 1.5em;
+      margin: 14px 0 0;
+
+      text-align: center;
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+
+      color: var(--muted);
+    }
+
+    .feedback.correct {
+      color: var(--correct);
+    }
+
+    .feedback.incorrect {
+      color: var(--wrong);
+    }
+
+    .completion {
+      margin-top: 15px;
+      padding: 16px;
+
+      border: 1px solid var(--correct-border);
+      border-radius: 13px;
+
+      background: var(--correct-bg);
+      color: var(--correct);
+
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 700px) {
+      .speakers {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .answers {
+        gap: 8px;
+      }
+
+      .speaker-button {
+        min-height: 64px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .slide {
+        padding: 20px 12px 32px;
+      }
+
+      .speakers {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .answers {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        padding: 14px;
+      }
+
+      .answer-row {
+        padding: 4px;
+      }
+
+      .footer {
+        align-items: stretch;
+      }
+
+      .actions {
+        width: 100%;
+      }
+
+      .action {
+        flex: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .speaker-button,
+      .answer-input {
+        transition: none;
+      }
+
+      .speaker-button:hover {
+        transform: none;
+      }
+
+      .speaker-button.playing .speaker-icon {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="slide">
+    <div class="content">
+
+      <header class="header">
+        <p class="eyebrow">
+          PRACTICE 6 • NUMBERS 1–10
+        </p>
+
+        <h1>Listening and Writing</h1>
+
+        <p class="subtitle">
+          Click on a speaker to listen.
+          Type the word for the number you hear
+          in the correct box.
+        </p>
+      </header>
+
+      <div class="exercise">
+
+        <!-- Listening section -->
+
+        <section class="panel" aria-labelledby="listen-title">
+          <div class="panel-header">
+            <h2 class="panel-heading" id="listen-title">
+              Listen to the Numbers
+            </h2>
+
+            <span class="panel-hint">
+              Click any speaker to listen again
+            </span>
+          </div>
+
+          <div
+            class="speakers"
+            id="speakers"
+            aria-label="Ten audio questions"
+          ></div>
+
+          <p
+            class="listen-status"
+            id="listen-status"
+            role="status"
+            aria-live="polite"
+          >
+            Choose a speaker to hear a number.
+          </p>
+        </section>
+
+        <!-- Writing section -->
+
+        <section class="panel" aria-labelledby="answers-title">
+          <div class="panel-header">
+            <h2 class="panel-heading" id="answers-title">
+              Write What You Hear
+            </h2>
+
+            <span class="panel-hint">
+              Write the English word, not the digit
+            </span>
+          </div>
+
+          <form id="answer-form" novalidate>
+            <div
+              class="answers"
+              id="answers"
+            ></div>
+
+            <div class="footer">
+              <div class="progress" id="progress">
+                <strong>10 questions</strong> • Not checked yet
+              </div>
+
+              <div class="actions">
+                <button
+                  id="reset-button"
+                  class="action"
+                  type="button"
+                >
+                  Try Again
+                </button>
+
+                <button
+                  id="check-button"
+                  class="action primary"
+                  type="submit"
+                >
+                  Check Answers
+                </button>
+              </div>
+            </div>
+          </form>
+
+          <p
+            id="feedback"
+            class="feedback"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+          <div
+            id="completion"
+            class="completion"
+            hidden
+          >
+            Excellent! You correctly identified all ten numbers!
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    /*
+      Ten listening questions covering numbers 1–10.
+
+      The values are intentionally not displayed to students.
+      A–J identify the audio prompts.
+
+      You can replace these questions with the exact numbers
+      from the original recording if those become available.
+    */
+
+    const NUMBER_WORDS = {
+      1: "one",
+      2: "two",
+      3: "three",
+      4: "four",
+      5: "five",
+      6: "six",
+      7: "seven",
+      8: "eight",
+      9: "nine",
+      10: "ten"
+    };
+
+    const QUESTIONS = [
+      { id: "A", number: 4 },
+      { id: "B", number: 9 },
+      { id: "C", number: 7 },
+      { id: "D", number: 1 },
+      { id: "E", number: 5 },
+      { id: "F", number: 2 },
+      { id: "G", number: 10 },
+      { id: "H", number: 8 },
+      { id: "I", number: 6 },
+      { id: "J", number: 3 }
+    ];
+
+    /*
+      Optional prerecorded audio.
+
+      For consistent educational pronunciation, add
+      permitted MP3 recordings here.
+
+      Example:
+        4: "./assets/audio/4.mp3"
+
+      If no recording exists, the browser's
+      Speech Synthesis API is used.
+    */
+
+    const AUDIO_BY_NUMBER = {};
+
+    const speakers = document.getElementById("speakers");
+    const answers = document.getElementById("answers");
+
+    const listenStatus = document.getElementById("listen-status");
+    const answerForm = document.getElementById("answer-form");
+    const feedback = document.getElementById("feedback");
+    const progress = document.getElementById("progress");
+    const completion = document.getElementById("completion");
+    const resetButton = document.getElementById("reset-button");
+
+    let currentAudio = null;
+    let activeSpeaker = null;
+    let playbackToken = 0;
+
+    const speakerSVG = `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M11 5 6 9H3v6h3l5 4V5z"></path>
+        <path d="M15 9a5 5 0 0 1 0 6"></path>
+        <path d="M18 6a9 9 0 0 1 0 12"></path>
+      </svg>
+    `;
+
+    /* Audio management */
+
+    function clearPlayingState() {
+      if (activeSpeaker) {
+        activeSpeaker.classList.remove("playing");
+        activeSpeaker = null;
+      }
+    }
+
+    function stopAudio() {
+      playbackToken++;
+
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+      }
+
+      if ("speechSynthesis" in window) {
+        window.speechSynthesis.cancel();
+      }
+
+      clearPlayingState();
+    }
+
+    function getBritishVoice() {
+      if (!("speechSynthesis" in window)) {
+        return null;
+      }
+
+      const voices = speechSynthesis.getVoices();
+
+      return (
+        voices.find(voice =>
+          voice.lang.toLowerCase() === "en-gb"
+        ) ||
+        voices.find(voice =>
+          voice.lang.toLowerCase().startsWith("en")
+        ) ||
+        null
+      );
+    }
+
+    function speakNumber(number, token) {
+      if (!("speechSynthesis" in window)) {
+        listenStatus.textContent =
+          "Audio playback is not supported in this browser.";
+        clearPlayingState();
+        return;
+      }
+
+      const speech = new SpeechSynthesisUtterance(
+        NUMBER_WORDS[number]
+      );
+
+      speech.lang = "en-GB";
+      speech.rate = 0.85;
+      speech.pitch = 1;
+      speech.volume = 1;
+
+      const voice = getBritishVoice();
+      if (voice) speech.voice = voice;
+
+      speech.onend = () => {
+        if (token === playbackToken) {
+          clearPlayingState();
+        }
+      };
+
+      speech.onerror = event => {
+        if (token !== playbackToken) return;
+
+        clearPlayingState();
+
+        if (
+          event.error !== "canceled" &&
+          event.error !== "interrupted"
+        ) {
+          listenStatus.textContent =
+            "Audio could not be played. Please try again.";
+        }
+      };
+
+      speechSynthesis.speak(speech);
+    }
+
+    async function playQuestion(question, button) {
+      stopAudio();
+
+      const token = playbackToken;
+
+      activeSpeaker = button;
+      button.classList.add("playing");
+
+      listenStatus.textContent =
+        `Playing question ${question.id}. Listen carefully.`;
+
+      const audioUrl = AUDIO_BY_NUMBER[question.number];
+
+      if (audioUrl) {
+        const audio = new Audio(audioUrl);
+        currentAudio = audio;
+
+        audio.onended = () => {
+          if (token === playbackToken) {
+            clearPlayingState();
+          }
+        };
+
+        audio.onerror = () => {
+          if (token === playbackToken) {
+            currentAudio = null;
+            speakNumber(question.number, token);
+          }
+        };
+
+        try {
+          await audio.play();
+        } catch {
+          if (token === playbackToken) {
+            currentAudio = null;
+            speakNumber(question.number, token);
+          }
+        }
+
+        return;
+      }
+
+      speakNumber(question.number, token);
+    }
+
+    /* Render speaker buttons */
+
+    function renderSpeakers() {
+      speakers.replaceChildren();
+
+      QUESTIONS.forEach(question => {
+        const button = document.createElement("button");
+
+        button.type = "button";
+        button.className = "speaker-button";
+
+        button.setAttribute(
+          "aria-label",
+          `Listen to question ${question.id}`
+        );
+
+        const letter = document.createElement("span");
+        letter.className = "speaker-letter";
+        letter.textContent = `${question.id}.`;
+
+        const icon = document.createElement("span");
+        icon.className = "speaker-icon";
+        icon.setAttribute("aria-hidden", "true");
+        icon.innerHTML = speakerSVG;
+
+        button.append(letter, icon);
+
+        button.addEventListener("click", () => {
+          playQuestion(question, button);
+        });
+
+        speakers.appendChild(button);
+      });
+    }
+
+    /* Render answer fields */
+
+    function renderAnswers() {
+      answers.replaceChildren();
+
+      QUESTIONS.forEach(question => {
+        const row = document.createElement("div");
+        row.className = "answer-row";
+        row.dataset.question = question.id;
+
+        const label = document.createElement("label");
+        label.className = "answer-label";
+        label.htmlFor = `answer-${question.id}`;
+        label.textContent = `${question.id}.`;
+
+        const input = document.createElement("input");
+
+        input.type = "text";
+        input.id = `answer-${question.id}`;
+        input.className = "answer-input";
+        input.name = question.id;
+
+        input.placeholder = "Write the number";
+        input.autocomplete = "off";
+        input.spellcheck = false;
+        input.maxLength = 30;
+
+        input.setAttribute(
+          "aria-label",
+          `Answer for question ${question.id}`
+        );
+
+        const result = document.createElement("span");
+        result.className = "result-symbol";
+        result.setAttribute("aria-hidden", "true");
+
+        input.addEventListener("input", () => {
+          row.classList.remove("correct", "incorrect");
+          result.textContent = "";
+          input.removeAttribute("aria-invalid");
+
+          feedback.textContent = "";
+          feedback.className = "feedback";
+
+          completion.hidden = true;
+
+          progress.innerHTML =
+            "<strong>10 questions</strong> • Check your answers";
+        });
+
+        row.append(label, input, result);
+        answers.appendChild(row);
+      });
+    }
+
+    /* Answer validation */
+
+    function normalizeAnswer(value) {
+      return value
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, " ");
+    }
+
+    function checkAnswers(event) {
+      event.preventDefault();
+
+      let correct = 0;
+      let answered = 0;
+      let firstIncorrect = null;
+
+      QUESTIONS.forEach(question => {
+        const row = answers.querySelector(
+          `[data-question="${question.id}"]`
+        );
+
+        const input = row.querySelector("input");
+        const symbol = row.querySelector(".result-symbol");
+
+        const answer = normalizeAnswer(input.value);
+        const expected = NUMBER_WORDS[question.number];
+
+        row.classList.remove("correct", "incorrect");
+
+        if (answer) answered++;
+
+        if (answer === expected) {
+          correct++;
+
+          row.classList.add("correct");
+          symbol.textContent = "✓";
+          input.setAttribute("aria-invalid", "false");
+        } else {
+          row.classList.add("incorrect");
+          symbol.textContent = "×";
+          input.setAttribute("aria-invalid", "true");
+
+          if (!firstIncorrect) {
+            firstIncorrect = input;
+          }
+        }
+      });
+
+      progress.innerHTML =
+        `<strong>${correct} / 10 correct</strong>`;
+
+      completion.hidden = correct !== 10;
+
+      if (correct === 10) {
+        feedback.className = "feedback correct";
+        feedback.textContent =
+          "Perfect score! You correctly wrote all ten number names.";
+      } else {
+        feedback.className = "feedback incorrect";
+
+        feedback.textContent =
+          `${correct} of 10 correct. ` +
+          (answered < 10
+            ? "Complete the remaining boxes and try again."
+            : "Listen again and correct the highlighted answers.");
+
+        firstIncorrect?.focus();
+      }
+    }
+
+    /* Reset */
+
+    function resetActivity() {
+      stopAudio();
+
+      QUESTIONS.forEach(question => {
+        const row = answers.querySelector(
+          `[data-question="${question.id}"]`
+        );
+
+        const input = row.querySelector("input");
+        const symbol = row.querySelector(".result-symbol");
+
+        input.value = "";
+        input.removeAttribute("aria-invalid");
+
+        row.classList.remove("correct", "incorrect");
+        symbol.textContent = "";
+      });
+
+      progress.innerHTML =
+        "<strong>10 questions</strong> • Not checked yet";
+
+      feedback.className = "feedback";
+      feedback.textContent = "";
+
+      listenStatus.textContent =
+        "Choose a speaker to hear a number.";
+
+      completion.hidden = true;
+    }
+
+    answerForm.addEventListener("submit", checkAnswers);
+    resetButton.addEventListener("click", resetActivity);
+
+    /* Simple Reader lifecycle */
+
+    window.stopSlideAudio = function() {
+      stopAudio();
+    };
+
+    window.resetSlide = resetActivity;
+
+    window.addEventListener("pagehide", stopAudio);
+
+    /* Initialize */
+
+    renderSpeakers();
+    renderAnswers();
+  </script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trace the Letters | Boston English Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+<script>
+  (() => {
+    let theme;
+    try {
+      if (window.parent !== window) {
+        theme = window.parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      }
+    } catch (_) {}
+    if (!theme) {
+      try { theme = localStorage.getItem('editor-theme-preference'); } catch (_) {}
+    }
+    if (!theme) theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    document.documentElement.classList.toggle('dark', theme === 'dark');
+    window.setTheme = value => document.documentElement.classList.toggle('dark', value === 'dark');
+  })();
+</script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  :root {
+    color-scheme: light;
+    --page: #f8fafc; --panel: #ffffff; --text: #102348;
+    --muted: #64748b; --line: #d8e1f0; --soft: #eef2f9;
+    --accent: #4f46e5; --accent-soft: #eef2ff;
+    --title-start: #384fc7; --title-end: #2769cd;
+    --paper: #fff; --guide-main: #56617a; --guide-soft: #e9edf6;
+  }
+  :root.dark {
+    color-scheme: dark;
+    --page: #0f172a; --panel: #111b30; --text: #f8fafc;
+    --muted: #cbd5e1; --line: #354362; --soft: #1e293b;
+    --accent: #a5b4fc; --accent-soft: #252e50;
+    --title-start: #6861f4; --title-end: #3c79f4;
+    --paper: #152139; --guide-main: #a9b5ce; --guide-soft: #364663;
+  }
+  html, body { margin: 0; min-height: 100%; }
+  body { background: var(--page); color: var(--text); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+  button { font: inherit; cursor: pointer; }
+  button:disabled { cursor: not-allowed; opacity: .45; }
+  button:focus-visible { outline: 3px solid #eab308; outline-offset: 3px; }
+  .slide {
+    display: flex; align-items: center; justify-content: center; min-height: 100dvh;
+    padding: clamp(16px, 2.3vh, 30px) clamp(12px, 2.5vw, 34px);
+    background: radial-gradient(circle at 5% 5%,rgba(99,102,241,.08),transparent 32%),var(--page);
+  }
+  .dark .slide { background: radial-gradient(circle at 5% 5%,rgba(99,102,241,.18),transparent 32%),var(--page); }
+  .content { width: 100%; max-width: 1180px; margin: auto; }
+  .heading { text-align: center; margin-bottom: 16px; }
+  .eyebrow { margin: 0 0 5px; font-size: 12px; letter-spacing: .13em; font-weight: 800; color: var(--accent); }
+  h1 {
+    margin: 0; font-weight: 800; font-size: clamp(32px, 4.3vw, 56px); letter-spacing: -.045em; line-height: 1.12;
+    background: linear-gradient(105deg,var(--title-start),var(--title-end));
+    color: transparent; -webkit-background-clip: text; background-clip: text;
+  }
+  .subtitle { font-size: clamp(13px, 1.45vw, 17px); font-weight: 600; line-height: 1.5; margin: 7px 0 0; color: var(--muted); }
+  .workspace { border: 1px solid var(--line); border-radius: 20px; padding: clamp(12px, 1.4vw, 20px); background: var(--panel); box-shadow: 0 12px 35px rgba(6,16,40,.04); }
+  .toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 13px; flex-wrap: wrap; }
+  .mode-group { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 5px; border-radius: 14px; background: var(--accent-soft); }
+  .mode-button { border: 0; background: transparent; color: var(--text); font-size: 13px; font-weight: 700; padding: 11px 15px; border-radius: 10px; }
+  .mode-button[aria-pressed="true"] { color: white; background: #159f9f; box-shadow: 0 3px 10px rgba(12,132,131,.12); }
+  .colors { display: flex; gap: 9px; align-items: center; }
+  .color-label { font-size: 12px; font-weight: 700; color: var(--muted); margin-right: 3px; }
+  .swatch { --swatch: #172554; width: 32px; height: 32px; padding: 0; border: 3px solid var(--panel); border-radius: 50%; background: var(--swatch); box-shadow: 0 0 0 1px var(--line); }
+  .swatch[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--accent); }
+  .alphabet { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 13px; }
+  .letter-tab { position: relative; min-width: 41px; min-height: 40px; padding: 6px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); color: var(--text); font-size: 16px; font-weight: 600; }
+  .letter-tab:hover { border-color: var(--accent); }
+  .letter-tab[aria-current="true"] { border-color: #159f9f; background: #159f9f; color: #fff; font-weight: 800; }
+  .letter-tab.practiced::after { content: ''; position: absolute; top: 3px; right: 3px; width: 6px; height: 6px; background: #22c55e; border: 1px solid #fff; border-radius: 50%; }
+  .board-scroll { border: 1px solid var(--line); border-radius: 16px; overflow-x: auto; background: var(--paper); }
+  .paper { position: relative; width: 100%; min-width: 650px; aspect-ratio: 1000/430; background: var(--paper); overflow: hidden; }
+  .paper svg { position: absolute; inset: 0; display: block; height: 100%; width: 100%; }
+  #guide-svg, #demo-svg { pointer-events: none; }
+  #ink-svg { touch-action: none; cursor: crosshair; }
+  .paper[data-watching="true"] #ink-svg { pointer-events: none; cursor: wait; }
+  .guide-stripe { stroke: #a8b9df; stroke-width: 2; opacity: .8; }
+  .guide-mid { stroke: #f59e0b; stroke-width: 2; stroke-dasharray: 9 9; }
+  .guide-baseline { stroke: #334773; stroke-width: 2.5; }
+  .dark .guide-stripe { stroke: #526788; }
+  .dark .guide-baseline { stroke: #889bb9; }
+  .hint { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-top: 12px; }
+  .guide-help { color: var(--muted); font-size: 12px; font-weight: 600; line-height: 1.5; }
+  .progress { color: var(--accent); font-size: 12px; font-weight: 800; }
+  .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 9px; margin-top: 16px; }
+  .action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--soft); color: var(--text); font-size: 14px; font-weight: 700; }
+  .action:hover:not(:disabled) { filter: brightness(.97); }
+  .action svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .action.watch { background: #233868; border-color: #233868; color: white; }
+  .action.listen { background: #704bc0; border-color: #704bc0; color: white; }
+  .action.clear { background: #fff2d7; border-color: #fce5b4; color: #8a5700; }
+  .action.done { background: #139f9f; border-color: #139f9f; color: white; }
+  .status { text-align: center; min-height: 1.6em; color: var(--muted); font-size: 13px; font-weight: 600; margin: 13px 0 0; line-height: 1.5; }
+  .status.good { color: #10a47a; }
+  .footnote { color: var(--muted); font-size: 11px; text-align: center; margin: 9px 0 0; line-height: 1.5; }
+  @media(max-width:730px) {
+    .heading { margin-bottom: 12px; } .toolbar { justify-content: center; }
+    .letter-tab { min-width: 37px; min-height: 36px; font-size: 14px; }
+    .workspace { padding: 11px; } .alphabet { gap: 5px; }
+    .action { font-size: 12px; padding: 9px 12px; min-height: 42px; }
+    .color-label { display:none; }
+  }
+  @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; } }
+</style>
+</head>
+<body>
+<main class="slide">
+  <div class="content">
+    <header class="heading">
+      <p class="eyebrow">PRACTICE 12 · ABC AND 123</p>
+      <h1>Trace the Letters</h1>
+      <p class="subtitle">Watch the strokes, listen to the letter, then trace it yourself.</p>
+    </header>
+    <section class="workspace" aria-label="Interactive alphabet tracing activity">
+      <div class="toolbar">
+        <div class="mode-group" role="group" aria-label="Tracing mode">
+          <button class="mode-button" type="button" data-mode="upper" aria-pressed="false">Capital A</button>
+          <button class="mode-button" type="button" data-mode="lower" aria-pressed="false">Small a</button>
+          <button class="mode-button" type="button" data-mode="both" aria-pressed="true">Both Aa</button>
+        </div>
+        <div class="colors" role="group" aria-label="Pen color">
+          <span class="color-label">PEN COLOR</span>
+          <button class="swatch" type="button" data-color="#1c2a54" style="--swatch:#1c2a54" aria-label="Navy pen" aria-pressed="false"></button>
+          <button class="swatch" type="button" data-color="#159f9f" style="--swatch:#159f9f" aria-label="Teal pen" aria-pressed="false"></button>
+          <button class="swatch" type="button" data-color="#704bc0" style="--swatch:#704bc0" aria-label="Purple pen" aria-pressed="false"></button>
+          <button class="swatch" type="button" data-color="#e44b21" style="--swatch:#e44b21" aria-label="Orange pen" aria-pressed="true"></button>
+        </div>
+      </div>
+      <nav class="alphabet" id="alphabet-nav" aria-label="Choose a letter"></nav>
+      <div class="board-scroll" id="board-scroll">
+        <div class="paper" id="paper" data-watching="false" aria-label="Letter tracing paper">
+          <svg id="guide-svg" viewBox="0 0 1000 430" aria-hidden="true"></svg>
+          <svg id="demo-svg" viewBox="0 0 1000 430" aria-hidden="true"></svg>
+          <svg id="ink-svg" viewBox="0 0 1000 430" aria-label="Draw your letter here" role="img"></svg>
+        </div>
+      </div>
+      <div class="hint">
+        <span class="guide-help">Start at the numbered green dots and follow the orange arrows.</span>
+        <span class="progress" id="progress">Letter A of 26</span>
+      </div>
+      <div class="controls">
+        <button class="action" id="prev" type="button">◀ Back</button>
+        <button class="action watch" id="watch" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 11 7-11 7z"/></svg> Watch</button>
+        <button class="action listen" id="listen" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5zM15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"/></svg> Listen</button>
+        <button class="action clear" id="clear" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11a9 9 0 1 1 2.6 6.4M3 4v7h7"/></svg> Clear</button>
+        <button class="action done" id="done" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg> Done</button>
+        <button class="action" id="next" type="button">Next ▶</button>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite">Choose a pen color and trace the dotted lines.</p>
+      <p class="footnote">Draw with a mouse, finger, or stylus. "Done" records practice; it does not grade handwriting.</p>
+    </section>
+  </div>
+</main>
+<script>
+(() => {
+  'use strict';
+  const NS = 'http://www.w3.org/2000/svg';
+  const ABC = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const LETTER_NAMES = {
+    A:'ay', B:'bee', C:'see', D:'dee', E:'ee', F:'eff', G:'jee', H:'aitch',
+    I:'eye', J:'jay', K:'kay', L:'ell', M:'em', N:'en', O:'oh', P:'pee',
+    Q:'cue', R:'ar', S:'ess', T:'tee', U:'you', V:'vee', W:'double you',
+    X:'ex', Y:'why', Z:'zed'
+  };
+
+  // Hand-authored, ordered monoline handwriting strokes, not font outlines.
+  // Each entry contains the strokes a child should follow in sequence.
+  // Co-ordinates: cap top=20, x-height=60, baseline=100, descenders to 122.
+  const GLYPHS = {
+    A: { u:['M15 100 L50 20 L85 100','M29 69 L71 69'], l:['M71 82 C71 53 27 53 27 82 C27 111 71 111 71 82','M71 60 L71 100'] },
+    B: { u:['M21 20 L21 100','M21 20 L56 20 C92 20 91 59 56 59 L21 59','M21 59 L57 59 C96 59 93 100 56 100 L21 100'], l:['M27 20 L27 100','M27 81 C27 53 75 53 75 81 C75 110 27 110 27 81'] },
+    C: { u:['M81 30 C62 10 26 19 19 57 C13 91 48 113 81 91'], l:['M76 66 C49 47 26 64 26 82 C26 106 53 110 75 94'] },
+    D: { u:['M22 20 L22 100','M22 20 L50 20 C95 21 96 98 50 100 L22 100'], l:['M73 20 L73 100','M73 81 C73 53 26 53 26 81 C26 110 73 110 73 81'] },
+    E: { u:['M79 20 L21 20 L21 100 L79 100','M21 60 L67 60'], l:['M27 82 L75 82 C75 49 27 53 27 82 C27 109 54 110 75 94'] },
+    F: { u:['M21 100 L21 20 L81 20','M21 59 L67 59'], l:['M69 23 C42 12 39 30 39 53 L39 100','M21 60 L65 60'] },
+    G: { u:['M82 32 C61 13 28 20 19 58 C12 92 48 115 82 88 L82 65 L58 65'], l:['M73 81 C73 53 27 53 27 81 C27 110 73 110 73 81','M73 61 L73 109 C73 127 40 131 26 114'] },
+    H: { u:['M21 20 L21 100','M79 20 L79 100','M21 60 L79 60'], l:['M27 20 L27 100','M27 79 C27 51 74 53 74 79 L74 100'] },
+    I: { u:['M25 20 L75 20','M50 20 L50 100','M25 100 L75 100'], l:['M47 60 L47 100','M47 38 L47 39'] },
+    J: { u:['M28 20 L80 20','M67 20 L67 80 C67 112 23 111 20 82'], l:['M56 60 L56 106 C56 127 31 130 21 113','M56 38 L56 39'] },
+    K: { u:['M21 20 L21 100','M80 20 L21 65','M46 47 L82 100'], l:['M28 20 L28 100','M75 59 L28 84','M49 74 L78 100'] },
+    L: { u:['M22 20 L22 100 L82 100'], l:['M48 20 L48 100'] },
+    M: { u:['M16 100 L16 20 L50 64 L84 20 L84 100'], l:['M14 60 L14 100','M14 79 C14 55 45 52 45 79 L45 100','M45 79 C45 54 81 54 81 79 L81 100'] },
+    N: { u:['M21 100 L21 20 L80 100 L80 20'], l:['M26 60 L26 100','M26 78 C26 52 75 52 75 79 L75 100'] },
+    O: { u:['M50 20 C9 20 9 100 50 100 C91 100 91 20 50 20 Z'], l:['M50 60 C18 60 18 100 50 100 C82 100 82 60 50 60 Z'] },
+    P: { u:['M23 100 L23 20 L58 20 C91 20 90 61 58 61 L23 61'], l:['M25 60 L25 123','M25 82 C25 53 75 53 75 82 C75 110 25 110 25 82'] },
+    Q: { u:['M50 20 C9 20 9 100 50 100 C91 100 91 20 50 20 Z','M63 86 L88 112'], l:['M73 60 L73 123','M73 82 C73 53 25 53 25 82 C25 110 73 110 73 82'] },
+    R: { u:['M22 100 L22 20 L58 20 C92 20 89 62 58 62 L22 62','M52 62 L83 100'], l:['M28 60 L28 100','M28 80 C35 63 53 56 73 62'] },
+    S: { u:['M80 28 C56 12 21 17 22 45 C23 67 79 53 79 80 C79 107 41 113 19 92'], l:['M74 67 C48 52 25 63 34 78 C43 90 77 83 72 96 C67 109 42 107 25 97'] },
+    T: { u:['M12 20 L88 20','M50 20 L50 100'], l:['M44 30 L44 88 C44 104 60 106 73 98','M23 60 L69 60'] },
+    U: { u:['M20 20 L20 76 C20 109 80 109 80 76 L80 20'], l:['M25 60 L25 83 C25 111 74 111 74 83 L74 60','M74 83 L74 100'] },
+    V: { u:['M15 20 L50 100 L85 20'], l:['M20 60 L50 100 L80 60'] },
+    W: { u:['M11 20 L27 100 L50 52 L73 100 L89 20'], l:['M12 60 L28 100 L50 73 L72 100 L88 60'] },
+    X: { u:['M21 20 L79 100','M79 20 L21 100'], l:['M25 60 L75 100','M75 60 L25 100'] },
+    Y: { u:['M15 20 L50 63 L85 20','M50 63 L50 100'], l:['M22 60 L50 99','M80 60 L47 123'] },
+    Z: { u:['M20 20 L80 20 L20 100 L80 100'], l:['M25 60 L76 60 L25 100 L76 100'] }
+  };
+
+  const $ = id => document.getElementById(id);
+  const guide = $('guide-svg'), demo = $('demo-svg'), ink = $('ink-svg'), paper = $('paper');
+  const nav = $('alphabet-nav'), status = $('status'), progress = $('progress');
+  let index = 0, mode = 'both', color = '#e44b21';
+  let currentStroke = null, pointerId = null, watchToken = 0, animationFrame = null;
+  const drawings = new Map(), practiced = new Set();
+  let activePaths = [];
+
+  function el(name, attributes = {}, parent = null) {
+    const node = document.createElementNS(NS, name);
+    for (const [key, value] of Object.entries(attributes)) node.setAttribute(key, String(value));
+    if (parent) parent.appendChild(node);
+    return node;
+  }
+  function key() { return `${ABC[index]}:${mode}`; }
+  function setStatus(text, good = false) { status.textContent = text; status.classList.toggle('good', good); }
+  function stopAudio() { if ('speechSynthesis' in window) speechSynthesis.cancel(); }
+  function stopWatch() {
+    watchToken++;
+    if (animationFrame !== null) cancelAnimationFrame(animationFrame);
+    animationFrame = null;
+    demo.replaceChildren();
+    paper.dataset.watching = 'false';
+    $('watch').disabled = false;
+  }
+  function stopInteractions() { stopWatch(); stopAudio(); if (pointerId !== null) { pointerId = null; currentStroke = null; } }
+
+  function updateControls() {
+    const name = ABC[index];
+    document.querySelector('[data-mode="upper"]').textContent = `Capital ${name}`;
+    document.querySelector('[data-mode="lower"]').textContent = `Small ${name.toLowerCase()}`;
+    document.querySelector('[data-mode="both"]').textContent = `Both ${name}${name.toLowerCase()}`;
+    document.querySelectorAll('.mode-button').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.mode === mode)));
+    document.querySelectorAll('.swatch').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.color === color)));
+    nav.querySelectorAll('button').forEach((button, n) => {
+      button.setAttribute('aria-current', String(index === n));
+      button.classList.toggle('practiced', practiced.has(`${ABC[n]}:${mode}`));
+    });
+    progress.textContent = `Letter ${name} of 26 · ${[...practiced].filter(v => v.endsWith(':' + mode)).length} practiced`;
+    $('prev').disabled = index === 0;
+    $('next').disabled = index === 25;
+    $('done').textContent = practiced.has(key()) ? '✓ Practiced' : '✓ Done';
+  }
+
+  function guideLines() {
+    for (const [y, css] of [[62,'guide-stripe'],[186,'guide-mid'],[310,'guide-baseline'],[372,'guide-stripe']]) {
+      el('line', { x1:20, y1:y, x2:980, y2:y, class:css }, guide);
+    }
+  }
+  function makeGlyph(strokes, tx, label) {
+    const group = el('g', { transform:`translate(${tx} 0) scale(3.1)` }, guide);
+    const arrows = [];
+    strokes.forEach((d, i) => {
+      const bg = el('path', { d, fill:'none', stroke:'var(--guide-soft)', 'stroke-width':15, 'stroke-linecap':'round', 'stroke-linejoin':'round' }, group);
+      el('path', { d, fill:'none', stroke:'var(--guide-main)', 'stroke-width':3.7, 'stroke-dasharray':'0.6 6.5', 'stroke-linecap':'round', 'stroke-linejoin':'round' }, group);
+      const len = bg.getTotalLength();
+      const start = bg.getPointAtLength(0);
+      el('circle', {cx:start.x,cy:start.y,r:6.3,fill:'#23b44e',stroke:'white','stroke-width':1.2}, group);
+      const num = el('text', {x:start.x,y:start.y+2.7,'text-anchor':'middle','font-family':'sans-serif','font-size':8.5,'font-weight':800,fill:'white'}, group);
+      num.textContent = String(i + 1);
+      const aRightLeg = label === 'Capital' && ABC[index] === 'A' && i === 0;
+      const fraction = aRightLeg ? .88 : .80;
+      const a = bg.getPointAtLength(len * (fraction - .05)), b = bg.getPointAtLength(len * fraction);
+      const angle = Math.atan2(b.y - a.y, b.x - a.x) * 180 / Math.PI;
+      arrows.push({d:'M -7 -5 L 7 0 L -7 5 Z',transform:`translate(${b.x} ${b.y}) rotate(${angle})`,fill:'#f59e0b',stroke:'white','stroke-width':.7});
+      activePaths.push({d, transform:`translate(${tx} 0) scale(3.1)`, label});
+    });
+    arrows.forEach(arrow => el('path', arrow, group));
+  }
+
+  function renderGuides() {
+    guide.replaceChildren(); demo.replaceChildren(); activePaths = [];
+    guideLines();
+    const glyph = GLYPHS[ABC[index]];
+    if (mode === 'both') {
+      makeGlyph(glyph.u, 145, 'Capital');
+      makeGlyph(glyph.l, 548, 'Small');
+    } else {
+      makeGlyph(mode === 'upper' ? glyph.u : glyph.l, 345, mode === 'upper' ? 'Capital' : 'Small');
+    }
+  }
+
+  function point(event) {
+    const rect = ink.getBoundingClientRect();
+    return {
+      x: Math.min(1000, Math.max(0, (event.clientX - rect.left) / rect.width * 1000)),
+      y: Math.min(430, Math.max(0, (event.clientY - rect.top) / rect.height * 430))
+    };
+  }
+  function strokeD(points) {
+    return points.map((p, i) => `${i ? 'L' : 'M'} ${p.x.toFixed(1)} ${p.y.toFixed(1)}`).join(' ');
+  }
+  function drawInk() {
+    ink.replaceChildren();
+    for (const stroke of drawings.get(key()) || []) {
+      if (!stroke.points.length) continue;
+      const path = el('path', {d: strokeD(stroke.points), fill:'none',stroke:stroke.color,'stroke-width':18,'stroke-linecap':'round','stroke-linejoin':'round'}, ink);
+      if (stroke.points.length === 1) path.setAttribute('d', `${strokeD(stroke.points)} l .01 0`);
+    }
+  }
+  function pointerDown(event) {
+    if (event.button !== 0 && event.pointerType === 'mouse') return;
+    if (paper.dataset.watching === 'true') return;
+    event.preventDefault();
+    pointerId = event.pointerId;
+    ink.setPointerCapture(event.pointerId);
+    currentStroke = {color, points:[point(event)]};
+    const list = drawings.get(key()) || [];
+    list.push(currentStroke);
+    drawings.set(key(), list);
+    drawInk();
+    setStatus('Trace along the dotted letter. Use Done when you finish.');
+  }
+  function pointerMove(event) {
+    if (event.pointerId !== pointerId || !currentStroke) return;
+    event.preventDefault();
+    const p = point(event), prev = currentStroke.points.at(-1);
+    if (Math.hypot(p.x - prev.x, p.y - prev.y) > 1.5) {
+      currentStroke.points.push(p);
+      drawInk();
+    }
+  }
+  function pointerUp(event) {
+    if (event.pointerId !== pointerId) return;
+    event.preventDefault();
+    try { if (ink.hasPointerCapture(pointerId)) ink.releasePointerCapture(pointerId); } catch (_) {}
+    pointerId = null; currentStroke = null;
+  }
+  ink.addEventListener('pointerdown', pointerDown);
+  ink.addEventListener('pointermove', pointerMove);
+  ink.addEventListener('pointerup', pointerUp);
+  ink.addEventListener('pointercancel', pointerUp);
+  ink.addEventListener('lostpointercapture', () => { pointerId = null; currentStroke = null; });
+
+  function selectLetter(next) {
+    if (next < 0 || next > 25 || next === index) return;
+    stopInteractions(); index = next; render();
+  }
+  function render() {
+    renderGuides(); drawInk(); updateControls();
+    setStatus(practiced.has(key()) ? 'Already practiced. You can trace this letter again.' : 'Start at the green dots and follow the arrows.');
+  }
+  for (const [i, letter] of [...ABC].entries()) {
+    const button = document.createElement('button');
+    button.type = 'button'; button.className = 'letter-tab';
+    button.textContent = `${letter}${letter.toLowerCase()}`;
+    button.setAttribute('aria-label', `Trace letter ${letter}`);
+    button.addEventListener('click', () => selectLetter(i));
+    nav.appendChild(button);
+  }
+  document.querySelectorAll('.mode-button').forEach(button => button.addEventListener('click', () => {
+    if (mode === button.dataset.mode) return;
+    stopInteractions(); mode = button.dataset.mode; render();
+  }));
+  document.querySelectorAll('.swatch').forEach(button => button.addEventListener('click', () => {
+    color = button.dataset.color; updateControls();
+  }));
+  $('prev').addEventListener('click', () => selectLetter(index - 1));
+  $('next').addEventListener('click', () => selectLetter(index + 1));
+  $('clear').addEventListener('click', () => {
+    stopWatch(); drawings.delete(key()); practiced.delete(key()); drawInk(); updateControls();
+    setStatus('Drawing cleared. Follow the dots and try again.');
+  });
+  $('done').addEventListener('click', () => {
+    if (!(drawings.get(key()) || []).length) {
+      setStatus('Trace the letter on the paper first, then press Done.'); return;
+    }
+    practiced.add(key()); updateControls();
+    setStatus(`Nice work! ${ABC[index]} marked as practiced.`, true);
+  });
+
+  function getVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    const voices = speechSynthesis.getVoices();
+    return voices.find(v => v.lang.toLowerCase() === 'en-gb') || voices.find(v => v.lang.toLowerCase().startsWith('en')) || null;
+  }
+  $('listen').addEventListener('click', () => {
+    stopAudio();
+    if (!('speechSynthesis' in window)) { setStatus('This browser does not support speech playback.'); return; }
+    const speech = new SpeechSynthesisUtterance(LETTER_NAMES[ABC[index]]);
+    speech.lang = 'en-GB'; speech.rate = .82; speech.pitch = 1;
+    const voice = getVoice(); if (voice) speech.voice = voice;
+    setStatus(`Listen: ${ABC[index]}.`);
+    speech.onerror = e => { if (e.error !== 'canceled' && e.error !== 'interrupted') setStatus('Audio playback is unavailable.'); };
+    speechSynthesis.speak(speech);
+  });
+
+  async function animatePath(meta, token) {
+    const demoGroup = el('g', { transform:meta.transform }, demo);
+    const path = el('path', {d:meta.d,fill:'none',stroke:color,'stroke-width':7.6,'stroke-linecap':'round','stroke-linejoin':'round'}, demoGroup);
+    const len = path.getTotalLength();
+    path.style.strokeDasharray = String(len);
+    path.style.strokeDashoffset = String(len);
+    const duration = Math.max(520, Math.min(2300, len * 8));
+    return new Promise(resolve => {
+      let start;
+      function frame(now) {
+        if (token !== watchToken) { resolve(false); return; }
+        if (start === undefined) start = now;
+        const ratio = Math.min(1, (now - start) / duration);
+        path.style.strokeDashoffset = String(len * (1 - ratio));
+        if (ratio < 1) animationFrame = requestAnimationFrame(frame);
+        else { animationFrame = null; resolve(true); }
+      }
+      animationFrame = requestAnimationFrame(frame);
+    });
+  }
+  $('watch').addEventListener('click', async () => {
+    stopWatch();
+    const token = watchToken;
+    paper.dataset.watching = 'true';
+    $('watch').disabled = true;
+    setStatus('Watch how each stroke starts at the green dot and follows the arrows.');
+    const paths = [...activePaths];
+    for (const path of paths) {
+      const finished = await animatePath(path, token);
+      if (!finished || watchToken !== token) return;
+    }
+    if (token === watchToken) {
+      demo.replaceChildren();
+      paper.dataset.watching = 'false'; $('watch').disabled = false;
+      setStatus('Your turn! Trace the dotted letter using your mouse, finger, or pen.');
+    }
+  });
+
+  window.stopSlideAudio = () => { stopInteractions(); };
+  // Keep drawings across reader navigation; Clear resets a single exercise.
+  window.resetSlide = () => { stopInteractions(); render(); };
+  window.addEventListener('pagehide', stopInteractions);
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1202 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Match the Numbers | Boston English Center</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    let initialTheme;
+
+    try {
+      if (window.parent !== window) {
+        initialTheme =
+          window.parent.document.documentElement.classList.contains("dark")
+            ? "dark" : "light";
+      }
+    } catch {}
+
+    if (!initialTheme) {
+      try {
+        initialTheme =
+          localStorage.getItem("editor-theme-preference");
+      } catch {}
+    }
+
+    if (!initialTheme) {
+      initialTheme =
+        matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark" : "light";
+    }
+
+    document.documentElement.classList.toggle(
+      "dark", initialTheme === "dark"
+    );
+
+    window.setTheme = theme => {
+      document.documentElement.classList.toggle(
+        "dark", theme === "dark"
+      );
+    };
+  </script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    :root {
+      color-scheme: light;
+      --page: #f8fafc;
+      --surface: #ffffff;
+      --card: #f1f5f9;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #cbd5e1;
+      --accent: #4f46e5;
+
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+
+      --selected-bg: #eef2ff;
+      --selected-border: #6366f1;
+
+      --correct: #065f46;
+      --correct-bg: #d1fae5;
+      --correct-border: #059669;
+
+      --wrong: #9f1239;
+      --wrong-bg: #fff1f2;
+      --wrong-border: #e11d48;
+    }
+
+    :root.dark {
+      color-scheme: dark;
+      --page: #0f172a;
+      --surface: #111b30;
+      --card: #1e293b;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --border: #34405f;
+      --accent: #a5b4fc;
+
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+
+      --selected-bg: #252e50;
+      --selected-border: #818cf8;
+
+      --correct: #a7f3d0;
+      --correct-bg: #123e39;
+      --correct-border: #34d399;
+
+      --wrong: #fecdd3;
+      --wrong-bg: #4c1d2b;
+      --wrong-border: #fb7185;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background: var(--page);
+      color: var(--text);
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 3px;
+    }
+
+    .slide {
+      min-height: 100dvh;
+      padding: clamp(22px, 3vh, 36px)
+               clamp(14px, 3.5vw, 42px);
+
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(79,70,229,.08),
+          transparent 34%
+        ),
+        var(--page);
+    }
+
+    .dark .slide {
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(99,102,241,.17),
+          transparent 34%
+        ),
+        var(--page);
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+
+    .header {
+      text-align: center;
+      margin-bottom: 26px;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+
+    h1 {
+      margin: 0;
+
+      background: linear-gradient(
+        100deg,
+        var(--heading-start),
+        var(--heading-end)
+      );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+
+      font-size: clamp(36px, 5vw, 64px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -.04em;
+      text-wrap: balance;
+    }
+
+    .subtitle {
+      margin: 12px auto 0;
+      font-size: clamp(16px, 1.5vw, 19px);
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .review-line {
+      margin: 12px auto 0;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 1.6;
+    }
+
+    .review-link {
+      display: inline;
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--accent);
+      font-size: inherit;
+      font-weight: 800;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .review-link:hover {
+      opacity: .8;
+    }
+
+    /* Activity container */
+
+    .activity {
+      display: flex;
+      flex-direction: column;
+      gap: 19px;
+    }
+
+    .panel {
+      min-width: 0;
+      padding: clamp(15px, 2vw, 23px);
+      border: 1px solid var(--border);
+      border-radius: 19px;
+      background: var(--surface);
+    }
+
+    .panel-heading {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .panel-heading h2 {
+      margin: 0;
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      color: var(--muted);
+    }
+
+    .panel-hint {
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* Draggable word bank */
+
+    .word-bank {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .word-token {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 0;
+      min-height: 63px;
+      padding: 12px 8px;
+
+      border: 1px solid var(--border);
+      border-radius: 13px;
+
+      background: var(--card);
+      color: var(--text);
+
+      font-size: clamp(15px, 1.45vw, 19px);
+      font-weight: 700;
+      line-height: 1.3;
+
+      touch-action: none;
+      user-select: none;
+      cursor: grab;
+
+      transition:
+        border-color .16s ease,
+        background .16s ease,
+        transform .16s ease;
+    }
+
+    .word-token:not(:disabled):hover {
+      border-color: var(--selected-border);
+      transform: translateY(-2px);
+    }
+
+    .word-token[aria-pressed="true"] {
+      border: 2px solid var(--selected-border);
+      background: var(--selected-bg);
+    }
+
+    .word-token.matched {
+      border-color: var(--correct-border);
+      background: var(--correct-bg);
+      color: var(--correct);
+      opacity: .65;
+      cursor: default;
+    }
+
+    .word-token.matched::after {
+      content: " ✓";
+      margin-left: 7px;
+    }
+
+    /* Number matching targets */
+
+    .number-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(14px, 2.5vw, 30px);
+    }
+
+    .number-column {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .target-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+
+      width: 100%;
+      min-width: 0;
+      min-height: 70px;
+      padding: 9px 13px;
+
+      border: 1px solid var(--border);
+      border-radius: 13px;
+
+      background: var(--card);
+      color: var(--text);
+
+      text-align: left;
+
+      transition:
+        border-color .16s ease,
+        background .16s ease;
+    }
+
+    .target-row:not(:disabled):hover,
+    .target-row.hovered {
+      border-color: var(--selected-border);
+      background: var(--selected-bg);
+    }
+
+    .number-badge {
+      display: grid;
+      place-items: center;
+      flex: 0 0 49px;
+
+      width: 49px;
+      height: 49px;
+
+      border-radius: 13px;
+
+      background: linear-gradient(
+        135deg,
+        #496ff0,
+        #7136d4
+      );
+
+      color: white;
+      font-size: 21px;
+      font-weight: 800;
+    }
+
+    .target-answer {
+      flex: 1;
+      min-width: 0;
+
+      font-size: 17px;
+      font-weight: 700;
+      line-height: 1.4;
+    }
+
+    .target-row.empty .target-answer {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .target-row.matched {
+      border-color: var(--correct-border);
+      background: var(--correct-bg);
+      color: var(--correct);
+      cursor: default;
+    }
+
+    .target-row.matched .target-answer {
+      color: var(--correct);
+    }
+
+    .match-check {
+      color: var(--correct);
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .target-row.wrong {
+      border-color: var(--wrong-border);
+      background: var(--wrong-bg);
+    }
+
+    /* Feedback */
+
+    .feedback {
+      min-height: 1.6em;
+      margin: 0;
+
+      color: var(--muted);
+      text-align: center;
+
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .feedback.correct {
+      color: var(--correct);
+    }
+
+    .feedback.incorrect {
+      color: var(--wrong);
+    }
+
+    /* Footer */
+
+    .footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .progress {
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .progress strong {
+      color: var(--text);
+      font-weight: 800;
+    }
+
+    .reset-button {
+      min-height: 44px;
+      padding: 10px 19px;
+
+      border: 1px solid var(--border);
+      border-radius: 11px;
+
+      background: var(--surface);
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .reset-button:hover {
+      border-color: var(--selected-border);
+    }
+
+    .completion {
+      padding: 17px;
+      border: 1px solid var(--correct-border);
+      border-radius: 14px;
+
+      background: var(--correct-bg);
+      color: var(--correct);
+
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    /* Pointer dragging */
+
+    .drag-ghost {
+      position: fixed;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+
+      min-width: 110px;
+      height: 58px;
+      padding: 0 14px;
+
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+
+      border: 2px solid var(--selected-border);
+      border-radius: 12px;
+
+      background: var(--selected-bg);
+      color: var(--text);
+
+      box-shadow: 0 12px 28px rgba(0,0,0,.2);
+
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 700px) {
+      .word-bank {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .number-grid {
+        gap: 10px;
+      }
+
+      .number-badge {
+        flex-basis: 41px;
+        width: 41px;
+        height: 41px;
+        font-size: 18px;
+      }
+
+      .target-row {
+        min-height: 63px;
+        padding: 8px;
+        gap: 9px;
+      }
+
+      .target-answer {
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .slide {
+        padding: 19px 12px 30px;
+      }
+
+      .number-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .word-token {
+        min-height: 55px;
+        font-size: 15px;
+      }
+
+      .header {
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .word-token,
+      .target-row {
+        transition: none;
+      }
+
+      .word-token:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="slide">
+    <div class="content">
+
+      <header class="header">
+
+        <p class="eyebrow">
+          PRACTICE 7
+        </p>
+
+        <h1>Match the Numbers!</h1>
+
+        <p class="subtitle">
+          Can you match these words and numbers?
+          Move each English word to its matching number.
+        </p>
+
+        <p class="review-line">
+          Need a quick vocabulary review?
+          <button
+            id="review-link"
+            class="review-link"
+            type="button"
+          >
+            Click here
+          </button>
+          to return to Slide 9.
+        </p>
+
+      </header>
+
+      <div class="activity">
+
+        <!-- Word bank -->
+
+        <section class="panel" aria-labelledby="words-title">
+
+          <div class="panel-heading">
+            <h2 id="words-title">
+              ENGLISH WORDS
+            </h2>
+
+            <span class="panel-hint">
+              Drag a word or click to select
+            </span>
+          </div>
+
+          <div
+            id="word-bank"
+            class="word-bank"
+            aria-label="Available English number words"
+          ></div>
+
+        </section>
+
+        <!-- Number targets -->
+
+        <section class="panel" aria-labelledby="numbers-title">
+
+          <div class="panel-heading">
+            <h2 id="numbers-title">
+              MATCH THE NUMBERS
+            </h2>
+
+            <span class="panel-hint">
+              Select the correct number for each word
+            </span>
+          </div>
+
+          <div
+            id="number-grid"
+            class="number-grid"
+            aria-label="Number matching targets"
+          ></div>
+
+        </section>
+
+        <p
+          id="feedback"
+          class="feedback"
+          role="status"
+          aria-live="polite"
+        >
+          Select a word, then choose its matching number.
+        </p>
+
+        <div
+          id="completion"
+          class="completion"
+          hidden
+        >
+          Excellent! You matched all ten numbers correctly!
+        </div>
+
+        <footer class="footer">
+          <span class="progress" id="progress">
+            <strong>0 / 10</strong> numbers matched
+          </span>
+
+          <button
+            id="reset-button"
+            class="reset-button"
+            type="button"
+          >
+            Reset Activity
+          </button>
+        </footer>
+
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const NUMBERS = [
+      { number: 1, word: "one" },
+      { number: 2, word: "two" },
+      { number: 3, word: "three" },
+      { number: 4, word: "four" },
+      { number: 5, word: "five" },
+      { number: 6, word: "six" },
+      { number: 7, word: "seven" },
+      { number: 8, word: "eight" },
+      { number: 9, word: "nine" },
+      { number: 10, word: "ten" }
+    ];
+
+    // Original shuffled order from the reference screenshot.
+    const INITIAL_ORDER = [
+      6, 2, 4, 9, 1,
+      8, 10, 7, 3, 5
+    ];
+
+    const bank = document.getElementById("word-bank");
+    const grid = document.getElementById("number-grid");
+    const feedback = document.getElementById("feedback");
+    const progress = document.getElementById("progress");
+    const completion = document.getElementById("completion");
+    const resetButton = document.getElementById("reset-button");
+    const reviewLink = document.getElementById("review-link");
+
+    let matched = new Set();
+    let selected = null;
+    let drag = null;
+    let wrongTimer = null;
+    let bankOrder = [...INITIAL_ORDER];
+    let suppressClickSource = null;
+    let suppressClickUntil = 0;
+
+    function shuffle(items) {
+      const result = [...items];
+
+      for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+      }
+
+      return result;
+    }
+
+    function setFeedback(message, kind = "") {
+      feedback.textContent = message;
+      feedback.className = `feedback ${kind}`;
+    }
+
+    function clearSelection() {
+      selected = null;
+
+      bank.querySelectorAll(".word-token").forEach(button => {
+        button.setAttribute("aria-pressed", "false");
+      });
+    }
+
+    function clearWrong() {
+      if (wrongTimer !== null) {
+        clearTimeout(wrongTimer);
+        wrongTimer = null;
+      }
+
+      grid.querySelectorAll(".wrong").forEach(button => {
+        button.classList.remove("wrong");
+      });
+    }
+
+    /* Progress */
+
+    function updateProgress() {
+      const count = matched.size;
+
+      progress.innerHTML =
+        `<strong>${count} / 10</strong> numbers matched`;
+
+      completion.hidden = count !== 10;
+
+      if (count === 10) {
+        setFeedback(
+          "Amazing! You've completed the number matching activity.",
+          "correct"
+        );
+      }
+    }
+
+    /* Create draggable word */
+
+    function createWordToken(number) {
+      const data = NUMBERS.find(item =>
+        item.number === number
+      );
+
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "word-token";
+      button.textContent = data.word;
+      button.dataset.number = number;
+
+      button.setAttribute("aria-pressed", "false");
+
+      button.setAttribute(
+        "aria-label",
+        `Select or drag word ${data.word}`
+      );
+
+      if (matched.has(number)) {
+        button.classList.add("matched");
+        button.disabled = true;
+      }
+
+      button.addEventListener("click", () => {
+        if (
+          matched.has(number) ||
+          (
+            button === suppressClickSource &&
+            performance.now() < suppressClickUntil
+          )
+        ) {
+          return;
+        }
+
+        selected = selected === number
+          ? null
+          : number;
+
+        bank.querySelectorAll(".word-token").forEach(token => {
+          token.setAttribute(
+            "aria-pressed",
+            String(Number(token.dataset.number) === selected)
+          );
+        });
+
+        setFeedback(
+          selected === null
+            ? "Selection cleared."
+            : `Selected "${data.word}". Choose the matching number.`
+        );
+      });
+
+      button.addEventListener("pointerdown", event => {
+        startDrag(event, number);
+      });
+
+      return button;
+    }
+
+    function renderBank() {
+      bank.replaceChildren();
+
+      bankOrder.forEach(number => {
+        bank.appendChild(createWordToken(number));
+      });
+    }
+
+    /* Create number targets */
+
+    function createNumberTarget(number) {
+      const data = NUMBERS.find(item =>
+        item.number === number
+      );
+
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "target-row";
+      button.dataset.number = number;
+
+      const badge = document.createElement("span");
+      badge.className = "number-badge";
+      badge.textContent = number;
+
+      const answer = document.createElement("span");
+      answer.className = "target-answer";
+
+      button.append(badge, answer);
+
+      if (matched.has(number)) {
+        button.classList.add("matched");
+        button.disabled = true;
+
+        answer.textContent = data.word;
+
+        const check = document.createElement("span");
+        check.className = "match-check";
+        check.textContent = "✓";
+
+        button.appendChild(check);
+
+        button.setAttribute(
+          "aria-label",
+          `Number ${number} correctly matched with ${data.word}`
+        );
+      } else {
+        button.classList.add("empty");
+        answer.textContent = "Drop word here";
+
+        button.setAttribute(
+          "aria-label",
+          `Match word with number ${number}`
+        );
+      }
+
+      button.addEventListener("click", () => {
+        if (selected !== null) {
+          checkMatch(selected, number);
+        } else {
+          setFeedback(
+            "Select an English word first."
+          );
+        }
+      });
+
+      return button;
+    }
+
+    function renderTargets() {
+      grid.replaceChildren();
+
+      const firstColumn = document.createElement("div");
+      const secondColumn = document.createElement("div");
+
+      firstColumn.className = "number-column";
+      secondColumn.className = "number-column";
+
+      for (let number = 1; number <= 10; number++) {
+        const button = createNumberTarget(number);
+
+        if (number <= 5) {
+          firstColumn.appendChild(button);
+        } else {
+          secondColumn.appendChild(button);
+        }
+      }
+
+      grid.append(firstColumn, secondColumn);
+    }
+
+    function renderActivity() {
+      renderBank();
+      renderTargets();
+      updateProgress();
+    }
+
+    /* Matching logic */
+
+    function checkMatch(sourceNumber, targetNumber) {
+      if (
+        sourceNumber === null ||
+        matched.has(sourceNumber) ||
+        matched.has(targetNumber)
+      ) {
+        return;
+      }
+
+      clearWrong();
+
+      const source = NUMBERS.find(item =>
+        item.number === sourceNumber
+      );
+
+      if (sourceNumber !== targetNumber) {
+        clearSelection();
+
+        const target = [...grid.querySelectorAll(".target-row")]
+          .find(button =>
+            Number(button.dataset.number) === targetNumber
+          );
+
+        if (target) {
+          target.classList.add("wrong");
+
+          wrongTimer = setTimeout(() => {
+            target.classList.remove("wrong");
+            wrongTimer = null;
+          }, 850);
+        }
+
+        setFeedback(
+          `"${source.word}" does not match ${targetNumber}. Try again.`,
+          "incorrect"
+        );
+
+        return;
+      }
+
+      matched.add(sourceNumber);
+      clearSelection();
+
+      setFeedback(
+        `Correct! ${sourceNumber} matches "${source.word}".`,
+        "correct"
+      );
+
+      renderActivity();
+
+      const nextWord = bank.querySelector(
+        ".word-token:not(:disabled)"
+      );
+
+      if (nextWord) {
+        nextWord.focus();
+      } else {
+        resetButton.focus();
+      }
+    }
+
+    /* Drag and drop */
+
+    function startDrag(event, number) {
+      if (
+        (event.pointerType === "mouse" && event.button !== 0) ||
+        matched.has(number) ||
+        drag
+      ) {
+        return;
+      }
+
+      drag = {
+        source: event.currentTarget,
+        pointerId: event.pointerId,
+        number,
+        x: event.clientX,
+        y: event.clientY,
+        ghost: null
+      };
+
+      drag.source.setPointerCapture(event.pointerId);
+    }
+
+    function moveDrag(event) {
+      if (!drag || event.pointerId !== drag.pointerId) {
+        return;
+      }
+
+      const distance = Math.hypot(
+        event.clientX - drag.x,
+        event.clientY - drag.y
+      );
+
+      if (!drag.ghost && distance < 7) return;
+
+      if (!drag.ghost) {
+        drag.ghost = document.createElement("div");
+        drag.ghost.className = "drag-ghost";
+
+        const data = NUMBERS.find(item =>
+          item.number === drag.number
+        );
+
+        drag.ghost.textContent = data.word;
+        document.body.appendChild(drag.ghost);
+      }
+
+      event.preventDefault();
+
+      drag.ghost.style.left = `${event.clientX}px`;
+      drag.ghost.style.top = `${event.clientY}px`;
+
+      grid.querySelectorAll(".hovered").forEach(target => {
+        target.classList.remove("hovered");
+      });
+
+      const target = document.elementFromPoint(
+        event.clientX,
+        event.clientY
+      )?.closest(".target-row:not(:disabled)");
+
+      if (target && grid.contains(target)) {
+        target.classList.add("hovered");
+      }
+    }
+
+    function cancelDrag() {
+      if (!drag) return;
+
+      try {
+        if (
+          drag.source.isConnected &&
+          drag.source.hasPointerCapture(drag.pointerId)
+        ) {
+          drag.source.releasePointerCapture(drag.pointerId);
+        }
+      } catch {}
+
+      drag.ghost?.remove();
+
+      grid.querySelectorAll(".hovered").forEach(target => {
+        target.classList.remove("hovered");
+      });
+
+      drag = null;
+    }
+
+    function endDrag(event) {
+      if (!drag || event.pointerId !== drag.pointerId) {
+        return;
+      }
+
+      const active = drag;
+      const wasDragging = !!active.ghost;
+
+      const target = wasDragging
+        ? document.elementFromPoint(
+            event.clientX,
+            event.clientY
+          )?.closest(".target-row:not(:disabled)")
+        : null;
+
+      cancelDrag();
+
+      if (!wasDragging) return;
+
+      suppressClickSource = active.source;
+      suppressClickUntil = performance.now() + 350;
+
+      clearSelection();
+
+      if (target && grid.contains(target)) {
+        checkMatch(
+          active.number,
+          Number(target.dataset.number)
+        );
+      } else {
+        setFeedback(
+          "Drop the word onto a number."
+        );
+      }
+    }
+
+    document.addEventListener("pointermove", moveDrag);
+    document.addEventListener("pointerup", endDrag);
+    document.addEventListener("pointercancel", cancelDrag);
+
+    window.addEventListener("resize", cancelDrag);
+
+    /* Reset */
+
+    function resetActivity() {
+      cancelDrag();
+      clearWrong();
+      clearSelection();
+
+      matched.clear();
+      bankOrder = shuffle(NUMBERS.map(item => item.number));
+
+      setFeedback(
+        "Select a word, then choose its matching number."
+      );
+
+      completion.hidden = true;
+
+      renderActivity();
+    }
+
+    resetButton.addEventListener("click", resetActivity);
+
+    /* Return to Slide 9 */
+
+    reviewLink.addEventListener("click", () => {
+      try {
+        if (
+          window.parent !== window &&
+          typeof window.parent.goToSlide === "function"
+        ) {
+          // Slide 9 is index 8 (zero-based).
+          window.parent.goToSlide(8);
+          return;
+        }
+      } catch (error) {
+        console.warn("Reader navigation unavailable:", error);
+      }
+
+      setFeedback(
+        "Open this activity inside the reader and select Slide 9 from the sidebar."
+      );
+    });
+
+    /* Reader lifecycle */
+
+    window.stopSlideAudio = function () {
+      cancelDrag();
+      clearWrong();
+      clearSelection();
+    };
+
+    window.resetSlide = resetActivity;
+
+    /* Initialize */
+
+    renderActivity();
+  </script>
+</body>
+</html>

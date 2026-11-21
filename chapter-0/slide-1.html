@@ -21,73 +21,28 @@
         };
     </script>
     <script>
-        const THEME_STORAGE_KEY = 'editor-theme-preference';
-        const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
-
-        function getStoredTheme() {
+        // --- Shared theme bootstrap for slides ---
+        (function applyInitialTheme() {
+            let useDark = false;
             try {
-                return localStorage.getItem(THEME_STORAGE_KEY);
-            } catch (error) {
-                return null;
-            }
-        }
-
-        function setStoredTheme(theme) {
-            try {
-                localStorage.setItem(THEME_STORAGE_KEY, theme);
-            } catch (error) {
-                // Ignore storage errors and keep runtime-only behavior.
-            }
-        }
-
-
-
-        function updateThemeToggleButton(theme) {
-            const themeToggleBtn = document.getElementById('theme-toggle-btn');
-            if (!themeToggleBtn) return;
-
-            const isDark = theme === 'dark';
-            themeToggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-            themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-        }
-
-        function applyTheme(theme) {
-            const isDark = theme === 'dark';
-            document.documentElement.classList.toggle('dark', isDark);
-            updateThemeToggleButton(theme);
-        }
-
-        function resolveInitialTheme() {
-            const storedTheme = getStoredTheme();
-            if (storedTheme === 'dark' || storedTheme === 'light') {
-                return storedTheme;
-            }
-            const systemTheme = colorScheme.matches ? 'dark' : 'light';
-            setStoredTheme(systemTheme);
-            return systemTheme;
-        }
-
-        function toggleThemePreference() {
-            const currentlyDark = document.documentElement.classList.contains('dark');
-            const nextTheme = currentlyDark ? 'light' : 'dark';
-            setStoredTheme(nextTheme);
-            applyTheme(nextTheme);
-        }
-
-        window.toggleThemePreference = toggleThemePreference;
-
-        // Apply on load
-        applyTheme(resolveInitialTheme());
-
-        window.addEventListener('storage', function (event) {
-            if (event.key === THEME_STORAGE_KEY) {
-                const newTheme = event.newValue;
-                if (newTheme === 'dark' || newTheme === 'light') {
-                    applyTheme(newTheme);
+                if (window.parent && window.parent !== window) {
+                    useDark = window.parent.document.documentElement.classList.contains('dark');
                 }
-            }
-        });
+            } catch (e) {}
 
+            if (!useDark) {
+                const saved = localStorage.getItem('editor-theme-preference');
+                useDark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+            }
+
+            document.documentElement.classList.toggle('dark', useDark);
+        })();
+
+        window.setTheme = function setTheme(theme) {
+            const dark = theme === 'dark';
+            document.documentElement.classList.toggle('dark', dark);
+            try { localStorage.setItem('editor-theme-preference', dark ? 'dark' : 'light'); } catch {}
+        };
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 </head>

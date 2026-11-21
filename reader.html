@@ -1,191 +1,705 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Boston English Center</title>
+
+    <title>ABC and 123 | Boston English Center</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
+
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <script>
+
         tailwind.config = {
+
+            darkMode: 'class',
+
             theme: {
+
                 extend: {
+
                     colors: {
+
                         brand: '#4f46e5',
+
                         'brand-glow': '#818cf8',
-                        surface: '#ffffff',
+
                     },
+
                     fontFamily: {
+
                         sans: ['Plus Jakarta Sans', 'sans-serif'],
+
                     },
+
                     screens: {
+
                         'xs': '480px',
+
                     },
+
                 }
+
             }
+
         }
+
     </script>
+
+    <!-- =====================================================
+*         THEME BOOTSTRAP — runs before paint to avoid flash
+*         ===================================================== -->
     <script>
-        const THEME_STORAGE_KEY = 'editor-theme-preference';
-        const colorScheme = window.matchMedia('(prefers-color-scheme: dark)');
+
+        const THEME_KEY = 'editor-theme-preference';
 
         function getStoredTheme() {
-            try {
-                return localStorage.getItem(THEME_STORAGE_KEY);
-            } catch (error) {
-                return null;
-            }
+
+            try { return localStorage.getItem(THEME_KEY); } catch { return null; }
+
         }
 
         function setStoredTheme(theme) {
-            try {
-                localStorage.setItem(THEME_STORAGE_KEY, theme);
-            } catch (error) {
-                // Ignore storage errors and keep runtime-only behavior.
-            }
-        }
 
+            try { localStorage.setItem(THEME_KEY, theme); } catch {}
 
-
-        function updateThemeToggleButton(theme) {
-            const themeToggleBtn = document.getElementById('theme-toggle-btn');
-            if (!themeToggleBtn) return;
-
-            const isDark = theme === 'dark';
-            themeToggleBtn.setAttribute('aria-label', isDark ? 'Switch to light mode' : 'Switch to dark mode');
-            themeToggleBtn.setAttribute('title', isDark ? 'Switch to light mode' : 'Switch to dark mode');
         }
 
         function applyTheme(theme) {
-            const isDark = theme === 'dark';
-            document.documentElement.classList.toggle('dark', isDark);
-            updateThemeToggleButton(theme);
+
+            const dark = theme === 'dark';
+
+            document.documentElement.classList.toggle('dark', dark);
+
+            // Update toggle button aria label (may not exist yet during bootstrap)
+            const btn = document.getElementById('theme-toggle-btn');
+
+            if (btn) {
+
+                btn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+
+                btn.setAttribute('title',      dark ? 'Switch to light mode' : 'Switch to dark mode');
+
+            }
+
         }
 
         function resolveInitialTheme() {
-            const storedTheme = getStoredTheme();
-            if (storedTheme === 'dark' || storedTheme === 'light') {
-                return storedTheme;
-            }
-            const systemTheme = colorScheme.matches ? 'dark' : 'light';
-            setStoredTheme(systemTheme);
-            return systemTheme;
+
+            const stored = getStoredTheme();
+
+            if (stored === 'dark' || stored === 'light') return stored;
+
+            const sys = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+
+            setStoredTheme(sys);
+
+            return sys;
+
         }
 
         function toggleThemePreference() {
-            const currentlyDark = document.documentElement.classList.contains('dark');
-            const nextTheme = currentlyDark ? 'light' : 'dark';
-            setStoredTheme(nextTheme);
-            applyTheme(nextTheme);
+
+            const next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+
+            setStoredTheme(next);
+
+            applyTheme(next);
+
+            // Sync all loaded iframes
+            syncAllIframeThemes(next);
+
+        }
+
+        function syncAllIframeThemes(theme) {
+
+            document.querySelectorAll('.slide iframe').forEach(iframe => {
+
+                try {
+
+                    if (iframe.contentWindow && typeof iframe.contentWindow.setTheme === 'function') {
+
+                        iframe.contentWindow.setTheme(theme);
+
+                    }
+
+                } catch {}
+
+            });
+
         }
 
         window.toggleThemePreference = toggleThemePreference;
 
-        // Apply on load
+        // Apply before first paint
         applyTheme(resolveInitialTheme());
 
-        window.addEventListener('storage', function (event) {
-            if (event.key === THEME_STORAGE_KEY) {
-                const newTheme = event.newValue;
-                if (newTheme === 'dark' || newTheme === 'light') {
-                    applyTheme(newTheme);
-                }
+        // Cross-tab sync
+        window.addEventListener('storage', e => {
+
+            if (e.key === THEME_KEY && (e.newValue === 'dark' || e.newValue === 'light')) {
+
+                applyTheme(e.newValue);
+
+                syncAllIframeThemes(e.newValue);
+
             }
+
         });
 
     </script>
+
     <style>
-        /* --- CSS VARIABLES & THEME CONFIGURATION --- */
+
+        /* ================================================
+*           CSS DESIGN TOKENS
+*           ================================================ */
+
         :root {
-            /* Light Mode Variables */
-            --bg-body: #f8fafc;
-            --bg-card: #ffffff;
-            --text-primary: #0f172a;
+
+            --bg-body:        #f8fafc;
+
+            --bg-card:        #ffffff;
+
+            --text-primary:   #0f172a;
+
             --text-secondary: #64748b;
-            --accent: #4f46e5;
-            --border-ui: #e2e8f0;
-            --sidebar-width: 280px;
 
-            /* Glass Light */
-            --glass-bg: rgba(255, 255, 255, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.5);
+            --accent:         #4f46e5;
+
+            --border-ui:      #e2e8f0;
+
+            --sidebar-width:  280px;
+
+            --glass-bg:       rgba(255,255,255,0.90);
+
+            --glass-border:   rgba(255,255,255,0.5);
+
+            --header-h:       auto; /* header is auto-height */
+
         }
 
-        /* Dark Mode Overrides */
         .dark {
-            --bg-body: #0f172a;
-            --bg-card: #1e293b;
-            --text-primary: #f1f5f9;
+
+            --bg-body:        #0f172a;
+
+            --bg-card:        #1e293b;
+
+            --text-primary:   #f1f5f9;
+
             --text-secondary: #94a3b8;
-            --accent: #6366f1;
-            --border-ui: #334155;
 
-            /* Glass Dark */
-            --glass-bg: rgba(15, 23, 42, 0.85);
-            --glass-border: rgba(255, 255, 255, 0.1);
+            --accent:         #6366f1;
+
+            --border-ui:      #334155;
+
+            --glass-bg:       rgba(15,23,42,0.92);
+
+            --glass-border:   rgba(255,255,255,0.08);
+
         }
-        body{
+
+        /* ================================================
+*           GLOBAL
+*           ================================================ */
+
+        *, *::before, *::after { box-sizing: border-box; }
+
+        html, body {
+
+            margin: 0; padding: 0;
+
+            height: 100%;
+
             overflow: hidden;
+
+            font-family: 'Plus Jakarta Sans', sans-serif;
+
+            background: var(--bg-body);
+
+            color: var(--text-primary);
+
         }
 
-        /* --- COMPONENT STYLES --- */
-        .glass-panel {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--border-ui);
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+        body {
+
+            display: flex;
+
+            flex-direction: column;
+
+            height: 100dvh;
+
         }
+
+        /* ================================================
+*           GLASS PANEL (header)
+*           ================================================ */
+
+        .glass-panel {
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(12px);
+
+            -webkit-backdrop-filter*: blur(12px);
+
+            border-bottom: 1px solid var(--border-ui);
+
+            box-shadow: 0 2px 6px -1px rgb(0 0 0 / 0.06);
+
+        }
+
+        /* ================================================
+*           SLIDE SYSTEM
+*           ================================================ */
 
         .slide-container {
-            height: calc(100dvh - 140px);
+
             position: relative;
-            /*overflow: hidden;*/
-            overflow-x: hidden;
-            overflow-y: auto;
+
+            overflow: hidden;
+
             background: var(--bg-body);
+
+            flex: 1 1 0;
+
+            min-height: 0;
+
+        }
+
+        #slides-wrapper {
+
+            position: relative;
+
+            width: 100%;
+
+            height: 100%;
+
         }
 
         .slide {
+
             position: absolute;
+
             inset: 0;
+
             display: flex;
+
             align-items: center;
+
             justify-content: center;
+
             opacity: 0;
+
             visibility: hidden;
+
             pointer-events: none;
-            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-            transform: translateX(30px);
+
+            transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease;
+
+            transform: translateX(24px);
+
         }
 
         .slide.active {
+
             opacity: 1;
+
             visibility: visible;
+
             pointer-events: auto;
+
             transform: translateX(0);
+
         }
 
         .slide.prev {
-            transform: translateX(-30px);
+
+            transform: translateX(-24px);
+
         }
 
-        .zoom-container {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        .slide-stage {
+
+            position: relative;
+
             width: 100%;
+
             height: 100%;
+
+            overflow: hidden;
+
+        }
+
+        /* Inner wrapper to fill the slide */
+
+        .slide > .slide-inner {
+
+            display: flex;
+
+            width: 100%;
+
+            height: 100%;
+
+            align-items: center;
+
+            justify-content: center;
+
+        }
+
+        /* ------------------------------------------------
+*           IFRAME
+*           ------------------------------------------------ */
+
+        iframe {
+
+            width: 100%;
+
+            height: 100%;
+
+            border: none;
+
+            display: block;
+
+            background: var(--bg-card);
+
+            pointer-events: none;
+
+        }
+
+        .slide.active iframe {
+
+            pointer-events: auto;
+
+        }
+
+        /* ------------------------------------------------
+*           ANNOTATION CANVAS LAYER
+*           ------------------------------------------------ */
+
+        .annotation-layer {
+
+            position: absolute;
+
+            inset: 0;
+
+            width: 100%;
+
+            height: 100%;
+
+            z-index: 2;
+
+            pointer-events: none;
+
+            touch-action: none;
+
+            cursor: default;
+
+        }
+
+        .annotation-layer.is-interactive {
+
+            pointer-events: all;
+
+        }
+
+        .annotation-layer.tool-draw {
+
+            cursor: crosshair;
+
+        }
+
+        .annotation-layer.tool-erase {
+
+            cursor: cell;
+
+        }
+
+        /* ================================================
+*           DRAWING TOOL POPOVER
+*           ================================================ */
+
+        .editor-tool-popover {
+
+            position: absolute;
+
+            top: calc(100% + 0.6rem);
+
+            right: -1.25rem;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 0.4rem;
+
+            padding: 0.45rem;
+
+            border-radius: 1rem;
+
+            border: 1px solid var(--border-ui);
+
+            background: var(--glass-bg);
+
+            backdrop-filter: blur(12px);
+
+            -webkit-backdrop-filter*: blur(12px);
+
+            box-shadow: 0 18px 40px -20px rgba(15, 23, 42, 0.35);
+
+            opacity: 0;
+
+            visibility: hidden;
+
+            transform: translateY(-6px);
+
+            transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+
+            z-index: 90;
+
+        }
+
+        .editor-tool-popover.is-open {
+
+            opacity: 1;
+
+            visibility: visible;
+
+            transform: translateY(0);
+
+        }
+
+        .editor-tool-btn {
+
+            width: 2.5rem;
+
+            height: 2.5rem;
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            border-radius: 0.9rem;
+
+            border: 1px solid transparent;
+
+            transition: transform 0.15s ease, border-color 0.15s ease,
+
+                        background-color 0.15s ease, color 0.15s ease;
+
+            cursor: pointer;
+
+            font-size: 1rem;
+
+        }
+
+        .editor-tool-btn:hover {
+
+            transform: scale(1.08);
+
+        }
+
+        .editor-tool-btn.is-active {
+
+            border-color: var(--border-ui);
+
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+
+        }
+
+        /* ================================================
+*           BUTTON TOKENS
+*           ================================================ */
+
+        .btn-action {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            gap: 0.35rem;
+
+            padding: 0.5rem 0.85rem;
+
+            min-height: 2.25rem;
+
+            border-radius: 0.75rem;
+
+            font-weight: 800;
+
+            font-size: 0.7rem;
+
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+            user-select: none;
+
+            white-space: nowrap;
+
+            cursor: pointer;
+
+            border: none;
+
+            outline: none;
+
+        }
+
+        @media (min-width: 640px) {
+
+            .btn-action {
+
+                gap: 0.5rem;
+
+                padding: 0.55rem 1rem;
+
+                min-height: 2.5rem;
+
+                border-radius: 0.9rem;
+
+                font-size: 0.76rem;
+
+            }
+
+        }
+
+        .btn-action:active { transform: scale(0.95); }
+
+        .btn-action:disabled,
+
+        .btn-action:disabled:hover {
+
+            opacity: 0.45;
+
+            cursor: not-allowed;
+
+            transform: none;
+
+            box-shadow: none;
+
+        }
+
+        .editor-primary-btn {
+
+            background: #4f46e5;
+
+            color: #fff;
+
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.25);
+
+        }
+
+        .editor-primary-btn:hover {
+
+            background: #818cf8;
+
+        }
+
+        .editor-secondary-btn {
+
+            background: var(--bg-card);
+
+            border: 1px solid var(--border-ui);
+
+            color: var(--text-primary);
+
+        }
+
+        .editor-secondary-btn:hover {
+
+            border-color: #4f46e5;
+
+            color: #4f46e5;
+
+        }
+
+        /* ================================================
+*           ICON BUTTON (theme, fullscreen)
+*           ================================================ */
+
+        .icon-btn {
+
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            width: 2.5rem;
+
+            height: 2.5rem;
+
+            border-radius: 0.75rem;
+
+            border: 1px solid var(--border-ui);
+
+            color: var(--text-secondary);
+
+            background: transparent;
+
+            transition: background 0.2s, color 0.2s;
+
+            cursor: pointer;
+
+        }
+
+        .icon-btn:hover {
+
+            background: var(--bg-body);
+
+            color: var(--text-primary);
+
+        }
+
+        /* ================================================
+*           SIDEBAR
+*           ================================================ */
+
+        #sidebar-drawer {
+
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+
+                        width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+        }
+
+        #sidebar-drawer.is-collapsed {
+
+            width: 0 !important;
+
+            overflow: hidden;
+
+        }
+
+        .sidebar-thumb {
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start;
+            width: 100%;
+            min-height: 62px;
+            gap: 12px;
+            padding: 10px 12px;
+            border: 1px solid transparent;
+            border-radius: 14px;
+            background: transparent;
+            text-align: left;
+            cursor: pointer;
+            transition: background .18s ease, border-color .18s ease;
         }
 
-        /* Sidebar Styles */
-        .sidebar-thumb {
-            transition: all 0.3s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-            background: var(--bg-card);
-        }
+        .sidebar-text { min-width: 0; flex: 1 1 0; overflow: hidden; }
+        .sidebar-text p { margin: 0; }
+        .sidebar-text .title { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .sidebar-thumb:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+        .sidebar-thumb:hover { background: var(--bg-body); }
 
         .sidebar-thumb:hover {
             border-color: var(--border-ui);
@@ -197,733 +711,1471 @@
         }
 
         .sidebar-thumb.active .thumb-number {
+
             background: var(--accent);
+
             color: white;
-        }
 
-        /* --- Sidebar Dark Mode Number Fix --- */
-        .dark .thumb-number {
-            color: var(--text-primary);
-            background: var(--bg-card);
-            border-color: var(--border-ui);
-        }
-
-        .dark .sidebar-thumb:hover .thumb-number {
             border-color: var(--accent);
+
         }
 
-        /* Custom Scrollbar */
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 6px;
+        .thumb-number {
+            flex: 0 0 2.25rem;
+            width: 2.25rem;
+            height: 2.25rem;
+            min-width: 2.25rem;
+
+            border-radius: 0.5rem;
+
+            background: var(--bg-body);
+
+            border: 1px solid var(--border-ui);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 0.72rem;
+            font-variant-numeric: tabular-nums;
+            font-weight: 800;
+
+            color: var(--text-primary);
+
+            transition: all 0.2s ease;
+
         }
 
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
+        .sidebar-thumb:hover .thumb-number {
+
+            border-color: var(--accent);
+
         }
+
+        /* ================================================
+*           CUSTOM SCROLLBAR
+*           ================================================ */
+
+        .custom-scrollbar::-webkit-scrollbar { width: 5px; }
+
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
 
         .custom-scrollbar::-webkit-scrollbar-thumb {
+
             background: var(--border-ui);
+
             border-radius: 10px;
+
         }
 
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+
             background: var(--text-secondary);
+
         }
 
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            background: var(--bg-card);
-            pointer-events: none;
-        }
+        /* ================================================
+*           MOBILE SIDEBAR OVERLAY
+*           ================================================ */
 
-        .slide.active iframe {
-            pointer-events: auto;
-        }
-
-        .btn-action {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1.25rem;
-            border-radius: 0.85rem;
-            font-weight: 800;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            user-select: none;
-            white-space: nowrap;
-            font-size: 0.75rem;
-        }
-
-        @media (min-width: 640px) {
-            .btn-action {
-                gap: 0.75rem;
-                padding: 0.75rem 1.5rem;
-                border-radius: 1rem;
-                font-size: 0.85rem;
-            }
-        }
-
-        .btn-action:active {
-            transform: scale(0.95);
-        }
-
-        /* --- TEACHER CUE STYLING --- */
-        .cue-btn {
-            position: relative;
-            overflow: hidden;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1.25rem;
-            border-radius: 0.65rem;
-            background: #4f46e5;
-            color: white;
-            font-weight: 800;
-            font-size: 0.7rem;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            box-shadow:
-                0 0 0 1px rgba(79, 70, 229, 0.4),
-                0 10px 20px -10px rgba(79, 70, 229, 0.5);
-            transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
-            cursor: pointer;
-            border: none;
-        }
-
-        @media (min-width: 640px) {
-            .cue-btn {
-                gap: 0.75rem;
-                padding: 0.7rem 1.75rem;
-                border-radius: 0.75rem;
-                font-size: 0.9rem;
-            }
-        }
-
-        .cue-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
-        }
-
-        .cue-btn:hover {
-            box-shadow:
-                0 0 0 2px rgba(79, 70, 229, 0.4),
-                0 8px 16px -4px rgba(79, 70, 229, 0.3);
-            background: #4338ca;
-        }
-
-        .cue-btn:hover::before {
-            transform: translateX(100%);
-        }
-
-        .cue-icon-wrap {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 20px;
-            height: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        @media (min-width: 640px) {
-            .cue-icon-wrap {
-                width: 24px;
-                height: 24px;
-            }
-        }
-
-        .cue-btn:hover .cue-icon-wrap {
-            background: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-        }
-
-        .cue-tooltip {
-            position: absolute;
-            top: calc(100% + 20px);
-            left: 50%;
-            transform: translateX(-50%) translateY(20px);
-            width: 360px;
-            padding: 2rem;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(24px) saturate(200%);
-            -webkit-backdrop-filter: blur(24px) saturate(200%);
-            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%);
-            border: 1px solid rgba(79, 70, 229, 0.1);
-            box-shadow:
-                0 40px 80px -15px rgba(15, 23, 42, 0.15),
-                inset 0 0 0 1px rgba(79, 70, 229, 0.05);
-            color: #475569;
-            text-align: left;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
-            z-index: 100;
-        }
-
-        .cue-header {
-            position: relative;
-            background: rgba(79, 70, 229, 0.05);
-            padding: 0.6rem 1.25rem;
-            border-radius: 0.5rem;
-            margin-bottom: 2rem;
-            border-left: 3px solid #4f46e5;
-            overflow: hidden;
-        }
-
-        .cue-header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent, rgba(79, 70, 229, 0.1), transparent);
-            animation: scanline 3s infinite linear;
-        }
-
-        @keyframes scanline {
-            0% { transform: translateY(-100%); }
-            100% { transform: translateY(100%); }
-        }
-
-        .cue-badge {
-            font-size: 11px;
-            font-weight: 900;
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            color: #4f46e5;
-            text-shadow: 0 0 10px rgba(79, 70, 229, 0.2);
-        }
-
-        .cue-header .cue-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-        }
-
-        .cue-header .cue-badge::after {
-            content: '';
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4f46e5;
-            box-shadow: 0 0 8px rgba(79, 70, 229, 0.4);
-        }
-
-        .teacher-cue {
-            margin-top: 0;
-        }
-
-        .teacher-cue div {
-            margin-bottom: 0.75rem;
-            display: flex;
-            gap: 0.75rem;
-            align-items: flex-start;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #475569;
-            padding: 0.25rem 0;
-            cursor: default;
-        }
-
-        .cue-marker {
-            flex-shrink: 0;
-            width: 12px;
-            height: 2px;
-            background: #4f46e5;
-            margin-top: 1rem;
-            box-shadow: 0 0 8px rgba(79, 70, 229, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .teacher-cue div:hover .cue-marker {
-            width: 20px;
-            background: #818cf8;
-            box-shadow: 0 0 12px rgba(129, 140, 248, 0.6);
-        }
-
-        .teacher-cue span:not(.cue-marker) {
-            font-size: 0.9rem;
-            font-weight: 500;
-            line-height: 1.8;
-            color: #475569;
-            transition: all 0.3s ease;
-        }
-
-        .teacher-cue div:hover span:not(.cue-marker) {
-            color: #0f172a;
-            transform: translateX(5px);
-        }
-
-        @keyframes edge-pulse {
-            0%, 100% { opacity: 0.2; filter: brightness(1); }
-            50% { opacity: 0.6; filter: brightness(1.5); }
-        }
-
-        /* --- DARK MODE ADAPTATION --- */
-        .dark .cue-tooltip {
-            background: rgba(15, 23, 42, 0.98);
-            border-color: rgba(79, 70, 229, 0.2);
-            box-shadow: 0 40px 80px -15px rgba(0, 0, 0, 0.6);
-            color: #f8fafc;
-        }
-
-        .dark .cue-header {
-            background: rgba(79, 70, 229, 0.1);
-            border-left-color: #6366f1;
-        }
-
-        .dark .teacher-cue div,
-        .dark .teacher-cue span:not(.cue-marker),
-        .dark .cue-header {
-            color: #ffffff;
-        }
-
-        .dark .teacher-cue div:hover span:not(.cue-marker) {
-            color: #ffffff;
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-        }
-
-        .dark .cue-marker {
-            background: #6366f1;
-            box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
-        }
-
-        .group:hover .cue-tooltip {
-            opacity: 1;
-            visibility: visible;
-            transform: translateX(-50%) translateY(0);
-        }
-
-        /* --- MOBILE SIDEBAR TRANSITION --- */
         #mobile-sidebar-overlay {
+
             transition: opacity 0.3s ease;
+
         }
 
-        #sidebar-drawer {
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        /* ================================================
+*           SLIDE INDEX INDICATOR
+*           ================================================ */
+
+        .slide-counter {
+
+            font-size: 0.6rem;
+
+            font-weight: 900;
+
+            letter-spacing: 0.08em;
+
+            color: var(--text-secondary);
+
+            background: var(--bg-body);
+
+            border: 1px solid var(--border-ui);
+
+            border-radius: 0.6rem;
+
+            padding: 0.35rem 0.75rem;
+
+            white-space: nowrap;
+
+            min-width: 62px;
+
+            text-align: center;
+
         }
+
+        @media (min-width: 640px) {
+
+            .slide-counter { font-size: 0.7rem; }
+
+        }
+
+        /* ================================================
+*           TRANSLATE HELPERS (mobile sidebar)
+*           ================================================ */
 
         .translate-x-full { transform: translateX(100%); }
-        .translate-x-0 { transform: translateX(0); }
-    </style>
-</head>
-<body class="flex flex-col h-[100dvh]">
-<!-- Top Header -->
-<header class="h-[70px] px-4 md:px-8 flex items-center justify-between glass-panel z-50 shrink-0 relative">
-    <!-- Section 1: Logo (Left) -->
-    <div class="flex-1 flex items-center gap-2 md:gap-3">
-        <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-tr from-brand to-indigo-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-200 shrink-0">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-6 md:h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-        </div>
-        <div class="hidden xs:block">
-            <h1 class="text-[10px] md:text-lg font-extrabold tracking-tight leading-tight max-w-[100px] md:max-w-none">Boston English Center</h1>
-        </div>
-    </div>
 
-    <!-- Section 2: Teacher Cue (Center) -->
-    <div class="flex-none hidden xs:flex items-center justify-center ">
-        <div class="group relative">
-            <button id="cue-toggle-btn" class="cue-btn !px-3 !py-1.5 md:!px-5 md:!py-2">
-                <span class="text-[10px] md:text-[14px]">Teacher Cue</span>
-                <div class="cue-icon-wrap !w-4 !h-4 md:!w-6 md:!h-6">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 md:w-4 md:h-4" viewBox="0 0 16 16">
-                        <g fill="currentColor">
-                            <path d="M9 11a1 1 0 1 1-2 0a1 1 0 0 1 2 0M7.5 4A2.5 2.5 0 0 0 5 6.5h2a.5.5 0 0 1 .5-.5h.646a.382.382 0 0 1 .17.724L7 7.382V9h2v-.382l.211-.106A2.382 2.382 0 0 0 8.146 4z" />
-                            <path d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-6a6 6 0 1 0 0 12A6 6 0 0 0 8 2" />
+        .translate-x-0    { transform: translateX(0); }
+
+        /* ================================================
+*           RESPONSIVE HEADER LAYOUT
+*           ================================================ */
+
+        /* On mobile: show mobile nav row (prev/counter/next below logo row) */
+
+        /* On desktop (lg+): show desktop nav within header row */
+
+
+        /* Reference-aligned reader header: tools next to brand; navigation on right. */
+        .reader-header-row { width: 100%; }
+        .reader-brand-cluster { min-width: 0; }
+        .reader-left-tools {
+            margin-left: clamp(12px, 1.7vw, 28px);
+            flex: 0 0 auto;
+            gap: 9px;
+        }
+        .reader-navigation { min-width: 0; gap: 9px; }
+        .reader-navigation .slide-counter { flex: 0 0 auto; }
+        .reader-navigation > .icon-btn { flex: 0 0 auto; }
+        .reader-left-tools .icon-btn { flex: 0 0 40px; }
+        .slide-counter { font-variant-numeric: tabular-nums; }
+        @media (min-width: 1024px) and (max-width: 1170px) {
+          .reader-left-tools { margin-left: 7px; gap: 5px; }
+          .reader-navigation { gap: 5px; }
+          .reader-brand-cluster > div:nth-child(2) { max-width: 155px; }
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- ============================================================
+*     TOP HEADER
+*     ============================================================ -->
+<header class="glass-panel reader-header z-[85] shrink-0 relative px-3 py-2 md:px-6 md:py-2">
+
+    <!-- Main row: logo | (desktop: tools+nav) | (mobile: menu btn) -->
+    <div class="reader-header-row flex min-h-[2.75rem] items-center justify-between gap-2 sm:min-h-[3rem]">
+
+        <!-- ---- LEFT: Logo + Brand ---- -->
+        <div class="reader-brand-cluster flex items-center gap-2 md:gap-3 flex-none min-w-0">
+
+            <div class="w-8 h-8 md:w-10 md:h-10 bg-gradient-to-tr from-brand to-indigo-600 rounded-xl flex items-center justify-center shadow-md shrink-0">
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 md:w-5 md:h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+
+                </svg>
+
+            </div>
+
+            <div class="hidden xs:block min-w-0 max-w-[130px] lg:max-w-[200px]">
+
+                <div class="text-sm md:text-base font-extrabold tracking-tight leading-tight text-[var(--text-primary)] truncate">Boston English Center</div>
+
+            </div>
+
+
+            <!-- Lesson tools stay with the brand, like the reference reader -->
+            <div class="reader-left-tools hidden lg:flex items-center gap-2">
+            <!-- Drawing tools toggle -->
+            <div class="relative">
+
+                <button id="editor-tool-toggle" type="button"
+
+                        class="icon-btn" aria-label="Open drawing tools" aria-expanded="false">
+
+                    <!-- Pen icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+
+                        <g fill="none">
+
+                            <path fill="currentColor" fill-rule="evenodd" d="M17.586 2a2 2 0 0 1 2.828 0L22 3.586a2 2 0 0 1 0 2.828L20.414 8L16 3.586zm-3 3l-5 5A2 2 0 0 0 9 11.414V13a2 2 0 0 0 2 2h1.586A2 2 0 0 0 14 14.414l5-5z" clip-rule="evenodd"/>
+
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 14H5a2 2 0 0 0-2 2v0a2 2 0 0 0 2 2h14a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-4"/>
+
                         </g>
+
                     </svg>
+
+                </button>
+
+                <!-- Drawing tool popover -->
+                <div id="editor-tool-popover" class="editor-tool-popover" role="toolbar" aria-label="Drawing tools">
+
+                    <!-- Select (pointer) -->
+                    <button type="button" class="editor-tool-btn is-active text-[var(--text-primary)] bg-[var(--bg-card)]" data-tool="select" aria-label="Select (no drawing)">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M4 0l16 12.279-6.951 1.17 4.325 8.817-3.596 1.734-4.35-8.879-5.428 4.702z"/></svg>
+
+                    </button>
+
+                    <!-- Draw red -->
+                    <button type="button" class="editor-tool-btn text-red-500 bg-red-500/10" data-tool="draw-red" aria-label="Draw red">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
+
+                    </button>
+
+                    <!-- Draw theme color -->
+                    <button type="button" class="editor-tool-btn text-[var(--text-primary)] bg-[var(--bg-body)]" data-tool="draw-theme" aria-label="Draw (theme color)">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.52 2.49C17.17.14 13.32.08 10.9 2.5L4.74 8.66c-2.42 2.42-2.48 6.27-.06 8.69l1.42 1.42-3.46 3.44 1.41 1.41 3.45-3.45 1.42 1.42c2.42 2.42 6.27 2.36 8.69-.06l6.16-6.16c2.42-2.42 2.36-6.27-.06-8.69l-.19-.19zm-1.22 7.47l-6.16 6.16c-1.65 1.65-4.33 1.68-5.95.07L4.76 14.76c-1.62-1.62-1.58-4.3.07-5.95l6.16-6.16c1.65-1.65 4.33-1.68 5.95-.07l1.42 1.42c1.62 1.62 1.58 4.3-.07 5.95l.01.01z"/></svg>
+
+                    </button>
+
+                    <!-- Draw blue -->
+                    <button type="button" class="editor-tool-btn text-blue-500 bg-blue-500/10" data-tool="draw-blue" aria-label="Draw blue">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M15.57 2.44l1.41 1.41L5.44 15.42l-1.41-1.41L15.57 2.44zM4.03 15.42l1.41 1.41L3 21l4.17-2.44 1.41 1.41L3 23l1.03-7.58zM20.98 2.44l1 1-1.57 1.57-1-1 1.57-1.57z"/></svg>
+
+                    </button>
+
+                    <!-- Eraser -->
+                    <button type="button" class="editor-tool-btn text-amber-500 bg-amber-500/10" data-tool="erase" aria-label="Eraser">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 20H7L3 16l10-10 7 7-3.5 3.5"/><path d="M6.0001 20l4-4"/></svg>
+
+                    </button>
+
+                    <!-- Clear all -->
+                    <button type="button" class="editor-tool-btn text-rose-500 bg-rose-500/10" data-tool="clear-all" aria-label="Clear all annotations">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+
+                    </button>
+
                 </div>
+
+            </div>
+
+            <!-- Theme Toggle -->
+            <button id="theme-toggle-btn" onclick="toggleThemePreference()"
+
+                    class="icon-btn" aria-label="Switch theme" title="Switch theme">
+
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>
+
+                </svg>
+
             </button>
 
-            <!-- Tooltip -->
-            <div id="cue-tooltip" class="cue-tooltip">
-                <div class="cue-header">Instructional Insight</div>
-                <div class="teacher-cue"></div>
+            <!-- Fullscreen -->
+            <button onclick="toggleFullscreen()" class="icon-btn" aria-label="Toggle fullscreen" title="Toggle fullscreen">
+
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+
+                </svg>
+
+            </button>
+
             </div>
         </div>
+
+        <!-- ---- RIGHT: slide navigation and sidebar toggle ---- -->
+        <div class="reader-navigation hidden lg:flex items-center gap-2 flex-1 justify-end">
+
+            <!-- Prev / Counter / Next (desktop) -->
+            <button onclick="prevSlide()" id="prev-btn-desktop"
+
+                    class="btn-action editor-secondary-btn min-w-[2.5rem]" aria-label="Previous slide">
+
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+
+                </svg>
+
+                <span class="text-[0.65rem] uppercase tracking-[0.08em] hidden xl:inline">Previous</span>
+
+            </button>
+
+            <span id="slide-index-footer" class="slide-counter" aria-live="polite">01 / 18</span>
+
+            <button onclick="nextSlide()" id="next-btn-desktop"
+
+                    class="btn-action editor-primary-btn min-w-[2.5rem]" aria-label="Next slide">
+
+                <span class="text-[0.65rem] uppercase tracking-[0.08em] hidden xl:inline">Next Slide</span>
+
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+
+                </svg>
+
+            </button>
+
+            <!-- Desktop Sidebar Toggle -->
+            <button id="desktop-sidebar-toggle-btn" type="button"
+
+                    class="icon-btn" aria-label="Toggle slide navigation" aria-expanded="true">
+
+                <svg id="sidebar-toggle-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+
+                    <path fill="currentColor" d="M21 4H7v2h14zm0 7H11v2h10zm0 7H7v2h14zM1.99 8.814L3.402 7.4L8 11.996l-4.597 4.596l-1.414-1.414l3.182-3.182z"/>
+
+                </svg>
+
+            </button>
+
+        </div>
+
+        <!-- ---- RIGHT (Mobile < lg): Theme toggle + hamburger ---- -->
+        <div class="flex lg:hidden items-center gap-2">
+
+            <!-- Mobile theme toggle -->
+            <button id="theme-toggle-btn-mobile" onclick="toggleThemePreference()"
+
+                    class="icon-btn" aria-label="Switch theme">
+
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/>
+
+                </svg>
+
+            </button>
+
+            <!-- Hamburger -->
+            <button id="mobile-menu-btn" type="button"
+
+                    class="p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-brand dark:text-brand-glow"
+
+                    aria-label="Toggle slide navigation" aria-expanded="false">
+
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
+
+                </svg>
+
+            </button>
+
+        </div>
+
     </div>
 
-    <!-- Mobile Center Title (replaces Teacher Cue) -->
-    <div class="flex-none flex xs:hidden items-center justify-center">
-        <h1 class="text-md font-extrabold tracking-tight leading-tight text-[var(--text-primary)]">Boston English Center</h1>
-    </div>
+    <!-- ---- MOBILE nav row: Prev / Counter / Next (below logo row, mobile only) ---- -->
+    <div class="flex lg:hidden items-center justify-between gap-1.5 pt-1.5 pb-0.5">
 
-    <!-- Section 3: Controls (Right) -->
-    <div class="flex-1 flex items-center justify-end gap-2 md:gap-4">
-        <!-- Theme Toggle -->
-        <button id="theme-toggle-btn" onclick="toggleThemePreference()" class="p-2 rounded-xl border border-[var(--border-ui)] hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300 flex items-center gap-2">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z" />
+        <button onclick="prevSlide()" id="prev-btn-mobile"
+
+                class="btn-action editor-secondary-btn min-w-[2.5rem] flex-shrink-0" aria-label="Previous slide">
+
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7"/>
+
             </svg>
-        </button>
-        <!-- Fullscreen Button -->
-        <button onclick="toggleFullscreen()" class="hidden sm:block p-2 rounded-xl border border-[var(--border-ui)] hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-slate-600 dark:text-slate-300">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
-            </svg>
+
+            <span class="text-[0.6rem] uppercase tracking-[0.08em]">Previous</span>
+
         </button>
 
-        <!-- Burger Menu Button (Right on mobile) -->
-        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-brand dark:text-brand-glow">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16" />
+        <span id="slide-index-mobile" class="slide-counter" aria-live="polite">01 / 18</span>
+
+        <button onclick="nextSlide()" id="next-btn-mobile"
+
+                class="btn-action editor-primary-btn min-w-[2.5rem] flex-shrink-0" aria-label="Next slide">
+
+            <span class="text-[0.6rem] uppercase tracking-[0.08em]">Next Slide</span>
+
+            <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/>
+
             </svg>
+
         </button>
+
     </div>
+
 </header>
 
-<div class="flex flex-1 relative overflow-hidden">
-    <!-- Main Content Area -->
-    <main class="flex-1 slide-container w-full">
-        <div id="zoom-wrapper" class="zoom-container">
-            <div id="slides-wrapper" class="w-full h-full relative">
-                <template id="slide-template">
-                    <div class="slide">
-                        <div class="w-full h-full flex items-center justify-center">
-                            <!-- Iframe src will be set via JS -->
-                            <iframe src="" scrolling="yes" style="overflow: auto;"></iframe>
+<!-- ============================================================
+*     BODY: main slide area + sidebar
+*     ============================================================ -->
+<div class="flex flex-1 min-h-0 relative overflow-hidden">
+
+    <!-- Main Slide Container -->
+    <main class="flex-1 slide-container w-full min-h-0">
+
+        <div id="slides-wrapper" class="w-full h-full relative">
+
+            <template id="slide-template">
+
+                <div class="slide">
+
+                    <div class="slide-inner">
+
+                        <div class="slide-stage">
+
+                            <!-- iframe src set by JS -->
+                            <iframe src="" scrolling="auto"></iframe>
+
+                            <canvas class="annotation-layer" aria-label="Slide annotations"></canvas>
 
                         </div>
+
                     </div>
-                </template>
-            </div>
+
+                </div>
+
+            </template>
+
         </div>
+
     </main>
 
     <!-- Mobile Sidebar Overlay -->
     <div id="mobile-sidebar-overlay"
+
          class="fixed inset-0 bg-black/50 z-[60] lg:hidden opacity-0 pointer-events-none backdrop-blur-sm"></div>
 
-    <!-- Right Side Navigation Sidebar -->
-    <!-- Fixed on mobile, static on desktop -->
+    <!-- Right Sidebar -->
     <aside id="sidebar-drawer"
-           class="fixed lg:static inset-y-0 right-0 z-[70] w-[85%] max-w-[320px] bg-[var(--bg-card)] border-l border-[var(--border-ui)] flex flex-col translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none h-full">
 
-        <div class="flex items-center justify-between p-5 border-b border-[var(--border-ui)]">
-            <div class="flex flex-col gap-1">
+           class="fixed lg:static inset-y-0 right-0 z-[70] w-[85%] max-w-[320px] lg:w-[320px] lg:max-w-none xl:w-[340px] bg-[var(--bg-card)] border-l border-[var(--border-ui)] flex flex-col translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none h-full">
 
-                <h3 class="font-black text-xs uppercase tracking-[0.2em] text-[var(--text-secondary)]">Course
-                    Content</h3>
-                <p class="text-sm md:text-md font-bold text-[var(--text-primary)]">Slide Navigation</p>
+        <!-- Sidebar header -->
+        <div class="flex items-center justify-start gap-3 p-4 border-b border-[var(--border-ui)]">
+
+            <div class="flex flex-col gap-0.5 flex-1 min-w-0">
+
+                <span class="font-black text-[0.6rem] uppercase tracking-[0.2em] text-[var(--text-secondary)]">Level A0 · Unit 1</span>
+
+                <p class="text-sm font-bold text-[var(--text-primary)]">Slide Navigation</p>
+
             </div>
-            <!-- Mobile Close Button -->
+
+            <!-- Mobile close -->
             <button id="close-sidebar-btn"
-                    class="lg:hidden p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-[var(--text-secondary)]">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                          d="M6 18L18 6M6 6l12 12" />
+
+                    class="lg:hidden p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-[var(--text-secondary)] transition-colors shrink-0">
+
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+
                 </svg>
+
             </button>
+
         </div>
 
-        <div id="sidebar-list" class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-3">
-            <!-- Sidebar items injected via JS -->
+        <!-- Sidebar items -->
+        <div id="sidebar-list" class="flex-1 overflow-y-auto custom-scrollbar p-3 space-y-2">
+
+            <!-- Injected via JS -->
         </div>
 
     </aside>
+
 </div>
 
-
-<!-- Bottom Control Bar -->
-<footer class="h-[70px] glass-panel flex items-center justify-between px-3 md:px-8 z-50 border-t shrink-0">
-    <div class="flex items-center gap-2 md:gap-4 flex-1">
-        <button onclick="prevSlide()"
-                class="btn-action bg-[var(--bg-card)] border border-[var(--border-ui)] text-[var(--text-primary)] hover:border-brand hover:text-brand shadow-sm !px-3 md:!px-5">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" />
-            </svg>
-            <span class="text-[10px] md:text-[11px] uppercase tracking-[0.1em] hidden sm:inline">Previous</span>
-        </button>
-
-        <div class="h-8 w-px bg-[var(--border-ui)] hidden md:block"></div>
-
-        <div
-            class="flex items-center gap-1.5 md:gap-2 bg-[var(--bg-body)] px-2 py-1 md:px-3 md:py-1.5 rounded-xl border border-[var(--border-ui)]">
-            <button onclick="changeZoom(-0.1)"
-                    class="p-1 text-[var(--text-secondary)] hover:text-brand transition-colors"><svg class="w-4 h-4"
-                                                                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M20 12H4" />
-                </svg></button>
-            <span id="zoom-level"
-                  class="text-[9px] md:text-[10px] font-black min-w-[2.2rem] md:min-w-[2.5rem] text-center uppercase text-[var(--text-primary)]">100%</span>
-            <button onclick="changeZoom(0.1)"
-                    class="p-1 text-[var(--text-secondary)] hover:text-brand transition-colors"><svg class="w-4 h-4"
-                                                                                                     fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4" />
-                </svg></button>
-        </div>
-    </div>
-
-    <div class="flex items-center justify-end gap-2 md:gap-4 flex-1">
-            <span id="slide-index-footer"
-                  class="text-[9px] md:text-[11px] font-black tracking-[0.1em] text-[var(--text-secondary)] bg-[var(--bg-body)] px-2.5 md:px-4 py-2 rounded-xl border border-[var(--border-ui)]">01
-                / 03</span>
-        <button onclick="nextSlide()"
-                class="btn-action bg-brand text-white shadow-lg shadow-brand/20 hover:bg-brand-glow !px-3 md:!px-5">
-            <span class="text-[10px] md:text-[11px] uppercase tracking-[0.1em] hidden sm:inline">Next Slide</span>
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-            </svg>
-        </button>
-    </div>
-</footer>
+<!-- ============================================================
+*     SCRIPTS
+*     ============================================================ -->
 <script>
-    const slideData = [
-        {
-            title: "Meet and Greet",
-            src: "chapter-0/slide-1.html",
-            cue: []
-        },
-        {
-            title: "Introducing yourself",
-            src: "chapter-0/slide-2.html",
-            cue: []
-        },
-        {
-            title: "Let's get to know you",
-            src: "chapter-0/slide-3.html",
-            cue: []
-        }
-    ];
-    const PRELOAD_AHEAD_COUNT = 2;
-    const state = {
-        currentSlide: 0,
-        zoom: 1.0,
-        slides: [],
-        loadedSlides: new Set() // <--- NEW: Tracks loaded indices
-    };
-    window.state = state;
 
+// ----------------------------------------------------------------
+// DATA
+// ----------------------------------------------------------------
+const slideData = [
 
+    {
 
-    // --- RESPONSIVE SIDEBAR LOGIC ---
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const closeSidebarBtn = document.getElementById('close-sidebar-btn');
-    const sidebarDrawer = document.getElementById('sidebar-drawer');
-    const sidebarOverlay = document.getElementById('mobile-sidebar-overlay');
+        title: "ABC and 123",
 
-    function toggleSidebar(show) {
-        if (show) {
-            sidebarDrawer.classList.remove('translate-x-full');
-            sidebarDrawer.classList.add('translate-x-0');
-            sidebarOverlay.classList.remove('opacity-0', 'pointer-events-none');
-        } else {
-            sidebarDrawer.classList.add('translate-x-full');
-            sidebarDrawer.classList.remove('translate-x-0');
-            sidebarOverlay.classList.add('opacity-0', 'pointer-events-none');
-        }
+        src: "chapter-1/slide-1/index.html"
+
+    },
+
+    {
+
+        title: "Learning Objectives",
+
+        src: "chapter-1/slide-2/index.html"
+
+    },
+
+    {
+
+        title: "Practice 1 — Warm-Up",
+
+        src: "chapter-1/slide-3/index.html"
+
+    },
+
+    {
+
+        title: "Let's Learn the English Alphabet",
+
+        src: "chapter-1/slide-4/index.html"
+
+    },
+
+    {
+
+        title: "Practice 2 — The English Alphabet",
+
+        src: "chapter-1/slide-5/index.html"
+
+    },
+
+    {
+
+        title: "Practice 3 — Match the Letters",
+
+        src: "chapter-1/slide-6/index.html"
+
+    },
+
+    {
+
+        title: "Practice 4 — Complete the Alphabet",
+
+        src: "chapter-1/slide-7/index.html"
+
+    },
+
+    {
+
+        title: "Let's Learn the Numbers",
+
+        src: "chapter-1/slide-8/index.html"
+
+    },
+
+    {
+
+        title: "Match the Numbers!",
+
+        src: "chapter-1/slide-9/index.html"
+
+    },
+
+    {
+
+        title: "Listening and Writing",
+
+        src: "chapter-1/slide-10/index.html"
+
+    },
+
+    {
+
+        title: "Match the Numbers!",
+
+        src: "chapter-1/slide-11/index.html"
+
+    },
+
+    {
+
+        title: "Numbers 11–20",
+
+        src: "chapter-1/slide-12/index.html"
+
+    },
+
+    {
+
+        title: "Listening and Writing — Numbers 11–20",
+
+        src: "chapter-1/slide-13/index.html"
+
+    },
+
+    {
+
+        title: "Match the Numbers! — Numbers 11–20",
+
+        src: "chapter-1/slide-14/index.html"
+
+    },
+
+    {
+
+        title: "Write Your Full Name",
+
+        src: "chapter-1/slide-15/index.html"
+
+    },
+
+    {
+
+        title: "Writing Practice",
+
+        src: "chapter-1/slide-16/index.html"
+
+    },
+
+    {
+
+        title: "Trace the Letters",
+
+        src: "chapter-1/slide-17/index.html"
+
+    },
+
+    {
+
+        title: "Lesson Complete — You Did It!",
+
+        src: "chapter-1/slide-18/index.html"
+
     }
 
-    mobileMenuBtn.addEventListener('click', () => toggleSidebar(true));
-    closeSidebarBtn.addEventListener('click', () => toggleSidebar(false));
-    sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
+];
 
-    window.addEventListener('message', (event) => {
-        const data = event.data;
-        if (!data || typeof data !== 'object' || data.type !== 'BEC_NAV') return;
-        if (data.action === 'next') nextSlide();
-        if (data.action === 'prev') prevSlide();
+const PRELOAD_AHEAD_COUNT = 2;
+
+const state = {
+
+    currentSlide: 0,
+
+    slides: [],
+
+    loadedSlides: new Set(),
+
+    sidebarOpen: window.innerWidth >= 1024,
+
+    activeTool: 'select',
+
+    isDrawing: false,
+
+    lastPoint: null,
+
+};
+
+window.state = state;
+
+// ----------------------------------------------------------------
+// TOOL DEFINITIONS
+// ----------------------------------------------------------------
+const TOOLS = {
+
+    'select':     { mode: 'select' },
+
+    'draw-red':   { mode: 'draw',  color: '#dc2626' },
+
+    'draw-theme': { mode: 'draw' },   // color resolved at draw time
+    'draw-blue':  { mode: 'draw',  color: '#2563eb' },
+
+    'erase':      { mode: 'erase' },
+
+    'clear-all':  { mode: 'clear-all' },
+
+};
+
+function getActiveTool() {
+
+    return TOOLS[state.activeTool] || TOOLS.select;
+
+}
+
+// Theme-aware pen color for 'draw-theme'
+function getThemeDrawColor() {
+
+    return document.documentElement.classList.contains('dark') ? '#ffffff' : '#111827';
+
+}
+
+// ----------------------------------------------------------------
+// SIDEBAR TOGGLE
+// ----------------------------------------------------------------
+const mobileMenuBtn        = document.getElementById('mobile-menu-btn');
+
+const desktopSidebarToggle = document.getElementById('desktop-sidebar-toggle-btn');
+
+const closeSidebarBtn      = document.getElementById('close-sidebar-btn');
+
+const sidebarDrawer        = document.getElementById('sidebar-drawer');
+
+const sidebarOverlay       = document.getElementById('mobile-sidebar-overlay');
+
+const SIDEBAR_ICON_OPEN   = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M21 4H7v2h14zm0 7H11v2h10zm0 7H7v2h14zM1.99 8.814L3.402 7.4L8 11.996l-4.597 4.596l-1.414-1.414l3.182-3.182z"/></svg>`;
+
+const SIDEBAR_ICON_CLOSED = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M3 18h13v-2H3zm0-5h10v-2H3zm0-7v2h13V6zm18 9.59L17.42 12L21 8.41L19.59 7l-5 5l5 5z"/></svg>`;
+
+function toggleSidebar(show) {
+
+    const isDesktop = window.innerWidth >= 1024;
+
+    state.sidebarOpen = !!show;
+
+    // Update aria
+    [mobileMenuBtn, desktopSidebarToggle].forEach(b => {
+
+        if (b) b.setAttribute('aria-expanded', state.sidebarOpen ? 'true' : 'false');
+
     });
 
-    // --- TEACHER CUE HOVER ONLY ---
-    // Tooltip visibility is controlled via CSS (.group:hover .cue-tooltip)
+    if (desktopSidebarToggle) {
 
-    // --- SLIDE LOGIC ---
-    function init() {
-        createSlides();
-        createSidebar();
-        updateSlides();
+        desktopSidebarToggle.innerHTML = state.sidebarOpen ? SIDEBAR_ICON_OPEN : SIDEBAR_ICON_CLOSED;
 
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
-            if (e.key === 'ArrowLeft') prevSlide();
-        });
     }
 
-    function createSlides() {
-        const wrapper = document.getElementById('slides-wrapper');
-        const template = document.getElementById('slide-template');
+    if (isDesktop) {
 
-        slideData.forEach((data, i) => {
-            const clone = template.content.cloneNode(true);
-            const slide = clone.querySelector('.slide');
-            const iframe = slide.querySelector('iframe');
-            // iframe.src = data.src; we will load it using ajax
+        sidebarDrawer.classList.toggle('is-collapsed', !state.sidebarOpen);
 
-            // Sync theme when iframe loads
-            iframe.onload = () => {
-                const isDark = document.documentElement.classList.contains('dark');
-                if (iframe.contentWindow && typeof iframe.contentWindow.setTheme === 'function') {
-                    iframe.contentWindow.setTheme(isDark ? 'dark' : 'light');
-                }
-            };
+        sidebarDrawer.classList.remove('translate-x-full');
 
-            wrapper.appendChild(clone);
-        });
-        state.slides = document.querySelectorAll('.slide');
+        sidebarDrawer.classList.add('translate-x-0');
+
+        sidebarOverlay.classList.add('opacity-0', 'pointer-events-none');
+
+    } else {
+
+        if (state.sidebarOpen) {
+
+            sidebarDrawer.classList.remove('translate-x-full');
+
+            sidebarDrawer.classList.add('translate-x-0');
+
+            sidebarOverlay.classList.remove('opacity-0', 'pointer-events-none');
+
+        } else {
+
+            sidebarDrawer.classList.add('translate-x-full');
+
+            sidebarDrawer.classList.remove('translate-x-0');
+
+            sidebarOverlay.classList.add('opacity-0', 'pointer-events-none');
+
+        }
+
     }
 
-    function loadSlideAtIndex(index) {
-        if (index < 0 || index >= slideData.length || state.loadedSlides.has(index)) return;
+}
 
-        const slide = state.slides[index];
-        if (!slide) return;
+mobileMenuBtn.addEventListener('click', () => toggleSidebar(!state.sidebarOpen));
+
+if (desktopSidebarToggle) desktopSidebarToggle.addEventListener('click', () => toggleSidebar(!state.sidebarOpen));
+
+closeSidebarBtn.addEventListener('click', () => toggleSidebar(false));
+
+sidebarOverlay.addEventListener('click', () => toggleSidebar(false));
+
+// Recalculate on resize
+window.addEventListener('resize', () => {
+
+    if (window.innerWidth >= 1024) {
+
+        // On desktop: ensure sidebar not stuck in mobile state
+        sidebarOverlay.classList.add('opacity-0', 'pointer-events-none');
+
+        sidebarDrawer.classList.remove('translate-x-full');
+
+        sidebarDrawer.classList.add('translate-x-0');
+
+    }
+
+});
+
+// ----------------------------------------------------------------
+// SLIDE CREATION
+// ----------------------------------------------------------------
+function createSlides() {
+
+    const wrapper  = document.getElementById('slides-wrapper');
+
+    const template = document.getElementById('slide-template');
+
+    slideData.forEach((data, i) => {
+
+        const clone  = template.content.cloneNode(true);
+
+        const slide  = clone.querySelector('.slide');
 
         const iframe = slide.querySelector('iframe');
-        if (!iframe) return;
 
-        const src = slideData[index]?.src;
-        if (!src || src.trim() === "") return;
+        // When iframe loads, sync the theme
+        iframe.onload = () => {
 
-        iframe.src = src;
-        state.loadedSlides.add(index);
-    }
+            const theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
-    function preloadUpcomingSlides(fromIndex) {
-        for (let step = 1; step <= PRELOAD_AHEAD_COUNT; step++) {
-            loadSlideAtIndex(fromIndex + step);
-        }
-    }
-
-    function createSidebar() {
-        const sidebarList = document.getElementById('sidebar-list');
-        slideData.forEach((data, i) => {
-            const item = document.createElement('div');
-            item.className = `sidebar-thumb flex items-center gap-4 p-3 rounded-2xl group border border-transparent active:scale-95 transition-all`;
-            item.onclick = () => goToSlide(i);
-            // dark:bg-slate-800
-            item.innerHTML = `
-                    <div class="thumb-number w-8 h-8 min-w-8 rounded-lg bg-slate-50 border border-[var(--border-ui)] flex items-center justify-center text-[10px] font-black group-hover:border-brand transition-colors text-[var(--text-primary)]">
-                        ${String(i + 1).padStart(2, '0')}
-                    </div>
-                    <div class="overflow-hidden">
-                        <p class="text-[10px] font-black uppercase tracking-wider text-[var(--text-secondary)]">Slide ${i + 1}</p>
-                        <p class="title text-sm md:text-md font-bold leading-tight text-[var(--text-primary)] truncate">${data.title}</p>
-                    </div>
-                `;
-            sidebarList.appendChild(item);
-        });
-    }
-    function updateHeaderInfo() {
-        const index = state.currentSlide;
-        const currentData = slideData[index];
-        const numEl = document.getElementById('header-slide-num');
-        const titleEl = document.getElementById('header-slide-title');
-
-        // ADDED: Safety check to prevent crash if elements are missing
-        if (numEl && titleEl && currentData) {
-            numEl.textContent = String(index + 1).padStart(2, '0');
-            titleEl.textContent = currentData.title;
-        }
-    }
-    function updateSlides() {
-        state.slides.forEach((s, i) => {
-            // 1. Handle CSS Transitions
-            s.classList.toggle('active', i === state.currentSlide);
-            s.classList.toggle('prev', i < state.currentSlide);
-            s.classList.toggle('next', i > state.currentSlide);
-        });
-
-        // Load current slide now, then preload the next slides in the background.
-        loadSlideAtIndex(state.currentSlide);
-        preloadUpcomingSlides(state.currentSlide);
-
-        const thumbs = document.querySelectorAll('.sidebar-thumb');
-        thumbs.forEach((t, i) => t.classList.toggle('active', i === state.currentSlide));
-
-        const activeThumb = thumbs[state.currentSlide];
-        if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-        // Trigger reset/replay for slides that support it
-        const activeSlide = state.slides[state.currentSlide];
-        if (activeSlide) {
-            const iframe = activeSlide.querySelector('iframe');
-            if (iframe && iframe.contentWindow && typeof iframe.contentWindow.resetSlide === 'function') {
-                // We use a small timeout to ensure the iframe is fully ready if it was just loaded
-                // If it was cached, this still works fine.
-                setTimeout(() => {
-                    try {
-                        iframe.contentWindow.resetSlide();
-                    } catch(e) { console.log("Reset slide not ready or failed"); }
-                }, 100);
-            }
-        }
-
-        const cues = slideData[state.currentSlide].cue || [];
-        const cueHtml = cues.map(c => `
-                <div>
-                    <span class="cue-marker"></span>
-                    <span>${c}</span>
-                </div>
-            `).join('');
-
-        document.querySelectorAll('.teacher-cue').forEach(el => {
-            el.innerHTML = cueHtml;
-        });
-
-        document.getElementById('slide-index-footer').textContent = `${String(state.currentSlide + 1).padStart(2, '0')} / ${String(state.slides.length).padStart(2, '0')}`;
-        updateHeaderInfo();
-    }
-
-    function stopAllIframeAudio() {
-        // Safely call stopSlideAudio on the current iframe if it exists
-        const activeSlide = state.slides[state.currentSlide];
-        if (activeSlide) {
-            const iframe = activeSlide.querySelector('iframe');
             try {
-                if (iframe && iframe.contentWindow && typeof iframe.contentWindow.stopSlideAudio === 'function') {
-                    iframe.contentWindow.stopSlideAudio();
+
+                if (iframe.contentWindow && typeof iframe.contentWindow.setTheme === 'function') {
+
+                    iframe.contentWindow.setTheme(theme);
+
                 }
-            } catch (e) {
-                // Handle potential cross-origin issues or other iframe errors
-                console.warn("Could not stop iframe audio:", e);
+
+            } catch {}
+
+        };
+
+        wrapper.appendChild(clone);
+
+    });
+
+    state.slides = Array.from(document.querySelectorAll('.slide'));
+
+}
+
+function loadSlideAtIndex(index) {
+
+    if (index < 0 || index >= slideData.length || state.loadedSlides.has(index)) return;
+
+    const slide  = state.slides[index];
+
+    if (!slide) return;
+
+    const iframe = slide.querySelector('iframe');
+
+    if (!iframe) return;
+
+    const src = slideData[index]?.src;
+
+    if (!src || src.trim() === '') return;
+
+    iframe.src = src;
+
+    state.loadedSlides.add(index);
+
+}
+
+function preloadUpcomingSlides(fromIndex) {
+
+    for (let step = 1; step <= PRELOAD_AHEAD_COUNT; step++) {
+
+        loadSlideAtIndex(fromIndex + step);
+
+    }
+
+}
+
+// ----------------------------------------------------------------
+// SIDEBAR POPULATION
+// ----------------------------------------------------------------
+function createSidebar() {
+
+    const list = document.getElementById('sidebar-list');
+
+    slideData.forEach((data, i) => {
+
+        const item = document.createElement('div');
+
+        item.className = 'sidebar-thumb flex items-center gap-3 group';
+
+        item.setAttribute('role', 'button');
+
+        item.setAttribute('tabindex', '0');
+
+        item.onclick = () => { goToSlide(i); if (window.innerWidth < 1024) toggleSidebar(false); };
+
+        item.onkeydown = e => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                item.click();
             }
+        };
+
+        item.innerHTML = `
+
+            <div class="thumb-number">${String(i + 1).padStart(2, '0')}</div>
+
+            <div class="sidebar-text min-w-0 flex-1 overflow-hidden">
+
+                <p class="text-[0.58rem] font-black uppercase tracking-widest text-[var(--text-secondary)]">Slide ${i + 1}</p>
+
+                <p class="title text-sm font-bold leading-tight text-[var(--text-primary)] truncate">${data.title}</p>
+
+            </div>
+
+        `;
+
+        list.appendChild(item);
+
+    });
+
+}
+
+// ----------------------------------------------------------------
+// SLIDE UPDATE
+// ----------------------------------------------------------------
+function updateSlides() {
+
+    state.slides.forEach((s, i) => {
+
+        s.classList.toggle('active', i === state.currentSlide);
+
+        s.classList.toggle('prev',   i < state.currentSlide);
+
+    });
+
+    loadSlideAtIndex(state.currentSlide);
+
+    preloadUpcomingSlides(state.currentSlide);
+
+    // Sidebar active state
+    document.querySelectorAll('.sidebar-thumb').forEach((t, i) => {
+
+        t.classList.toggle('active', i === state.currentSlide);
+        if (i === state.currentSlide) t.setAttribute('aria-current', 'step');
+        else t.removeAttribute('aria-current');
+
+    });
+
+    const activeThumb = document.querySelectorAll('.sidebar-thumb')[state.currentSlide];
+
+    if (activeThumb) activeThumb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+    // Reset/replay active slide
+    const activeSlide = state.slides[state.currentSlide];
+
+    if (activeSlide) {
+
+        const iframe = activeSlide.querySelector('iframe');
+
+        try {
+
+            if (iframe?.contentWindow && typeof iframe.contentWindow.resetSlide === 'function') {
+
+                setTimeout(() => {
+
+                    try { iframe.contentWindow.resetSlide(); } catch {}
+
+                }, 100);
+
+            }
+
+        } catch {
+
+            // Local file iframes can have opaque origins; navigation must still finish.
         }
+
     }
 
-    function nextSlide() {
-        if (state.currentSlide < state.slides.length - 1) {
-            stopAllIframeAudio();
-            state.currentSlide++;
-            updateSlides();
+    // Slide counter
+    const label = `${String(state.currentSlide + 1).padStart(2, '0')} / ${String(state.slides.length).padStart(2, '0')}`;
+
+    const footerCounter = document.getElementById('slide-index-footer');
+
+    const mobileCounter = document.getElementById('slide-index-mobile');
+
+    if (footerCounter) footerCounter.textContent = label;
+
+    if (mobileCounter) mobileCounter.textContent = label;
+
+    document.querySelectorAll('#prev-btn-desktop, #prev-btn-mobile').forEach(button => {
+
+        button.disabled = state.currentSlide === 0;
+
+    });
+
+    document.querySelectorAll('#next-btn-desktop, #next-btn-mobile').forEach(button => {
+
+        button.disabled = state.currentSlide === state.slides.length - 1;
+
+    });
+
+    // Resize annotation canvases after slide switch
+    requestAnimationFrame(() => resizeAllCanvases());
+
+    // Keep annotation layer interactive mode in sync with current tool
+    updateAnnotationLayers();
+
+}
+
+// ----------------------------------------------------------------
+// NAVIGATION
+// ----------------------------------------------------------------
+function stopAllIframeAudio() {
+
+    const activeSlide = state.slides[state.currentSlide];
+
+    if (!activeSlide) return;
+
+    const iframe = activeSlide.querySelector('iframe');
+
+    try {
+
+        if (iframe && iframe.contentWindow && typeof iframe.contentWindow.stopSlideAudio === 'function') {
+
+            iframe.contentWindow.stopSlideAudio();
+
         }
+
+    } catch (e) {
+
+        console.warn('Could not stop iframe audio:', e);
+
     }
-    function prevSlide() {
-        if (state.currentSlide > 0) {
-            stopAllIframeAudio();
-            state.currentSlide--;
-            updateSlides();
-        }
-    }
-    function goToSlide(index) {
+
+}
+
+function nextSlide() {
+
+    if (state.currentSlide < state.slides.length - 1) {
+
         stopAllIframeAudio();
-        state.currentSlide = index;
+
+        state.currentSlide++;
+
         updateSlides();
+
     }
 
-    function changeZoom(delta) {
-        state.zoom = Math.min(Math.max(0.5, state.zoom + delta), 2.0);
-        document.getElementById('zoom-wrapper').style.transform = `scale(${state.zoom})`;
-        document.getElementById('zoom-level').textContent = `${Math.round(state.zoom * 100)}%`;
+}
+
+function goToSlide(index) {
+
+    stopAllIframeAudio();
+
+    state.currentSlide = index;
+
+    updateSlides();
+
+}
+
+function prevSlide() {
+
+    if (state.currentSlide > 0) {
+
+        stopAllIframeAudio();
+
+        state.currentSlide--;
+
+        updateSlides();
+
     }
 
-    function toggleFullscreen() {
-        if (!document.fullscreenElement) document.documentElement.requestFullscreen();
-        else if (document.exitFullscreen) document.exitFullscreen();
+}
+
+// Message listener (from iframes)
+window.addEventListener('message', e => {
+
+    const data = e.data;
+
+    if (!data || typeof data !== 'object' || data.type !== 'BEC_NAV') return;
+
+    if (data.action === 'next') nextSlide();
+
+    if (data.action === 'prev') prevSlide();
+
+});
+
+// Keyboard navigation
+window.addEventListener('keydown', e => {
+
+    // Skip if drawing
+    if (getActiveTool().mode === 'draw' || getActiveTool().mode === 'erase') return;
+
+    if (e.defaultPrevented || e.target.closest('button, a, input, textarea, select, [role="button"], [contenteditable="true"]')) return;
+
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+
+    if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+
+});
+
+// ----------------------------------------------------------------
+// FULLSCREEN
+// ----------------------------------------------------------------
+function toggleFullscreen() {
+
+    if (!document.fullscreenElement) {
+
+        document.documentElement.requestFullscreen().catch(() => {});
+
+    } else if (document.exitFullscreen) {
+
+        document.exitFullscreen();
+
     }
 
-    document.addEventListener('DOMContentLoaded', init);
+}
+
+// ----------------------------------------------------------------
+// DRAWING / ANNOTATION SYSTEM
+// ----------------------------------------------------------------
+// --- Tool Toggle UI ---
+const toolToggleBtn  = document.getElementById('editor-tool-toggle');
+
+const toolPopover    = document.getElementById('editor-tool-popover');
+
+const toolBtns       = document.querySelectorAll('[data-tool]');
+
+function openToolPopover() {
+
+    if (!toolPopover || !toolToggleBtn) return;
+
+    toolPopover.classList.add('is-open');
+
+    toolToggleBtn.setAttribute('aria-expanded', 'true');
+
+}
+
+function closeToolPopover() {
+
+    if (!toolPopover || !toolToggleBtn) return;
+
+    toolPopover.classList.remove('is-open');
+
+    toolToggleBtn.setAttribute('aria-expanded', 'false');
+
+}
+
+if (toolToggleBtn) {
+
+    toolToggleBtn.addEventListener('click', e => {
+
+        e.stopPropagation();
+
+        toolPopover.classList.contains('is-open') ? closeToolPopover() : openToolPopover();
+
+    });
+
+}
+
+// Close popover on outside click
+document.addEventListener('click', e => {
+
+    if (!toolPopover || !toolToggleBtn) return;
+
+    if (!toolPopover.contains(e.target) && !toolToggleBtn.contains(e.target)) {
+
+        closeToolPopover();
+
+    }
+
+});
+
+// Close on Escape
+document.addEventListener('keydown', e => {
+
+    if (e.key === 'Escape') closeToolPopover();
+
+});
+
+// Tool selection
+toolBtns.forEach(btn => {
+
+    btn.addEventListener('click', () => selectTool(btn.dataset.tool));
+
+});
+
+function selectTool(toolName) {
+
+    if (toolName === 'clear-all') {
+
+        clearAllAnnotations();
+
+        state.activeTool = 'select';
+
+    } else {
+
+        state.activeTool = toolName;
+
+    }
+
+    state.isDrawing  = false;
+
+    state.lastPoint  = null;
+
+    syncToolButtons();
+
+    updateAnnotationLayers();
+
+    closeToolPopover();
+
+}
+
+function syncToolButtons() {
+
+    toolBtns.forEach(btn => {
+
+        btn.classList.toggle('is-active', btn.dataset.tool === state.activeTool);
+
+    });
+
+}
+
+// --- Per-slide annotation layer management ---
+function setupAnnotationListeners() {
+
+    state.slides.forEach(slide => {
+
+        const canvas = slide.querySelector('.annotation-layer');
+
+        if (!canvas) return;
+
+        canvas.addEventListener('pointerdown',   onPointerDown);
+
+        canvas.addEventListener('pointermove',   onPointerMove);
+
+        canvas.addEventListener('pointerup',     onPointerUp);
+
+        canvas.addEventListener('pointerleave',  onPointerUp);
+
+        canvas.addEventListener('pointercancel', onPointerUp);
+
+    });
+
+    resizeAllCanvases();
+
+}
+
+function resizeAllCanvases() {
+
+    state.slides.forEach(slide => resizeCanvas(slide));
+
+}
+
+function resizeCanvas(slide) {
+
+    const canvas = slide?.querySelector('.annotation-layer');
+
+    const stage  = slide?.querySelector('.slide-stage');
+
+    if (!canvas || !stage) return;
+
+    const rect = stage.getBoundingClientRect();
+
+    const dpr  = window.devicePixelRatio || 1;
+
+    const w    = Math.max(1, Math.round(rect.width));
+
+    const h    = Math.max(1, Math.round(rect.height));
+
+    // Preserve existing drawing when resizing
+    let savedImage = null;
+
+    if (canvas.width > 0 && canvas.height > 0) {
+
+        try { savedImage = canvas.toDataURL(); } catch {}
+
+    }
+
+    canvas.width  = Math.round(w * dpr);
+
+    canvas.height = Math.round(h * dpr);
+
+    canvas.style.width  = `${w}px`;
+
+    canvas.style.height = `${h}px`;
+
+    const ctx = canvas.getContext('2d');
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    ctx.lineCap  = 'round';
+
+    ctx.lineJoin = 'round';
+
+    if (savedImage) {
+
+        const img = new Image();
+
+        img.onload = () => { ctx.clearRect(0, 0, w, h); ctx.drawImage(img, 0, 0, w, h); };
+
+        img.src = savedImage;
+
+    }
+
+}
+
+function updateAnnotationLayers() {
+
+    const tool = getActiveTool();
+
+    state.slides.forEach(slide => {
+
+        const iframe = slide.querySelector('iframe');
+
+        const canvas = slide.querySelector('.annotation-layer');
+
+        if (!iframe || !canvas) return;
+
+        const interactive = tool.mode === 'draw' || tool.mode === 'erase';
+
+        // Block iframe interaction when drawing, restore otherwise
+        iframe.style.pointerEvents = interactive ? 'none' : '';
+
+        canvas.classList.toggle('is-interactive', interactive);
+
+        canvas.classList.toggle('tool-draw',  tool.mode === 'draw');
+
+        canvas.classList.toggle('tool-erase', tool.mode === 'erase');
+
+    });
+
+}
+
+function clearAllAnnotations() {
+
+    state.slides.forEach(slide => {
+
+        const canvas = slide.querySelector('.annotation-layer');
+
+        if (!canvas) return;
+
+        const ctx = canvas.getContext('2d');
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    });
+
+}
+
+// --- Pointer events ---
+function getCanvasPoint(canvas, e) {
+
+    const rect = canvas.getBoundingClientRect();
+
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+
+}
+
+function drawSegment(canvas, from, to) {
+
+    const tool = getActiveTool();
+
+    const ctx  = canvas.getContext('2d');
+
+    ctx.save();
+
+    ctx.lineWidth = tool.mode === 'erase' ? 20 : 4;
+
+    ctx.globalCompositeOperation = tool.mode === 'erase' ? 'destination-out' : 'source-over';
+
+    ctx.strokeStyle = tool.color || getThemeDrawColor();
+
+    ctx.beginPath();
+
+    ctx.moveTo(from.x, from.y);
+
+    ctx.lineTo(to.x, to.y);
+
+    ctx.stroke();
+
+    ctx.restore();
+
+}
+
+function onPointerDown(e) {
+
+    const tool = getActiveTool();
+
+    if (tool.mode !== 'draw' && tool.mode !== 'erase') return;
+
+    const canvas = e.currentTarget;
+
+    // Resize canvas to current size in case layout changed
+    const slide = canvas.closest('.slide');
+
+    resizeCanvas(slide);
+
+    state.isDrawing = true;
+
+    state.lastPoint = getCanvasPoint(canvas, e);
+
+    canvas.setPointerCapture(e.pointerId);
+
+    // Draw a dot for single tap/click
+    drawSegment(canvas, state.lastPoint, state.lastPoint);
+
+}
+
+function onPointerMove(e) {
+
+    if (!state.isDrawing) return;
+
+    const canvas   = e.currentTarget;
+
+    const newPoint = getCanvasPoint(canvas, e);
+
+    drawSegment(canvas, state.lastPoint, newPoint);
+
+    state.lastPoint = newPoint;
+
+}
+
+function onPointerUp(e) {
+
+    if (!state.isDrawing) return;
+
+    const canvas = e.currentTarget;
+
+    if (canvas.hasPointerCapture(e.pointerId)) {
+
+        canvas.releasePointerCapture(e.pointerId);
+
+    }
+
+    state.isDrawing = false;
+
+    state.lastPoint = null;
+
+}
+
+// Resize canvases when window resizes
+window.addEventListener('resize', () => {
+
+    resizeAllCanvases();
+
+});
+
+// ----------------------------------------------------------------
+// INIT
+// ----------------------------------------------------------------
+function init() {
+
+    createSlides();
+
+    createSidebar();
+
+    updateSlides();
+
+    setupAnnotationListeners();
+
+    syncToolButtons();
+
+    // Set initial sidebar state on desktop
+    if (window.innerWidth >= 1024) {
+
+        sidebarDrawer.classList.remove('translate-x-full');
+
+        sidebarDrawer.classList.add('translate-x-0');
+
+        state.sidebarOpen = true;
+
+    }
+
+    if (desktopSidebarToggle) desktopSidebarToggle.innerHTML = SIDEBAR_ICON_OPEN;
+
+}
+
+document.addEventListener('DOMContentLoaded', init);
+
 </script>
+
 </body>
+
 </html>

@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Learning Objectives | Boston English Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    let initialTheme;
+    try {
+      if (window.parent !== window) {
+        initialTheme = window.parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      }
+    } catch {}
+    if (!initialTheme) {
+      try { initialTheme = localStorage.getItem('editor-theme-preference'); } catch {}
+    }
+    if (!initialTheme) {
+      initialTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
+    window.setTheme = function (theme) {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    };
+    window.resetSlide = function () {};
+    window.stopSlideAudio = function () {};
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      color-scheme: light;
+      --page: #f8fafc;
+      --text: #0f172a;
+      --card: #ffffff;
+      --border: #d9e0ed;
+      --card-mark: #b9c7e7;
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+    }
+    :root.dark {
+      color-scheme: dark;
+      --page: #0f172a;
+      --text: #f8fafc;
+      --card: #10192d;
+      --border: #34405f;
+      --card-mark: #3a456a;
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+    }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      overflow-x: hidden;
+      background: var(--page);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    .slide {
+      position: relative;
+      min-height: 100dvh;
+      padding: clamp(46px, 9vh, 90px) clamp(18px, 4vw, 64px) 36px;
+      background: radial-gradient(circle at 5% 5%, rgba(79,70,229,.07), transparent 32%), var(--page);
+    }
+    .dark .slide {
+      background: radial-gradient(circle at 5% 5%, rgba(99,102,241,.17), transparent 32%), var(--page);
+    }
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      background: linear-gradient(90deg, #247de1, #693de7);
+    }
+    .content { width: 100%; min-width: 0; max-width: 1260px; margin: 0 auto; }
+    .intro { margin: 0 auto clamp(30px, 4.5vh, 48px); text-align: center; }
+    h1 {
+      margin: 0;
+      background: linear-gradient(100deg, var(--heading-start), var(--heading-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: clamp(40px, 6.4vw, 80px);
+      font-weight: 800;
+      letter-spacing: -.04em;
+      line-height: 1.12;
+    }
+    .subtitle {
+      margin: 10px 0 0;
+      font-size: clamp(17px, 2vw, 22px);
+      font-weight: 700;
+      line-height: 1.5;
+    }
+    .objectives {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      width: 100%;
+      min-width: 0;
+      gap: clamp(14px, 2.1vh, 20px);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+    .objective {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+      min-height: 119px;
+      padding: 20px 24px;
+      border: 1px solid var(--border);
+      border-radius: 28px;
+      background: var(--card);
+    }
+    .objective::before {
+      content: '';
+      position: absolute;
+      left: -1px;
+      top: 21px;
+      bottom: 21px;
+      width: 5px;
+      border-radius: 5px;
+      background: var(--card-mark);
+    }
+    .objective:last-child {
+      grid-column: 1 / -1;
+      justify-self: center;
+      width: calc((100% - clamp(14px, 2.1vh, 20px)) / 2);
+    }
+    .number {
+      display: grid;
+      flex: 0 0 55px;
+      place-items: center;
+      width: 55px;
+      height: 55px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, #3e66e4, #7136d4);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .objective p {
+      margin: 0;
+      min-width: 0;
+      font-size: clamp(16px, 1.55vw, 19px);
+      font-weight: 600;
+      line-height: 1.55;
+      letter-spacing: 0;
+      overflow-wrap: normal;
+    }
+    @media (max-width: 860px) {
+      .objectives { grid-template-columns: minmax(0, 1fr); }
+      .objective:last-child { grid-column: auto; width: 100%; }
+      .objective { min-height: 98px; }
+    }
+    @media (max-width: 500px) {
+      .slide { padding: 28px 16px 36px; }
+      .intro { margin-bottom: 28px; }
+      .objective { gap: 13px; min-height: 0; padding: 17px 16px; border-radius: 20px; }
+      .objective::before { top: 18px; bottom: 18px; }
+      .number { flex-basis: 44px; width: 44px; height: 44px; border-radius: 12px; font-size: 14px; }
+      .objective p { font-size: 15px; line-height: 1.5; }
+    }
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <div class="content">
+      <header class="intro">
+        <h1>Learning Objectives</h1>
+        <p class="subtitle">By the end of the lesson, students will be able to:</p>
+      </header>
+      <ol class="objectives" aria-label="Seven learning objectives">
+        <li class="objective"><span class="number" aria-hidden="true">01</span><p>I can recognize and identify uppercase and lowercase English letters.</p></li>
+        <li class="objective"><span class="number" aria-hidden="true">02</span><p>I can say the letters of the English alphabet in order with understandable pronunciation.</p></li>
+        <li class="objective"><span class="number" aria-hidden="true">03</span><p>I can recognize, pronounce, and tell apart numbers 1–20, especially the pronunciation of 13–19.</p></li>
+        <li class="objective"><span class="number" aria-hidden="true">04</span><p>I can answer at least 4 out of 5 basic personal questions using simple words or short phrases.</p></li>
+        <li class="objective"><span class="number" aria-hidden="true">05</span><p>I can spell my first and family names aloud using English letter names.</p></li>
+        <li class="objective"><span class="number" aria-hidden="true">06</span><p>I can write my full name using appropriate capitalization.</p></li>
+        <li class="objective"><span class="number" aria-hidden="true">07</span><p>I can correctly identify at least 4 out of 5 dictated letters and 4 out of 5 dictated numbers.</p></li>
+      </ol>
+    </div>
+  </main>
+</body>
+</html>

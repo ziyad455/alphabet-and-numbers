@@ -1,0 +1,1346 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Practice 4 — Complete the Alphabet | Boston English Center</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <script>
+    let initialTheme;
+
+    try {
+      if (window.parent !== window) {
+        initialTheme =
+          window.parent.document.documentElement.classList.contains("dark")
+            ? "dark"
+            : "light";
+      }
+    } catch {}
+
+    if (!initialTheme) {
+      try {
+        initialTheme = localStorage.getItem("editor-theme-preference");
+      } catch {}
+    }
+
+    if (!initialTheme) {
+      initialTheme = matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "light";
+    }
+
+    document.documentElement.classList.toggle(
+      "dark",
+      initialTheme === "dark"
+    );
+
+    window.setTheme = function (theme) {
+      document.documentElement.classList.toggle(
+        "dark",
+        theme === "dark"
+      );
+    };
+  </script>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    :root {
+      color-scheme: light;
+
+      --page: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --surface: #ffffff;
+      --surface-alt: #f1f5f9;
+      --border: #cbd5e1;
+
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+
+      --accent: #4f46e5;
+      --selected-bg: #e7e9ff;
+      --selected-border: #4f46e5;
+
+      --correct: #065f46;
+      --correct-bg: #d1fae5;
+      --correct-border: #059669;
+
+      --wrong: #9f1239;
+      --wrong-bg: #fff1f2;
+    }
+
+    :root.dark {
+      color-scheme: dark;
+
+      --page: #0f172a;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --surface: #111b30;
+      --surface-alt: #1e293b;
+      --border: #34405f;
+
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+
+      --accent: #818cf8;
+      --selected-bg: #24274c;
+      --selected-border: #818cf8;
+
+      --correct: #a7f3d0;
+      --correct-bg: #123e39;
+      --correct-border: #34d399;
+
+      --wrong: #fecdd3;
+      --wrong-bg: #4c1d2b;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      background: var(--page);
+      color: var(--text);
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+    }
+
+    button {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button:focus-visible {
+      outline: 3px solid #f59e0b;
+      outline-offset: 3px;
+    }
+
+    .slide {
+      min-height: 100dvh;
+      padding:
+        clamp(20px, 3vh, 36px)
+        clamp(12px, 3vw, 42px);
+
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(79, 70, 229, .08),
+          transparent 34%
+        ),
+        var(--page);
+    }
+
+    .dark .slide {
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(99, 102, 241, .17),
+          transparent 34%
+        ),
+        var(--page);
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1130px;
+      margin: 0 auto;
+    }
+
+    /* Heading */
+
+    .heading {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .activity-label {
+      margin: 0 0 8px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+
+    h1.lesson-title {
+      margin: 0;
+
+      background: linear-gradient(
+        100deg,
+        var(--heading-start),
+        var(--heading-end)
+      );
+
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+
+      font-size: clamp(36px, 5.4vw, 64px);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -.04em;
+    }
+
+    .subtitle {
+      margin: 10px 0 0;
+      color: var(--text);
+      font-size: clamp(16px, 1.6vw, 20px);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .instruction {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: clamp(14px, 1.3vw, 17px);
+      font-weight: 500;
+      line-height: 1.55;
+    }
+
+    /* Progress */
+
+    .activity-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      margin: 0 0 13px;
+
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .activity-meta strong {
+      color: var(--accent);
+    }
+
+    /* Letter bank */
+
+    .bank {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 14px;
+
+      border: 1px solid var(--border);
+      border-radius: 17px;
+      background: var(--surface);
+    }
+
+    .bank.top {
+      margin-bottom: 22px;
+    }
+
+    .bank.bottom {
+      margin-top: 22px;
+    }
+
+    .letter-token {
+      position: relative;
+
+      display: grid;
+      place-items: center;
+
+      width: 80px;
+      height: 54px;
+
+      border: 3px solid rgba(255,255,255,.55);
+      border-radius: 10px;
+
+      background: var(--token-color, #93c5fd);
+      color: #102138;
+
+      box-shadow: 0 3px 0 rgba(0,0,0,.14);
+
+      font-size: 27px;
+      font-weight: 800;
+      line-height: 1;
+
+      touch-action: none;
+      user-select: none;
+      cursor: grab;
+
+      transition:
+        transform .15s ease,
+        box-shadow .15s ease,
+        opacity .15s ease;
+    }
+
+    .letter-token:not(:disabled):hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 14px rgba(0,0,0,.16);
+    }
+
+    .letter-token[aria-pressed="true"] {
+      outline: 3px solid var(--selected-border);
+      outline-offset: 3px;
+    }
+
+    .letter-token:active {
+      cursor: grabbing;
+    }
+
+    .letter-token.matched {
+      opacity: .42;
+      cursor: default;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .letter-token.matched::after {
+      content: "✓";
+      position: absolute;
+      top: 3px;
+      right: 5px;
+      font-size: 13px;
+    }
+
+    /* Alphabet table */
+
+    .alphabet-board {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(12px, 2vw, 24px);
+    }
+
+    .alphabet-group {
+      display: grid;
+      align-content: start;
+      gap: 7px;
+      min-width: 0;
+
+      padding: 13px;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+    }
+
+    .letter-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      align-items: stretch;
+      gap: 8px;
+      min-width: 0;
+    }
+
+    /* Uppercase icon reference */
+
+    .uppercase-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      min-width: 0;
+      min-height: 54px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-alt);
+    }
+
+    .uppercase-art {
+      position: relative;
+      display: grid;
+      place-items: center;
+      flex: none;
+
+      width: 45px;
+      height: 45px;
+      overflow: hidden;
+      border-radius: 9px;
+
+      background: linear-gradient(
+        145deg,
+        #63b6fa,
+        #1874db 70%,
+        #1459b6
+      );
+    }
+
+    .uppercase-art.magnific {
+      background: transparent;
+    }
+
+    .uppercase-art img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      pointer-events: none;
+      -webkit-user-drag: none;
+      user-select: none;
+    }
+
+    .uppercase-art img.fontawesome {
+      width: 60%;
+      height: 60%;
+      filter: brightness(0) invert(1);
+    }
+
+    .uppercase-art.loading {
+      background: var(--surface-alt);
+      border: 1px solid var(--border);
+    }
+
+    .uppercase-art.failed {
+      color: white;
+      font-size: 25px;
+      font-weight: 800;
+    }
+
+    /* Lowercase positions */
+
+    .lowercase-slot {
+      display: grid;
+      place-items: center;
+
+      width: 100%;
+      min-width: 0;
+      min-height: 54px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface-alt);
+      color: var(--text);
+
+      font-size: 27px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .lowercase-slot.fixed {
+      opacity: .92;
+    }
+
+    .lowercase-slot.empty {
+      border: 2px dashed var(--border);
+      background: var(--surface);
+
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .lowercase-slot.empty::after {
+      content: "?";
+      font-size: 19px;
+      opacity: .5;
+    }
+
+    .lowercase-slot.empty:hover,
+    .lowercase-slot.hovered {
+      border-color: var(--selected-border);
+      background: var(--selected-bg);
+    }
+
+    .lowercase-slot.wrong {
+      border-color: var(--wrong);
+      background: var(--wrong-bg);
+      color: var(--wrong);
+    }
+
+    .lowercase-slot.filled {
+      border-color: var(--correct-border);
+      background: var(--correct-bg);
+      color: var(--correct);
+      cursor: default;
+    }
+
+    .lowercase-slot.filled::after {
+      content: "✓";
+      position: absolute;
+      margin-left: 45px;
+      margin-top: -26px;
+      font-size: 11px;
+    }
+
+    /* Feedback and controls */
+
+    .feedback {
+      min-height: 1.6em;
+      margin: 15px 0 10px;
+
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .feedback.correct {
+      color: var(--correct);
+    }
+
+    .feedback.incorrect {
+      color: var(--wrong);
+    }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+    }
+
+    .progress {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .progress strong {
+      color: var(--text);
+    }
+
+    .reset-button {
+      min-height: 43px;
+      padding: 9px 18px;
+
+      border: 1px solid var(--border);
+      border-radius: 10px;
+
+      background: var(--surface);
+      color: var(--text);
+
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .reset-button:hover {
+      border-color: var(--selected-border);
+    }
+
+    .completion {
+      margin: 15px 0 0;
+      padding: 15px;
+      border: 1px solid var(--correct-border);
+      border-radius: 13px;
+      background: var(--correct-bg);
+      color: var(--correct);
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .credit {
+      margin: 17px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .credit a {
+      color: inherit;
+    }
+
+    /* Pointer dragging */
+
+    .drag-ghost {
+      position: fixed;
+      z-index: 50;
+      display: grid;
+      place-items: center;
+
+      width: 74px;
+      height: 55px;
+
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+
+      border: 3px solid white;
+      border-radius: 10px;
+
+      background: var(--token-color, #93c5fd);
+      color: #102138;
+
+      box-shadow: 0 12px 25px rgba(0,0,0,.22);
+
+      font-size: 28px;
+      font-weight: 800;
+    }
+
+    /* Responsive */
+
+    @media (max-width: 850px) {
+      .alphabet-board {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .alphabet-group:last-child {
+        grid-column: 1 / -1;
+        width: min(100%, 420px);
+        justify-self: center;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .alphabet-board {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .alphabet-group,
+      .alphabet-group:last-child {
+        grid-column: auto;
+        width: 100%;
+      }
+
+      .letter-token {
+        width: 65px;
+        height: 49px;
+        font-size: 23px;
+      }
+
+      .bank {
+        gap: 8px;
+        padding: 10px;
+      }
+
+      .heading {
+        margin-bottom: 18px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .letter-token {
+        transition: none;
+      }
+
+      .letter-token:hover {
+        transform: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="slide">
+    <div class="content">
+
+      <header class="heading">
+        <p class="activity-label">PRACTICE 4</p>
+
+        <h1 class="lesson-title">
+          Complete the Alphabet!
+        </h1>
+
+        <p class="subtitle">
+          Drag and Drop the Lower Case Letters
+        </p>
+
+        <p class="instruction">
+          Can you add the missing lowercase letters to the alphabet?
+          Drag them into the empty spaces, or select a letter and then its position.
+        </p>
+      </header>
+
+      <div class="activity-meta">
+        <span>LOWERCASE ALPHABET PRACTICE</span>
+        <span id="top-progress">0 of 12 completed</span>
+      </div>
+
+      <!-- First half of the missing-letter bank -->
+      <section
+        class="bank top"
+        id="top-bank"
+        aria-label="Available lowercase letters, first group"
+      ></section>
+
+      <!-- Uppercase icons and lowercase positions -->
+      <section
+        class="alphabet-board"
+        id="alphabet-board"
+        aria-label="Alphabet completion table"
+      ></section>
+
+      <!-- Second half of the missing-letter bank -->
+      <section
+        class="bank bottom"
+        id="bottom-bank"
+        aria-label="Available lowercase letters, second group"
+      ></section>
+
+      <p
+        class="feedback"
+        id="feedback"
+        role="status"
+        aria-live="polite"
+      ></p>
+
+      <div class="completion" id="completion" hidden>
+        Excellent! You've completed the lowercase alphabet!
+      </div>
+
+      <div class="footer">
+        <div class="progress" id="overall-progress">
+          0 of 12 missing letters completed
+        </div>
+
+        <button
+          class="reset-button"
+          id="reset-button"
+          type="button"
+        >
+          Practice Again
+        </button>
+      </div>
+
+      <p class="credit">
+        Uppercase icon artwork:
+        <a
+          href="https://www.magnific.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Magnific</a>
+        and
+        <a
+          href="https://fontawesome.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Font Awesome</a>.
+      </p>
+
+    </div>
+  </main>
+
+  <script>
+    const ALPHABET = "abcdefghijklmnopqrstuvwxyz".split("");
+
+    /*
+      Fixed missing positions from the reference screenshot.
+      Every other lowercase letter is already displayed.
+    */
+    const MISSING = [
+      "a", "b", "c",
+      "f", "g",
+      "l", "m",
+      "p", "q",
+      "t", "u", "x"
+    ];
+
+    const MISSING_SET = new Set(MISSING);
+
+    /*
+      Three groups reproduce the original alphabet-table layout:
+      A–I, J–R, S–Z.
+    */
+    const GROUPS = [
+      ALPHABET.slice(0, 9),
+      ALPHABET.slice(9, 18),
+      ALPHABET.slice(18, 26)
+    ];
+
+    /*
+      Uppercase icon sources shared with Slides 5 and 6.
+
+      A and B: Magnific images.
+      C–Z: Font Awesome letter icons.
+    */
+    const magnificIcons = {
+      a: "https://cdn-icons-png.magnific.com/512/10149/10149682.png",
+      b: "https://cdn-icons-png.magnific.com/512/10149/10149683.png"
+    };
+
+    const FONT_AWESOME_BASE =
+      "https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.7.2/svgs/solid";
+
+    function getImageSources(letter) {
+      const options = [];
+
+      if (magnificIcons[letter]) {
+        options.push({
+          url: magnificIcons[letter],
+          kind: "magnific"
+        });
+      }
+
+      options.push({
+        url: `${FONT_AWESOME_BASE}/${letter}.svg`,
+        kind: "fontawesome"
+      });
+
+      return options;
+    }
+
+    const tokenColors = [
+      "#93c5fd",
+      "#fda4af",
+      "#86efac",
+      "#fde68a",
+      "#a5b4fc",
+      "#67e8f9",
+      "#f9a8d4",
+      "#c4b5fd",
+      "#fcd34d",
+      "#7dd3fc",
+      "#6ee7b7",
+      "#fdba74"
+    ];
+
+    const board = document.getElementById("alphabet-board");
+    const topBank = document.getElementById("top-bank");
+    const bottomBank = document.getElementById("bottom-bank");
+
+    const feedback = document.getElementById("feedback");
+    const progress = document.getElementById("overall-progress");
+    const topProgress = document.getElementById("top-progress");
+    const completion = document.getElementById("completion");
+    const resetButton = document.getElementById("reset-button");
+
+    let matched = new Set();
+    let selected = null;
+    let drag = null;
+    let wrongTimer = null;
+    let suppressClickUntil = 0;
+    let suppressClickSource = null;
+    let restartCount = 0;
+
+    /*
+      The initial order reflects the screenshot.
+      After the first attempt, Practice Again reshuffles it.
+    */
+    const initialBankOrder = [
+      "c", "g", "f", "b", "a", "l",
+      "t", "u", "q", "p", "m", "x"
+    ];
+
+    function shuffle(items) {
+      const result = [...items];
+
+      for (let i = result.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [result[i], result[j]] = [result[j], result[i]];
+      }
+
+      return result;
+    }
+
+    function setFeedback(message, kind = "") {
+      feedback.textContent = message;
+      feedback.className = `feedback ${kind}`;
+    }
+
+    function clearWrong() {
+      if (wrongTimer !== null) {
+        clearTimeout(wrongTimer);
+      }
+
+      wrongTimer = null;
+
+      board.querySelectorAll(".wrong").forEach(slot => {
+        slot.classList.remove("wrong");
+      });
+    }
+
+    function clearSelection() {
+      selected = null;
+
+      document.querySelectorAll(".letter-token").forEach(token => {
+        token.setAttribute("aria-pressed", "false");
+      });
+    }
+
+    function updateProgress() {
+      const count = matched.size;
+      const total = MISSING.length;
+
+      topProgress.textContent =
+        `${count} of ${total} completed`;
+
+      progress.innerHTML =
+        `<strong>${count} of ${total}</strong> missing letters completed`;
+
+      completion.hidden = count !== total;
+
+      if (count === total) {
+        setFeedback(
+          "Great work! Every lowercase letter is in the correct position.",
+          "correct"
+        );
+      }
+    }
+
+    /*
+      Use image elements for uppercase references.
+      If an external URL fails, a readable uppercase
+      fallback keeps the exercise usable.
+    */
+    function createUppercaseArt(letter) {
+      const art = document.createElement("span");
+      art.className = "uppercase-art loading";
+      art.setAttribute("aria-hidden", "true");
+
+      const options = getImageSources(letter);
+      let index = 0;
+
+      function loadNext() {
+        if (index >= options.length) {
+          art.className = "uppercase-art failed";
+          art.textContent = letter.toUpperCase();
+          return;
+        }
+
+        const option = options[index++];
+        const image = new Image();
+
+        image.alt = "";
+        image.draggable = false;
+        image.decoding = "async";
+        image.referrerPolicy = "no-referrer";
+
+        if (option.kind === "fontawesome") {
+          image.className = "fontawesome";
+        }
+
+        image.addEventListener("load", () => {
+          if (!image.naturalWidth) {
+            loadNext();
+            return;
+          }
+
+          art.className = "uppercase-art";
+
+          if (option.kind === "magnific") {
+            art.classList.add("magnific");
+          }
+
+          art.replaceChildren(image);
+        });
+
+        image.addEventListener("error", loadNext);
+        image.src = option.url;
+      }
+
+      loadNext();
+      return art;
+    }
+
+    /*
+      Build the three alphabet groups.
+    */
+    function renderAlphabet() {
+      board.replaceChildren();
+
+      GROUPS.forEach(group => {
+        const groupElement = document.createElement("div");
+        groupElement.className = "alphabet-group";
+
+        group.forEach(letter => {
+          const pair = document.createElement("div");
+          pair.className = "letter-pair";
+
+          const uppercase = document.createElement("div");
+          uppercase.className = "uppercase-box";
+          uppercase.setAttribute(
+            "aria-label",
+            `Uppercase ${letter.toUpperCase()}`
+          );
+
+          uppercase.appendChild(
+            createUppercaseArt(letter)
+          );
+
+          pair.appendChild(uppercase);
+
+          if (MISSING_SET.has(letter)) {
+            const slot = document.createElement("button");
+
+            slot.type = "button";
+            slot.className = "lowercase-slot empty";
+            slot.dataset.letter = letter;
+
+            slot.setAttribute(
+              "aria-label",
+              `Missing lowercase position beside uppercase ${letter.toUpperCase()}`
+            );
+
+            slot.addEventListener("click", () => {
+              if (selected) {
+                checkPlacement(selected, letter);
+              } else {
+                setFeedback(
+                  "Select a lowercase letter first."
+                );
+              }
+            });
+
+            pair.appendChild(slot);
+          } else {
+            const fixed = document.createElement("span");
+
+            fixed.className = "lowercase-slot fixed";
+            fixed.textContent = letter;
+
+            fixed.setAttribute(
+              "aria-label",
+              `Lowercase ${letter}`
+            );
+
+            pair.appendChild(fixed);
+          }
+
+          groupElement.appendChild(pair);
+        });
+
+        board.appendChild(groupElement);
+      });
+    }
+
+    /*
+      Build the colorful draggable lowercase bank.
+    */
+    function createLetterToken(letter, index) {
+      const button = document.createElement("button");
+
+      button.type = "button";
+      button.className = "letter-token";
+      button.textContent = letter;
+
+      button.dataset.letter = letter;
+      button.style.setProperty(
+        "--token-color",
+        tokenColors[index % tokenColors.length]
+      );
+
+      button.setAttribute("aria-pressed", "false");
+      button.setAttribute(
+        "aria-label",
+        `Select or drag lowercase ${letter}`
+      );
+
+      button.addEventListener("click", () => {
+        if (
+          (button === suppressClickSource &&
+            performance.now() < suppressClickUntil) ||
+          matched.has(letter)
+        ) {
+          return;
+        }
+
+        selected = selected === letter ? null : letter;
+
+        document.querySelectorAll(".letter-token").forEach(token => {
+          token.setAttribute(
+            "aria-pressed",
+            token.dataset.letter === selected
+              ? "true"
+              : "false"
+          );
+        });
+
+        setFeedback(
+          selected
+            ? `Selected ${selected}. Choose its position in the alphabet.`
+            : "Selection cleared."
+        );
+      });
+
+      button.addEventListener("pointerdown", event => {
+        startPointer(event, letter);
+      });
+
+      return button;
+    }
+
+    function renderBank() {
+      topBank.replaceChildren();
+      bottomBank.replaceChildren();
+
+      const order = restartCount === 0
+        ? initialBankOrder
+        : shuffle(MISSING);
+
+      order.forEach((letter, index) => {
+        const token = createLetterToken(letter, index);
+
+        if (index < 6) {
+          topBank.appendChild(token);
+        } else {
+          bottomBank.appendChild(token);
+        }
+      });
+    }
+
+    /*
+      Match a lowercase source with a specific position.
+    */
+    function checkPlacement(sourceLetter, targetLetter) {
+      if (
+        !sourceLetter ||
+        matched.has(sourceLetter) ||
+        matched.has(targetLetter)
+      ) {
+        return;
+      }
+
+      clearWrong();
+
+      const slot = [...board.querySelectorAll(".lowercase-slot.empty")]
+        .find(element => element.dataset.letter === targetLetter);
+
+      if (!slot) return;
+
+      if (sourceLetter !== targetLetter) {
+        clearSelection();
+
+        slot.classList.add("wrong");
+
+        wrongTimer = setTimeout(() => {
+          slot.classList.remove("wrong");
+          wrongTimer = null;
+        }, 850);
+
+        setFeedback(
+          "Not quite. Try another position.",
+          "incorrect"
+        );
+
+        return;
+      }
+
+      matched.add(sourceLetter);
+
+      slot.classList.remove("empty");
+      slot.classList.add("filled");
+      slot.textContent = sourceLetter;
+      slot.disabled = true;
+
+      slot.setAttribute(
+        "aria-label",
+        `Lowercase ${sourceLetter}, correctly placed`
+      );
+
+      const source = [...document.querySelectorAll(".letter-token")]
+        .find(token => token.dataset.letter === sourceLetter);
+
+      if (source) {
+        source.classList.add("matched");
+        source.disabled = true;
+        source.setAttribute(
+          "aria-label",
+          `Lowercase ${sourceLetter}, completed`
+        );
+      }
+
+      clearSelection();
+
+      setFeedback(
+        `Correct! ${sourceLetter} belongs beside ${targetLetter.toUpperCase()}.`,
+        "correct"
+      );
+
+      updateProgress();
+
+      const nextToken = document.querySelector(
+        ".letter-token:not(:disabled)"
+      );
+
+      if (nextToken) {
+        nextToken.focus();
+      } else {
+        resetButton.focus();
+      }
+    }
+
+    /*
+      Pointer-based drag-and-drop.
+      Click-to-place remains available independently.
+    */
+    function cancelDrag() {
+      if (!drag) return;
+
+      if (
+        drag.source.isConnected &&
+        drag.source.hasPointerCapture(drag.pointerId)
+      ) {
+        drag.source.releasePointerCapture(drag.pointerId);
+      }
+
+      drag.ghost?.remove();
+
+      board.querySelectorAll(".hovered").forEach(slot => {
+        slot.classList.remove("hovered");
+      });
+
+      drag = null;
+    }
+
+    function startPointer(event, letter) {
+      if (
+        (event.pointerType === "mouse" && event.button !== 0) ||
+        matched.has(letter) ||
+        drag
+      ) {
+        return;
+      }
+
+      drag = {
+        source: event.currentTarget,
+        pointerId: event.pointerId,
+        letter,
+        x: event.clientX,
+        y: event.clientY,
+        ghost: null
+      };
+
+      drag.source.setPointerCapture(event.pointerId);
+    }
+
+    function movePointer(event) {
+      if (!drag || event.pointerId !== drag.pointerId) {
+        return;
+      }
+
+      const distance = Math.hypot(
+        event.clientX - drag.x,
+        event.clientY - drag.y
+      );
+
+      if (!drag.ghost && distance < 7) return;
+
+      if (!drag.ghost) {
+        drag.ghost = document.createElement("div");
+        drag.ghost.className = "drag-ghost";
+        drag.ghost.textContent = drag.letter;
+
+        const color = drag.source.style.getPropertyValue(
+          "--token-color"
+        );
+
+        drag.ghost.style.setProperty(
+          "--token-color",
+          color
+        );
+
+        document.body.appendChild(drag.ghost);
+        drag.source.setAttribute("aria-pressed", "true");
+      }
+
+      event.preventDefault();
+
+      drag.ghost.style.left = `${event.clientX}px`;
+      drag.ghost.style.top = `${event.clientY}px`;
+
+      board.querySelectorAll(".hovered").forEach(slot => {
+        slot.classList.remove("hovered");
+      });
+
+      const target = document
+        .elementFromPoint(event.clientX, event.clientY)
+        ?.closest(".lowercase-slot.empty:not(:disabled)");
+
+      if (target) {
+        target.classList.add("hovered");
+      }
+    }
+
+    function endPointer(event) {
+      if (!drag || event.pointerId !== drag.pointerId) {
+        return;
+      }
+
+      const active = drag;
+      const wasDragging = !!active.ghost;
+
+      const target = wasDragging
+        ? document
+            .elementFromPoint(event.clientX, event.clientY)
+            ?.closest(".lowercase-slot.empty:not(:disabled)")
+        : null;
+
+      cancelDrag();
+
+      if (wasDragging) {
+        suppressClickSource = active.source;
+        suppressClickUntil = performance.now() + 350;
+
+        clearSelection();
+
+        if (target) {
+          checkPlacement(
+            active.letter,
+            target.dataset.letter
+          );
+        } else {
+          setFeedback(
+            "Choose an empty position in the alphabet."
+          );
+        }
+      }
+    }
+
+    /*
+      Reset and reader lifecycle.
+    */
+    function resetActivity() {
+      cancelDrag();
+      clearWrong();
+      clearSelection();
+
+      matched.clear();
+
+      restartCount++;
+
+      completion.hidden = true;
+      setFeedback("");
+
+      renderAlphabet();
+      renderBank();
+      updateProgress();
+    }
+
+    resetButton.addEventListener("click", resetActivity);
+
+    document.addEventListener("pointermove", movePointer);
+    document.addEventListener("pointerup", endPointer);
+    document.addEventListener("pointercancel", cancelDrag);
+
+    window.addEventListener("resize", cancelDrag);
+
+    window.stopSlideAudio = function () {
+      cancelDrag();
+      clearWrong();
+      clearSelection();
+    };
+
+    window.resetSlide = resetActivity;
+
+    renderAlphabet();
+    renderBank();
+    updateProgress();
+  </script>
+
+</body> 
+
+</html>

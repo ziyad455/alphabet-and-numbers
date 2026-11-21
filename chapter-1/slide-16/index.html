@@ -1,0 +1,530 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Writing Practice | Boston English Center</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://images.pexels.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <script>
+    let initialTheme;
+
+    try {
+      if (window.parent !== window) {
+        initialTheme =
+          window.parent.document.documentElement.classList.contains("dark")
+            ? "dark"
+            : "light";
+      }
+    } catch {}
+
+    if (!initialTheme) {
+      try {
+        initialTheme = localStorage.getItem(
+          "editor-theme-preference"
+        );
+      } catch {}
+    }
+
+    if (!initialTheme) {
+      initialTheme = matchMedia(
+        "(prefers-color-scheme: dark)"
+      ).matches ? "dark" : "light";
+    }
+
+    document.documentElement.classList.toggle(
+      "dark",
+      initialTheme === "dark"
+    );
+
+    window.setTheme = function(theme) {
+      document.documentElement.classList.toggle(
+        "dark",
+        theme === "dark"
+      );
+    };
+
+    window.stopSlideAudio = function() {};
+    window.resetSlide = function() {};
+  </script>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    :root {
+      color-scheme: light;
+      --page: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #d9e0ed;
+      --soft: #f1f5f9;
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+      --accent: #4f46e5;
+    }
+
+    :root.dark {
+      color-scheme: dark;
+      --page: #0f172a;
+      --surface: #111b30;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --border: #34405f;
+      --soft: #1e293b;
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+      --accent: #a5b4fc;
+    }
+
+    html, body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      font-family: "Plus Jakarta Sans", system-ui, sans-serif;
+      background: var(--page);
+      color: var(--text);
+    }
+
+    .slide {
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding:
+        clamp(24px, 4vh, 46px)
+        clamp(16px, 4vw, 52px);
+
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(79, 70, 229, .08),
+          transparent 33%
+        ),
+        var(--page);
+    }
+
+    .dark .slide {
+      background:
+        radial-gradient(
+          circle at 5% 5%,
+          rgba(99, 102, 241, .17),
+          transparent 33%
+        ),
+        var(--page);
+    }
+
+    .content {
+      width: 100%;
+      max-width: 1120px;
+      margin: auto;
+    }
+
+    /* Heading */
+
+    .header {
+      text-align: center;
+      margin-bottom: clamp(25px, 4vh, 40px);
+    }
+
+    .eyebrow {
+      margin: 0 0 10px;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+    }
+
+    h1 {
+      margin: 0;
+      background: linear-gradient(
+        100deg,
+        var(--heading-start),
+        var(--heading-end)
+      );
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+
+      font-size: clamp(40px, 5.5vw, 72px);
+      font-weight: 800;
+      letter-spacing: -.045em;
+      line-height: 1.12;
+    }
+
+    .subtitle {
+      margin: 12px auto 0;
+      max-width: 700px;
+      font-size: clamp(16px, 1.6vw, 20px);
+      font-weight: 600;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    /* Cards */
+
+    .activities {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(16px, 2vw, 26px);
+    }
+
+    .activity-card {
+      min-width: 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      background: var(--surface);
+    }
+
+    .image-wrap {
+      position: relative;
+      height: clamp(185px, 28vh, 260px);
+      overflow: hidden;
+      background: var(--soft);
+    }
+
+    .image-wrap img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .first-image img {
+      object-position: center 45%;
+    }
+
+    .second-image img {
+      object-position: center 45%;
+    }
+
+    .image-label {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+
+      padding: 9px 14px;
+      border-radius: 25px;
+
+      background: rgba(15, 23, 42, .85);
+      color: #ffffff;
+
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      backdrop-filter: blur(8px);
+    }
+
+    .image-label::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #a5b4fc;
+    }
+
+    /* Card content */
+
+    .card-body {
+      padding: clamp(19px, 2.5vw, 28px);
+    }
+
+    .task-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+
+      background: linear-gradient(
+        135deg, #496ff0, #7136d4
+      );
+      color: #ffffff;
+
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    h2 {
+      margin: 14px 0 10px;
+      font-size: clamp(22px, 2.3vw, 29px);
+      font-weight: 800;
+      letter-spacing: -.035em;
+      line-height: 1.28;
+    }
+
+    .description {
+      margin: 0;
+      color: var(--muted);
+      font-size: clamp(14px, 1.4vw, 17px);
+      font-weight: 500;
+      line-height: 1.65;
+    }
+
+    /* Example boxes */
+
+    .example {
+      margin-top: 19px;
+      padding: 15px 17px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      background: var(--soft);
+    }
+
+    .example-label {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .1em;
+    }
+
+    .example-text {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(17px, 1.6vw, 21px);
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .example-note {
+      margin: 5px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Bottom reminder */
+
+    .reminder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      margin: 24px auto 0;
+      padding: 13px 20px;
+
+      width: fit-content;
+      max-width: 100%;
+
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      background: var(--surface);
+
+      color: var(--muted);
+      text-align: center;
+
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    .reminder-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    /* Responsive */
+
+    @media (max-width: 750px) {
+      .slide {
+        align-items: flex-start;
+      }
+
+      .activities {
+        grid-template-columns: 1fr;
+        max-width: 560px;
+        margin: 0 auto;
+      }
+
+      .image-wrap {
+        height: 220px;
+      }
+
+      .card-body {
+        padding: 20px;
+      }
+    }
+
+    @media (max-width: 450px) {
+      .slide {
+        padding: 23px 13px 35px;
+      }
+
+      h1 {
+        font-size: 39px;
+      }
+
+      .image-wrap {
+        height: 185px;
+      }
+
+      .activity-card {
+        border-radius: 18px;
+      }
+
+      .reminder {
+        border-radius: 16px;
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="slide">
+    <div class="content">
+
+      <!-- Main heading -->
+
+      <header class="header">
+        <p class="eyebrow">
+          UNIT 1 • LETTERS, NUMBERS AND ME
+        </p>
+
+        <h1>Writing Practice</h1>
+
+        <p class="subtitle">
+          Now it's your turn! Complete these two
+          writing activities in your notebook.
+        </p>
+      </header>
+
+      <div class="activities">
+
+        <!-- Task 1: Full name -->
+
+        <article class="activity-card">
+
+          <div class="image-wrap first-image">
+            <img
+              src="https://images.pexels.com/photos/8547747/pexels-photo-8547747.jpeg?auto=compress&amp;dpr=1&amp;h=750&amp;w=1260"
+              alt="A person writing in a lined notebook with a pencil"
+              loading="eager"
+              decoding="async"
+            >
+
+            <span class="image-label">
+              WRITING ACTIVITY
+            </span>
+          </div>
+
+          <div class="card-body">
+
+            <span class="task-number">01</span>
+
+            <h2>Write Your Full Name</h2>
+
+            <p class="description">
+              Write your first name and family name
+              in your notebook. Remember to use a
+              capital letter at the beginning of each name.
+            </p>
+
+            <div class="example">
+              <span class="example-label">
+                EXAMPLE
+              </span>
+
+              <p class="example-text">
+                Sophia Marie Johnson
+              </p>
+
+              <p class="example-note">
+                Each name begins with a capital letter.
+              </p>
+            </div>
+
+          </div>
+        </article>
+
+        <!-- Task 2: Numbers -->
+
+        <article class="activity-card">
+
+          <div class="image-wrap second-image">
+            <img
+              src="https://images.pexels.com/photos/6623827/pexels-photo-6623827.jpeg?auto=compress&amp;dpr=1&amp;h=750&amp;w=1260"
+              alt="Colorful number shapes arranged on a wooden table"
+              loading="eager"
+              decoding="async"
+            >
+
+            <span class="image-label">
+              NUMBERS 1–10
+            </span>
+          </div>
+
+          <div class="card-body">
+
+            <span class="task-number">02</span>
+
+            <h2>Write Numbers as Words</h2>
+
+            <p class="description">
+              Write the numbers from 1 to 10 in English.
+              Use words instead of digits, and check
+              your spelling carefully.
+            </p>
+
+            <div class="example">
+              <span class="example-label">
+                EXAMPLE
+              </span>
+
+              <p class="example-text">
+                1 — one &nbsp; 2 — two &nbsp; 3 — three
+              </p>
+
+              <p class="example-note">
+                Continue writing the remaining numbers.
+              </p>
+            </div>
+
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Instruction reminder -->
+
+      <div class="reminder">
+        <span>Use your notebook</span>
+        <span class="reminder-dot" aria-hidden="true"></span>
+        <span>Write neatly</span>
+        <span class="reminder-dot" aria-hidden="true"></span>
+        <span>Check your spelling</span>
+      </div>
+
+    </div>
+  </main>
+
+</body>
+</html>

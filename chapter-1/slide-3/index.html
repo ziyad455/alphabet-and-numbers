@@ -1,0 +1,516 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice 1 — Warm-Up | Boston English Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    let initialTheme;
+    try {
+      if (window.parent !== window) {
+        initialTheme = window.parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      }
+    } catch {}
+    if (!initialTheme) {
+      try { initialTheme = localStorage.getItem('editor-theme-preference'); } catch {}
+    }
+    if (!initialTheme) {
+      initialTheme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    document.documentElement.classList.toggle('dark', initialTheme === 'dark');
+    window.setTheme = function (theme) {
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    };
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    :root {
+      color-scheme: light;
+      --page: #f8fafc;
+      --text: #0f172a;
+      --muted: #475569;
+      --title-a: #394fc8;
+      --title-b: #286acb;
+      --dialog: #ffffff;
+      --dialog-border: #cbd5e1;
+      --secondary: #f1f5f9;
+      --secondary-border: #94a3b8;
+      --remove: #fff1f2;
+      --remove-border: #be123c;
+      --remove-text: #9f1239;
+    }
+    :root.dark {
+      color-scheme: dark;
+      --page: #0f172a;
+      --text: #f8fafc;
+      --muted: #cbd5e1;
+      --title-a: #6861f4;
+      --title-b: #3c79f4;
+      --dialog: #111a2e;
+      --dialog-border: #334155;
+      --secondary: #111b30;
+      --secondary-border: #3f4d69;
+      --remove: #321427;
+      --remove-border: #8a2546;
+      --remove-text: #fecdd3;
+    }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      overflow-x: hidden;
+      background: var(--page);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    }
+    button { font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 3px solid #f59e0b; outline-offset: 4px; }
+    button:disabled { cursor: not-allowed; opacity: .58; }
+    .slide {
+      position: relative;
+      display: grid;
+      align-items: center;
+      min-height: 100dvh;
+      padding: 30px clamp(22px, 5vw, 72px);
+      background: radial-gradient(circle at 4% 8%, rgba(79,70,229,.08), transparent 35%), var(--page);
+    }
+    .dark .slide {
+      background: radial-gradient(circle at 4% 8%, rgba(99,102,241,.17), transparent 35%), var(--page);
+    }
+    .slide::before {
+      content: '';
+      position: absolute;
+      inset: 0 0 auto;
+      height: 3px;
+      background: linear-gradient(90deg, #3478ed, #7433e7);
+    }
+    .content {
+      display: grid;
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+      align-items: center;
+      gap: clamp(25px, 4vw, 70px);
+      width: 100%;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+    .intro { min-width: 0; }
+    .activity {
+      margin: 0 0 20px;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    h1 {
+      max-width: 550px;
+      margin: 0 0 30px;
+      background: linear-gradient(100deg, var(--title-a), var(--title-b));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-size: clamp(43px, 5.2vw, 76px);
+      font-weight: 800;
+      letter-spacing: -.06em;
+      line-height: 1.02;
+    }
+    .primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: min(100%, 480px);
+      min-height: 74px;
+      padding: 16px 24px;
+      border: 1px solid #6977f8;
+      border-radius: 18px;
+      background: linear-gradient(105deg, #4d70ef, #773ee4);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      transition: filter .15s ease, transform .15s ease;
+    }
+    .primary:not(:disabled):hover { filter: brightness(1.12); }
+    .primary:not(:disabled):active { transform: scale(.985); }
+    .wheel-section { display: flex; justify-content: center; min-width: 0; }
+    .wheel-wrap {
+      position: relative;
+      width: min(100%, 560px, 66dvh);
+      aspect-ratio: 1;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 22px 28px rgba(2,6,23,.18));
+    }
+    .wheel-svg { display: block; width: 100%; height: 100%; }
+    .pointer {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: -12px;
+      width: 52px;
+      height: 38px;
+      transform: translateY(-50%);
+      fill: #25205b;
+      filter: drop-shadow(2px 2px 2px rgba(0,0,0,.25));
+    }
+    .hub {
+      position: absolute;
+      z-index: 1;
+      top: 50%;
+      left: 50%;
+      display: grid;
+      place-items: center;
+      width: 31%;
+      aspect-ratio: 1;
+      padding: 10px;
+      transform: translate(-50%, -50%);
+      border: 5px solid #1b2b42;
+      border-radius: 50%;
+      background: #26333f;
+      color: #fff;
+      font-size: clamp(12px, 1.3vw, 18px);
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-align: center;
+    }
+    .empty-wheel {
+      display: grid;
+      place-items: center;
+      width: 100%;
+      aspect-ratio: 1;
+      padding: 30px;
+      border: 2px dashed var(--dialog-border);
+      border-radius: 50%;
+      background: var(--dialog);
+      color: var(--text);
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 800;
+      text-align: center;
+    }
+    .status { min-height: 1.5em; margin: 14px 0 0; color: var(--muted); font-size: 14px; font-weight: 600; }
+    .modal {
+      position: fixed;
+      z-index: 10;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      background: rgba(2, 6, 23, .78);
+      backdrop-filter: blur(9px);
+    }
+    .modal-card {
+      width: min(100%, 950px);
+      padding: clamp(30px, 5vw, 54px);
+      border: 1px solid var(--dialog-border);
+      border-radius: 34px;
+      background: var(--dialog);
+      box-shadow: 0 24px 60px rgba(2,6,23,.28);
+      text-align: center;
+    }
+    .modal-label {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: .1em;
+    }
+    .modal-question {
+      margin: 0;
+      color: var(--text);
+      font-size: clamp(29px, 4.3vw, 58px);
+      font-weight: 800;
+      letter-spacing: -.05em;
+      line-height: 1.15;
+    }
+    .modal-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 16px; margin-top: 44px; }
+    .modal-action {
+      min-width: 205px;
+      min-height: 58px;
+      padding: 12px 20px;
+      border: 1px solid var(--secondary-border);
+      border-radius: 15px;
+      background: var(--secondary);
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 800;
+      transition: filter .15s ease, transform .15s ease;
+    }
+    .modal-action:hover { filter: brightness(1.08); }
+    .modal-action:active { transform: scale(.98); }
+    .modal-action.remove { border-color: var(--remove-border); background: var(--remove); color: var(--remove-text); }
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0,0,0,0);
+      white-space: nowrap;
+    }
+    @media (max-width: 850px) {
+      .slide { padding: 40px 22px; }
+      .content { grid-template-columns: minmax(0, 1fr); gap: 28px; }
+      .intro { text-align: center; }
+      h1 { margin-inline: auto; margin-bottom: 24px; }
+      .wheel-wrap { width: min(100%, 490px); }
+    }
+    @media (max-width: 500px) {
+      .slide { padding: 30px 16px 40px; }
+      .activity { margin-bottom: 14px; }
+      h1 { font-size: clamp(40px, 11vw, 55px); }
+      .primary { min-height: 58px; }
+      .wheel-wrap { width: min(100%, 390px); }
+      .pointer { left: -7px; width: 40px; }
+      .modal-card { border-radius: 24px; padding: 28px 19px; }
+      .modal-actions { gap: 10px; margin-top: 26px; }
+      .modal-action { width: 100%; min-height: 52px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .primary, .modal-action { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <div class="content">
+      <section class="intro" aria-labelledby="slide-title">
+        <p class="activity">Practice 1 — Warm-Up</p>
+        <h1 id="slide-title">Let's Get to Know You!</h1>
+        <button class="primary" id="spin-button" type="button">SPIN WHEEL</button>
+        <button class="primary" id="reset-button" type="button" hidden>RESET WHEEL</button>
+        <p class="status" id="status" role="status" aria-live="polite"></p>
+      </section>
+      <section class="wheel-section" aria-label="Warm-up question wheel">
+        <div class="wheel-wrap" id="wheel-wrap" aria-busy="false">
+          <svg class="wheel-svg" id="wheel-svg" viewBox="0 0 600 600" aria-hidden="true">
+            <circle cx="300" cy="300" r="287" fill="#071120"></circle>
+            <g id="wheel-rotor"></g>
+            <circle cx="300" cy="300" r="284" fill="none" stroke="#071120" stroke-width="5"></circle>
+          </svg>
+          <svg class="pointer" id="pointer" viewBox="0 0 60 42" aria-hidden="true"><path d="M 0 0 L 60 21 L 0 42 L 10 21 Z"></path></svg>
+          <div class="hub" id="hub" aria-hidden="true">READY?</div>
+          <div class="empty-wheel" id="empty-wheel" hidden>All questions complete</div>
+        </div>
+        <ul class="sr-only" id="question-list" aria-label="Questions currently on the wheel"></ul>
+      </section>
+    </div>
+  </main>
+
+  <div class="modal" id="result-modal" role="dialog" aria-modal="true" aria-labelledby="modal-label" aria-describedby="modal-question" hidden>
+    <div class="modal-card">
+      <p class="modal-label" id="modal-label">Next Challenge Selected</p>
+      <h2 class="modal-question" id="modal-question"></h2>
+      <div class="modal-actions">
+        <button class="modal-action" id="keep-button" type="button">Keep on wheel</button>
+        <button class="modal-action remove" id="remove-button" type="button">Remove Item</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { QUESTIONS, indexAtPointer, pointAt, randomIndex, segmentPath, targetRotation, wrapQuestion } from './wheel-core.mjs';
+
+    const SVG_NS = 'http://www.w3.org/2000/svg';
+    const rotor = document.getElementById('wheel-rotor');
+    const wheelSvg = document.getElementById('wheel-svg');
+    const wheelWrap = document.getElementById('wheel-wrap');
+    const pointer = document.getElementById('pointer');
+    const hub = document.getElementById('hub');
+    const emptyWheel = document.getElementById('empty-wheel');
+    const questionList = document.getElementById('question-list');
+    const spinButton = document.getElementById('spin-button');
+    const resetButton = document.getElementById('reset-button');
+    const status = document.getElementById('status');
+    const modal = document.getElementById('result-modal');
+    const modalQuestion = document.getElementById('modal-question');
+    const keepButton = document.getElementById('keep-button');
+    const removeButton = document.getElementById('remove-button');
+
+    let available = [...QUESTIONS];
+    let rotation = 0;
+    let spinning = false;
+    let frame = null;
+    let selectedId = null;
+    let dialogOpen = false;
+
+    function svgElement(name, attributes = {}) {
+      const element = document.createElementNS(SVG_NS, name);
+      for (const [key, value] of Object.entries(attributes)) element.setAttribute(key, String(value));
+      return element;
+    }
+
+    function setRotation(angle) {
+      rotation = angle;
+      rotor.setAttribute('transform', `rotate(${angle} 300 300)`);
+    }
+
+    function addQuestionLabel(question, index, count) {
+      const mid = 180 + index * 360 / count;
+      const position = count === 1 ? { x: 300, y: 155 } : pointAt(mid, 192);
+      const normalized = ((mid % 360) + 360) % 360;
+      const textAngle = count === 1 ? 0 : mid + (normalized > 90 && normalized < 270 ? 180 : 0);
+      const lines = wrapQuestion(question.text);
+      const label = svgElement('text', {
+        x: position.x,
+        y: position.y,
+        fill: '#ffffff',
+        'font-size': 22,
+        'font-weight': 800,
+        'text-anchor': 'middle',
+        'dominant-baseline': 'middle',
+        transform: `rotate(${textAngle} ${position.x} ${position.y})`,
+      });
+      lines.forEach((line, lineIndex) => {
+        const span = svgElement('tspan', {
+          x: position.x,
+          dy: lineIndex === 0 ? `${-(lines.length - 1) * .55}em` : '1.1em',
+        });
+        span.textContent = line;
+        label.appendChild(span);
+      });
+      rotor.appendChild(label);
+    }
+
+    function renderWheel() {
+      rotor.replaceChildren();
+      questionList.replaceChildren();
+      const count = available.length;
+      wheelSvg.hidden = count === 0;
+      pointer.hidden = count === 0;
+      hub.hidden = count === 0;
+      emptyWheel.hidden = count !== 0;
+      spinButton.hidden = count === 0;
+      resetButton.hidden = count !== 0;
+      if (!count) {
+        status.textContent = 'All five questions complete.';
+        return;
+      }
+      available.forEach((question, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = question.text;
+        questionList.appendChild(listItem);
+        const sector = count === 1
+          ? svgElement('circle', { cx: 300, cy: 300, r: 282, fill: question.color, stroke: '#071120', 'stroke-width': 3 })
+          : svgElement('path', { d: segmentPath(index, count), fill: question.color, stroke: '#071120', 'stroke-width': 3 });
+        rotor.appendChild(sector);
+      });
+      available.forEach((question, index) => addQuestionLabel(question, index, count));
+    }
+
+    function showResult(question) {
+      selectedId = question.id;
+      modalQuestion.textContent = question.text;
+      hub.textContent = 'DONE!';
+      status.textContent = '';
+      dialogOpen = true;
+      modal.hidden = false;
+      keepButton.focus();
+    }
+
+    function closeResult(restoreFocus = true) {
+      modal.hidden = true;
+      dialogOpen = false;
+      selectedId = null;
+      hub.textContent = 'READY?';
+      spinButton.disabled = available.length === 0;
+      if (restoreFocus) (available.length ? spinButton : resetButton).focus();
+    }
+
+    function finishSpin(selectedIndex, count, destination) {
+      frame = null;
+      setRotation(destination);
+      spinning = false;
+      wheelWrap.setAttribute('aria-busy', 'false');
+      spinButton.textContent = 'SPIN WHEEL';
+      if (indexAtPointer(rotation, count) !== selectedIndex) {
+        spinButton.disabled = false;
+        status.textContent = 'The wheel could not select a question. Please spin again.';
+        return;
+      }
+      showResult(available[selectedIndex]);
+    }
+
+    function startSpin() {
+      if (spinning || dialogOpen || available.length === 0) return;
+      const count = available.length;
+      const selectedIndex = randomIndex(count);
+      const destination = targetRotation(rotation, selectedIndex, count);
+      const start = rotation;
+      spinning = true;
+      spinButton.disabled = true;
+      spinButton.textContent = 'SPINNING…';
+      wheelWrap.setAttribute('aria-busy', 'true');
+      status.textContent = 'Spinning the wheel.';
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        finishSpin(selectedIndex, count, destination);
+        return;
+      }
+      const started = performance.now();
+      const duration = 4800;
+      function tick(now) {
+        if (!spinning) return;
+        const progress = Math.min((now - started) / duration, 1);
+        const eased = 1 - (1 - progress) ** 4;
+        setRotation(start + (destination - start) * eased);
+        if (progress < 1) frame = requestAnimationFrame(tick);
+        else finishSpin(selectedIndex, count, destination);
+      }
+      frame = requestAnimationFrame(tick);
+    }
+
+    function stopSpin() {
+      if (frame !== null) cancelAnimationFrame(frame);
+      frame = null;
+      spinning = false;
+      spinButton.disabled = available.length === 0;
+      spinButton.textContent = 'SPIN WHEEL';
+      wheelWrap.setAttribute('aria-busy', 'false');
+      if (available.length) status.textContent = '';
+    }
+
+    spinButton.addEventListener('click', startSpin);
+    keepButton.addEventListener('click', () => closeResult());
+    removeButton.addEventListener('click', () => {
+      available = available.filter(question => question.id !== selectedId);
+      setRotation(0);
+      renderWheel();
+      closeResult();
+    });
+    resetButton.addEventListener('click', () => {
+      available = [...QUESTIONS];
+      setRotation(0);
+      renderWheel();
+      hub.textContent = 'READY?';
+      status.textContent = '';
+      spinButton.disabled = false;
+      spinButton.focus();
+    });
+    document.addEventListener('keydown', event => {
+      if (!dialogOpen) return;
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        closeResult();
+      } else if (event.key === 'Tab') {
+        if (event.shiftKey && document.activeElement === keepButton) {
+          event.preventDefault();
+          removeButton.focus();
+        } else if (!event.shiftKey && document.activeElement === removeButton) {
+          event.preventDefault();
+          keepButton.focus();
+        }
+      }
+    });
+
+    window.stopSlideAudio = function () {
+      stopSpin();
+      if (dialogOpen) closeResult(false);
+    };
+    window.resetSlide = function () {
+      stopSpin();
+      if (dialogOpen) closeResult(false);
+    };
+    window.addEventListener('pagehide', stopSpin);
+    renderWheel();
+  </script>
+</body>
+</html>
