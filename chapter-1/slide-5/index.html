@@ -73,6 +73,8 @@
 
       --selected: #4f46e5;
       --selected-bg: #eef2ff;
+      --speaker-selected-border: #6366f1;
+      --speaker-accent: #4f46e5;
     }
 
     :root.dark {
@@ -89,6 +91,8 @@
 
       --selected: #818cf8;
       --selected-bg: #252e50;
+      --speaker-selected-border: #818cf8;
+      --speaker-accent: #a5b4fc;
     }
 
     html,
@@ -197,6 +201,11 @@
       gap: 11px;
     }
 
+    .letter-card-wrap {
+      position: relative;
+      min-width: 0;
+    }
+
     .letter-card {
       appearance: none;
 
@@ -254,6 +263,43 @@
 
       box-shadow:
         0 0 0 2px rgba(99, 102, 241, 0.16);
+    }
+
+    .speaker-indicator {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      display: grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--muted);
+      background: var(--surface);
+      cursor: pointer;
+    }
+
+    .speaker-indicator svg {
+      width: 16px;
+      height: 16px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .letter-card.active + .speaker-indicator,
+    .speaker-indicator:hover {
+      border-color: var(--speaker-selected-border);
+      color: var(--speaker-accent);
+    }
+
+    .speaker-indicator:focus-visible {
+      outline: 3px solid var(--selected);
+      outline-offset: 3px;
     }
 
     /* Letter image */
@@ -373,6 +419,13 @@
       .letter-icon {
         width: 59px;
         height: 59px;
+      }
+
+      .speaker-indicator {
+        top: 6px;
+        right: 6px;
+        width: 23px;
+        height: 23px;
       }
     }
 
@@ -537,6 +590,14 @@
     const status =
       document.getElementById("letter-status");
 
+    const speakerSVG = `
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M11 5 6 9H3v6h3l5 4V5z"></path>
+        <path d="M15 9a5 5 0 0 1 0 6"></path>
+        <path d="M18 6a9 9 0 0 1 0 12"></path>
+      </svg>
+    `;
+
     let selectedLetter = null;
 
     /*
@@ -648,6 +709,9 @@
     function createLetterCard(letter) {
       const icon = getLetterIcon(letter);
 
+      const wrapper = document.createElement("div");
+      wrapper.className = "letter-card-wrap";
+
       const button = document.createElement("button");
 
       button.type = "button";
@@ -705,7 +769,18 @@
         selectLetter(letter, button);
       });
 
-      return button;
+      const speaker = document.createElement("button");
+      speaker.type = "button";
+      speaker.className = "speaker-indicator";
+      speaker.setAttribute("aria-label", `Play pronunciation for letter ${letter}`);
+      speaker.innerHTML = speakerSVG;
+      speaker.addEventListener("click", event => {
+        event.stopPropagation();
+        selectLetter(letter, button);
+      });
+
+      wrapper.append(button, speaker);
+      return wrapper;
     }
 
     function renderAlphabet() {
