@@ -725,7 +725,7 @@
       <p class="speaking-text">
         Now say it!
         <strong id="speaking-example">
-          "My name is ... How do you spell it?"
+          Write your name to see the sentence.
         </strong>
       </p>
 
@@ -1308,16 +1308,17 @@
 
     if (!fullName) {
       speakingExample.textContent =
-        '"My name is ... How do you spell it?"';
+        "Write your name to see the sentence.";
       return;
     }
 
-    const spelled = [...fullName.replace(/\s/g, "")]
-      .map(letter => letter.toUpperCase())
-      .join("-");
+    const spelled = [first, family]
+      .filter(Boolean)
+      .map(name => [...name].map(letter => letter.toUpperCase()).join("-"))
+      .join(" ");
 
     speakingExample.textContent =
-      `"My name is ${fullName}. How do you spell it? ${spelled}."`;
+      `"My name is ${fullName}. It's spelled ${spelled}."`;
   }
 
   /* Spell full name aloud */
@@ -1349,7 +1350,8 @@
     */
 
     const items = [
-      { text: `My name is ${fullName}` }
+      { text: `My name is ${fullName}` },
+      { text: "It's spelled" }
     ];
 
     for (const section of ["first", "family"]) {

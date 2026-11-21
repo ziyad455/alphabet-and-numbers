@@ -144,7 +144,7 @@
       </div>
       <div class="hint">
         <span class="guide-help">Start at the numbered green dots and follow the orange arrows.</span>
-        <span class="progress" id="progress">Letter A of 26</span>
+        <span class="progress" id="progress">Letter 1 of 26 — A</span>
       </div>
       <div class="controls">
         <button class="action" id="prev" type="button">◀ Back</button>
@@ -241,7 +241,7 @@
       button.setAttribute('aria-current', String(index === n));
       button.classList.toggle('practiced', practiced.has(`${ABC[n]}:${mode}`));
     });
-    progress.textContent = `Letter ${name} of 26 · ${[...practiced].filter(v => v.endsWith(':' + mode)).length} practiced`;
+    progress.textContent = `Letter ${index + 1} of 26 — ${name} · ${[...practiced].filter(v => v.endsWith(':' + mode)).length} practiced`;
     $('prev').disabled = index === 0;
     $('next').disabled = index === 25;
     $('done').textContent = practiced.has(key()) ? '✓ Practiced' : '✓ Done';
@@ -368,7 +368,7 @@
   });
   $('done').addEventListener('click', () => {
     if (!(drawings.get(key()) || []).length) {
-      setStatus('Trace the letter on the paper first, then press Done.'); return;
+      setStatus('Trace the letter on the screen first, then press Done.'); return;
     }
     practiced.add(key()); updateControls();
     setStatus(`Nice work! ${ABC[index]} marked as practiced.`, true);
