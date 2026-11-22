@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice 1 — Complete the Capital Letters | Boston English Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (() => {
+      let theme;
+      try {
+        if (window.parent !== window) {
+          theme = window.parent.document.documentElement.classList.contains("dark") ? "dark" : "light";
+        }
+      } catch (_) {}
+      if (!theme) {
+        try { theme = localStorage.getItem("editor-theme-preference"); } catch (_) {}
+      }
+      if (theme !== "dark" && theme !== "light") {
+        theme = matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+      document.documentElement.classList.toggle("dark", theme === "dark");
+      window.setTheme = nextTheme => document.documentElement.classList.toggle("dark", nextTheme === "dark");
+      window.stopSlideAudio = () => {};
+    })();
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      color-scheme: light;
+      --page: #f8fafc;
+      --card: #fff;
+      --tile-bg: #f1f5fb;
+      --text: #0f172a;
+      --muted: #52627b;
+      --border: #cbd5e5;
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+      --fixed-bg: #eef3ff;
+      --fixed-text: #3049af;
+      --empty-bg: #f1f5ff;
+      --target-border: #8097d6;
+      --success-bg: #d1fae5;
+      --success-text: #076347;
+      --error: #b42318;
+    }
+    :root.dark {
+      color-scheme: dark;
+      --page: #0f172a;
+      --card: #1e293b;
+      --tile-bg: #18263f;
+      --text: #f8fafc;
+      --muted: #bac8da;
+      --border: #344660;
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+      --fixed-bg: #2b3b60;
+      --fixed-text: #dce7ff;
+      --empty-bg: #172d50;
+      --target-border: #7182c5;
+      --success-bg: #114a37;
+      --success-text: #c4fce1;
+      --error: #ff9e98;
+    }
+    html, body { margin: 0; min-height: 100%; }
+    body { font-family: "Plus Jakarta Sans", system-ui, sans-serif; color: var(--text); background: var(--page); }
+    button { font: inherit; cursor: pointer; }
+    button:focus-visible, a:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+    .slide {
+      min-height: 100dvh;
+      padding: clamp(18px, 3vh, 36px) clamp(15px, 3.5vw, 50px) 28px;
+      background: radial-gradient(circle at 4% 4%, rgba(99, 102, 241, .11), transparent 32%),
+                  radial-gradient(circle at 96% 92%, rgba(56, 132, 211, .07), transparent 30%), var(--page);
+    }
+    .content { max-width: 1300px; margin: 0 auto; }
+    .intro { text-align: center; margin-bottom: clamp(17px, 2.6vh, 28px); }
+    .eyebrow { color: #596ee7; font-size: 13px; font-weight: 800; letter-spacing: .11em; text-transform: uppercase; margin: 0 0 8px; }
+    .dark .eyebrow { color: #a5b4fc; }
+    h1 {
+      margin: 0 0 12px; font-size: clamp(34px, 4.7vw, 58px); line-height: 1.12;
+      font-weight: 800; letter-spacing: -.048em;
+      background: linear-gradient(100deg, var(--heading-start), var(--heading-end));
+      background-clip: text; -webkit-background-clip: text; color: transparent;
+    }
+    .intro .instructions { margin: 0 auto; max-width: 870px; font-size: clamp(13px, 1.2vw, 16px); line-height: 1.6; color: var(--muted); font-weight: 600; }
+    .method {
+      display: inline-flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-items: center;
+      margin-top: 13px; color: var(--muted); font-size: 12px; font-weight: 700;
+    }
+    .method span { border: 1px solid var(--border); background: var(--card); border-radius: 9px; padding: 7px 12px; }
+    .method strong { background: linear-gradient(140deg, #5569ec, #7538da); color: #fff; display: inline-grid; place-items: center; width: 20px; height: 20px; border-radius: 6px; margin-right: 6px; }
+    .columns { display: grid; grid-template-columns: minmax(0, 1.18fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+    .panel { background: var(--card); border: 1px solid var(--border); border-radius: 22px; padding: clamp(14px, 1.7vw, 23px); min-width: 0; }
+    .panel-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; margin: 0 0 14px; }
+    .panel-head h2 { font-size: 13px; font-weight: 800; letter-spacing: .065em; margin: 0; text-transform: uppercase; }
+    .panel-head small { color: var(--muted); font-size: 12px; font-weight: 700; }
+    .alphabet { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px 15px; }
+    .letter-pair { display: grid; grid-template-columns: minmax(0, 1fr) 46px; gap: 6px; min-width: 0; }
+    .capital, .small {
+      display: flex; align-items: center; justify-content: center; height: 38px;
+      border-radius: 9px; border: 1px solid var(--border); line-height: 1; font-size: 19px; font-weight: 800;
+    }
+    .small { color: var(--muted); background: var(--tile-bg); font-size: 18px; }
+    .capital.fixed { color: var(--fixed-text); background: var(--fixed-bg); }
+    .capital.target { background: var(--empty-bg); border: 2px dashed var(--target-border); color: var(--muted); }
+    .capital.target:hover, .capital.target.drop-hover { background: rgba(99, 102, 241, .17); border-color: #6f5cf2; }
+    .capital.target:active { transform: scale(.98); }
+    .capital.correct { color: var(--success-text); background: var(--success-bg); border-color: #10b981; gap: 7px; }
+    .capital .check { font-size: 12px; }
+    .capital.error-flash { animation: shake .28s linear; border-color: #ef4444; }
+    @keyframes shake { 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+    .bank { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; align-content: start; min-height: 206px; }
+    .bank-letter {
+      position: relative; display: flex; align-items: center; justify-content: center;
+      min-width: 0; height: 67px; border-radius: 13px; background: var(--tile-bg); border: 1px solid var(--border);
+      touch-action: none; user-select: none; transition: transform .14s ease, box-shadow .14s ease;
+    }
+    .bank-letter:hover { transform: translateY(-2px); }
+    .bank-letter.selected { box-shadow: 0 0 0 3px rgba(100, 90, 239, .28); border-color: #7161ea; }
+    .bank-letter .tile {
+      width: 45px; height: 45px; border-radius: 12px; display: grid; place-items: center;
+      font-size: 25px; line-height: 1; font-weight: 800; color: white;
+      background: linear-gradient(140deg, #42aafa, #1766cd); pointer-events: none;
+      box-shadow: inset 0 1px rgba(255,255,255,.25);
+    }
+    .bank-letter:nth-child(5n+2) .tile { background: linear-gradient(140deg, #967ef5, #6444ca); }
+    .bank-letter:nth-child(5n+3) .tile { background: linear-gradient(140deg, #11b0b0, #087e96); }
+    .bank-letter:nth-child(5n+4) .tile { background: linear-gradient(140deg, #eda63f, #b46e0a); }
+    .bank-letter:nth-child(5n+5) .tile { background: linear-gradient(140deg, #f086ac, #d03979); }
+    .bank-letter .selected-tick { position: absolute; top: 2px; right: 7px; font-size: 11px; color: #8273f8; display: none; }
+    .bank-letter.selected .selected-tick { display: block; }
+    .bank-finished { grid-column: 1 / -1; text-align: center; padding: 37px 12px; background: var(--success-bg); color: var(--success-text); border: 1px dashed #10b981; border-radius: 15px; font-weight: 800; }
+    .feedback { margin: 17px 0 0; min-height: 45px; display: flex; align-items: center; justify-content: center; text-align: center; line-height: 1.5; color: var(--muted); font-size: 13px; font-weight: 700; }
+    .feedback.good { color: var(--success-text); }
+    .feedback.bad { color: var(--error); }
+    .footer {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;
+      gap: 15px; margin-top: 19px; padding-top: 16px; border-top: 1px solid var(--border);
+    }
+    .progress { display: flex; align-items: center; gap: 12px; }
+    .progress-text { font-size: 13px; font-weight: 700; color: var(--muted); white-space: nowrap; }
+    .progress-track { background: var(--border); border-radius: 100px; width: 136px; height: 8px; overflow: hidden; max-width: 28vw; }
+    .progress-fill { width: 0; height: 100%; border-radius: 100px; transition: width .2s; background: linear-gradient(100deg, #466ef0, #7338dc); }
+    .actions { display: flex; gap: 9px; flex-wrap: wrap; justify-content: center; }
+    .action { padding: 10px 17px; border-radius: 12px; min-height: 43px; background: var(--card); color: var(--text); border: 1px solid var(--border); font-weight: 800; font-size: 13px; }
+    .action.primary { background: linear-gradient(105deg, #496ef0, #7137d8); border-color: transparent; color: #fff; }
+    .action:hover { filter: brightness(1.08); }
+    .ghost { position: fixed; z-index: 9999; pointer-events: none; transform: translate(-50%, -50%); width: 55px; height: 55px; border-radius: 13px; display: grid; place-items: center; background: linear-gradient(140deg, #40aafa, #1964ca); color: white; font-size: 28px; font-weight: 800; opacity: .92; box-shadow: 0 16px 32px rgba(0,0,0,.22); }
+    @media (max-width: 900px) { .columns { grid-template-columns: 1fr; } .panel { max-width: 760px; width: 100%; margin-inline: auto; } .bank { grid-template-columns: repeat(6, minmax(0,1fr)); min-height: 0; } }
+    @media (max-width: 520px) { .alphabet { gap: 5px 7px; } .letter-pair { grid-template-columns: minmax(0,1fr) 31px; gap: 3px; } .capital,.small { height: 35px; font-size: 16px; } .bank { grid-template-columns: repeat(4, minmax(0,1fr)); gap: 7px; } .bank-letter { height: 58px; } .bank-letter .tile { width: 40px; height: 40px; font-size: 22px; } .footer { justify-content: center; } .progress { width: 100%; justify-content: center; } }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <div class="content">
+      <header class="intro">
+        <p class="eyebrow">Practice 1 · Warm-Up</p>
+        <h1>Complete the Capital Letters!</h1>
+        <p class="instructions">Some capital letters are missing. Drag a capital letter into the correct space, or select a letter and then choose the space above its lowercase partner.</p>
+        <div class="method" aria-label="How to play">
+          <span><strong>1</strong>Drag a capital letter to its place</span>
+          <span aria-hidden="true">OR</span>
+          <span><strong>2</strong>Select a letter, then choose its place</span>
+        </div>
+      </header>
+      <div class="columns">
+        <section class="panel" aria-labelledby="table-heading">
+          <div class="panel-head"><h2 id="table-heading">Alphabet Table</h2><small>Capital letter + lowercase letter</small></div>
+          <div class="alphabet" id="alphabet" aria-label="Alphabet with missing capital letters"></div>
+        </section>
+        <section class="panel" aria-labelledby="bank-heading">
+          <div class="panel-head"><h2 id="bank-heading">Your Capital Letters</h2><small id="remaining">17 letters to place</small></div>
+          <div class="bank" id="bank" aria-label="Available capital letters"></div>
+          <p class="feedback" id="feedback" role="status" aria-live="polite">Select a capital letter, then choose its matching space.</p>
+        </section>
+      </div>
+      <div class="footer">
+        <div class="progress">
+          <span class="progress-text" id="progress-text">0 of 17 matched</span>
+          <div class="progress-track" id="progressbar" role="progressbar" aria-label="Activity progress" aria-valuemin="0" aria-valuemax="17" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+        <div class="actions"><button id="reset" type="button" class="action">Reset Activity</button><button id="check" type="button" class="action primary">Check Answers</button></div>
+      </div>
+    </div>
+  </main>
+  <script>
+    (() => {
+      "use strict";
+      const ALPHABET = [..."ABCDEFGHIJKLMNOPQRSTUVWXYZ"];
+      // As in the reference alphabet table, some capitals are given and the others are missing.
+      const GIVEN = new Set(["A", "B", "D", "E", "K", "N", "S", "V", "Y"]);
+      const MIXED_BANK = ["L", "P", "U", "X", "C", "G", "Q", "R", "H", "O", "F", "W", "Z", "J", "T", "I", "M"];
+      const TOTAL = MIXED_BANK.length;
+      const $ = id => document.getElementById(id);
+      const alphabet = $("alphabet");
+      const bank = $("bank");
+      const feedback = $("feedback");
+      const remaining = $("remaining");
+      const progressText = $("progress-text");
+      const progressBar = $("progressbar");
+      const progressFill = $("progress-fill");
+      const placed = new Set();
+      let selected = null;
+      let dragging = null;
+      let suppressClickUntil = 0;
+
+      function announce(text, type = "") {
+        feedback.textContent = text;
+        feedback.className = `feedback${type ? " " + type : ""}`;
+      }
+      function updateProgress() {
+        const count = placed.size;
+        progressText.textContent = `${count} of ${TOTAL} matched`;
+        remaining.textContent = `${TOTAL - count} ${TOTAL - count === 1 ? "letter" : "letters"} to place`;
+        progressBar.setAttribute("aria-valuenow", count);
+        progressFill.style.width = `${(count / TOTAL) * 100}%`;
+      }
+      function elt(tag, cls, content) {
+        const element = document.createElement(tag);
+        if (cls) element.className = cls;
+        if (content !== undefined) element.textContent = content;
+        return element;
+      }
+      function render() {
+        alphabet.replaceChildren();
+        for (const letter of ALPHABET) {
+          const pair = elt("div", "letter-pair");
+          const lowercase = elt("span", "small", letter.toLowerCase());
+          lowercase.setAttribute("aria-label", `Lowercase ${letter.toLowerCase()}`);
+          let capital;
+          if (GIVEN.has(letter)) {
+            capital = elt("span", "capital fixed", letter);
+          } else if (placed.has(letter)) {
+            capital = elt("span", "capital correct");
+            capital.append(document.createTextNode(letter), elt("span", "check", "✓"));
+            capital.setAttribute("aria-label", `Capital ${letter} matched`);
+          } else {
+            capital = elt("button", "capital target", "?");
+            capital.type = "button";
+            capital.dataset.letter = letter;
+            capital.setAttribute("aria-label", `Empty space above lowercase ${letter.toLowerCase()}`);
+            capital.addEventListener("click", () => {
+              if (!selected) { announce("Select a capital letter from the right first."); return; }
+              tryMatch(selected, letter);
+            });
+          }
+          pair.append(capital, lowercase);
+          alphabet.append(pair);
+        }
+        bank.replaceChildren();
+        for (const letter of MIXED_BANK) {
+          if (placed.has(letter)) continue;
+          const button = elt("button", `bank-letter${selected === letter ? " selected" : ""}`);
+          button.type = "button";
+          button.dataset.letter = letter;
+          button.setAttribute("aria-label", `Select capital letter ${letter}`);
+          button.setAttribute("aria-pressed", String(selected === letter));
+          button.append(elt("span", "tile", letter), elt("span", "selected-tick", "✓"));
+          button.addEventListener("click", () => {
+            if (Date.now() < suppressClickUntil) return;
+            selected = selected === letter ? null : letter;
+            render();
+            announce(selected ? `Selected ${selected}. Choose its matching space in the alphabet table.` : "Selection cleared.");
+          });
+          button.addEventListener("pointerdown", onPointerDown);
+          button.addEventListener("pointermove", onPointerMove);
+          button.addEventListener("pointerup", onPointerUp);
+          button.addEventListener("pointercancel", cancelPointer);
+          bank.append(button);
+        }
+        if (placed.size === TOTAL) {
+          bank.append(elt("div", "bank-finished", "✓ All capital letters matched!"));
+        }
+        updateProgress();
+      }
+      function tryMatch(letter, targetLetter) {
+        if (!letter || placed.has(letter) || placed.has(targetLetter)) return;
+        if (letter !== targetLetter) {
+          announce("Not quite. Try another space.", "bad");
+          const target = [...alphabet.querySelectorAll(".target")].find(x => x.dataset.letter === targetLetter);
+          if (target) {
+            target.classList.add("error-flash");
+            setTimeout(() => target.isConnected && target.classList.remove("error-flash"), 350);
+          }
+          return;
+        }
+        placed.add(letter);
+        selected = null;
+        render();
+        announce(placed.size === TOTAL ? "Excellent! You completed the capital alphabet!" : `Correct! ${letter} matches ${letter.toLowerCase()}.`, "good");
+      }
+      function removeGhostAndHover() {
+        dragging?.ghost?.remove();
+        alphabet.querySelectorAll(".drop-hover").forEach(x => x.classList.remove("drop-hover"));
+      }
+      function findTarget(clientX, clientY) {
+        return document.elementFromPoint(clientX, clientY)?.closest(".capital.target") ?? null;
+      }
+      function onPointerDown(event) {
+        if (dragging) return;
+        if (event.pointerType === "mouse" && event.button !== 0) return;
+        dragging = { id: event.pointerId, letter: event.currentTarget.dataset.letter, button: event.currentTarget,
+          originX: event.clientX, originY: event.clientY, dragging: false, ghost: null };
+        try { event.currentTarget.setPointerCapture(event.pointerId); } catch (_) {}
+      }
+      function onPointerMove(event) {
+        if (!dragging || dragging.id !== event.pointerId || dragging.button !== event.currentTarget) return;
+        if (!dragging.dragging && Math.hypot(event.clientX - dragging.originX, event.clientY - dragging.originY) > 8) {
+          dragging.dragging = true;
+          dragging.ghost = elt("div", "ghost", dragging.letter);
+          dragging.ghost.setAttribute("aria-hidden", "true");
+          document.body.append(dragging.ghost);
+        }
+        if (!dragging.dragging) return;
+        dragging.ghost.style.left = `${event.clientX}px`;
+        dragging.ghost.style.top = `${event.clientY}px`;
+        alphabet.querySelectorAll(".drop-hover").forEach(x => x.classList.remove("drop-hover"));
+        findTarget(event.clientX, event.clientY)?.classList.add("drop-hover");
+      }
+      function onPointerUp(event) {
+        if (!dragging || dragging.id !== event.pointerId || dragging.button !== event.currentTarget) return;
+        const letter = dragging.letter;
+        const moved = dragging.dragging;
+        const target = moved ? findTarget(event.clientX, event.clientY) : null;
+        removeGhostAndHover();
+        dragging = null;
+        if (moved) {
+          suppressClickUntil = Date.now() + 350;
+          event.preventDefault();
+          if (target) tryMatch(letter, target.dataset.letter);
+          else announce("Drop the letter onto an empty space, or tap it to select it.");
+        }
+      }
+      function cancelPointer() { removeGhostAndHover(); dragging = null; }
+      function reset() {
+        removeGhostAndHover(); dragging = null;
+        placed.clear(); selected = null;
+        render();
+        announce("Select a capital letter, then choose its matching space.");
+      }
+      $("check").addEventListener("click", () => {
+        const missing = TOTAL - placed.size;
+        announce(missing ? `${missing} ${missing === 1 ? "letter is" : "letters are"} still missing. Keep going!` : "Perfect! All capital letters are in the correct places.", missing ? "" : "good");
+      });
+      $("reset").addEventListener("click", reset);
+      window.resetSlide = reset;
+      window.addEventListener("pagehide", cancelPointer);
+      render();
+    })();
+  </script>
+</body>
+</html>

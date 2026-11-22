@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<title>Practice 6 — Put the Words in Order | Boston English Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+(function () {
+  let t = null;
+  try { if (window.parent !== window) t = window.parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light'; } catch (_) {}
+  if (!t) { try { t = localStorage.getItem('editor-theme-preference'); } catch (_) {} }
+  if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.classList.toggle('dark', t === 'dark');
+  window.setTheme = function (theme) { document.documentElement.classList.toggle('dark', theme === 'dark'); };
+})();
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+:root{color-scheme:light;
+  --page:#f6f7fb;--panel:#fff;--panel2:#eef1fa;--text:#12203a;--muted:#55678a;--line:#d5ddee;
+  --accent:#4a3fe0;--accent2:#2f6df0;--accent-soft:#e9ecff;
+  --ok:#007a56;--ok-soft:#d7f7e8;--ok-line:#5fcf9f;--bad:#a8294c;--bad-soft:#ffeaf0;--bad-line:#f0a9bf;
+  --scene1:#0f1b3d;--scene2:#2a2a86}
+:root.dark{color-scheme:dark;
+  --page:#0b1223;--panel:#1a2438;--panel2:#141d31;--text:#f4f7fc;--muted:#b6c4dc;--line:#33435f;
+  --accent:#b0b9ff;--accent2:#7fa8ff;--accent-soft:#2a3258;
+  --ok:#8df0ba;--ok-soft:#10382f;--ok-line:#2a8a6c;--bad:#ff9db1;--bad-soft:#4a2638;--bad-line:#a14b69;
+  --scene1:#0a1330;--scene2:#23237a}
+html,body{margin:0;min-height:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--page);color:var(--text)}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid #f5a30b;outline-offset:3px}
+button:disabled{cursor:default}
+svg{display:block}
+
+.app{min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto;gap:clamp(10px,2vh,18px);padding:clamp(12px,2.2vh,24px) clamp(12px,2.6vw,40px);max-width:1360px;margin:auto}
+.top{display:flex;align-items:center;gap:clamp(10px,2vw,28px);flex-wrap:wrap}
+.title{margin:0;font-size:clamp(20px,2.4vw,32px);font-weight:800;letter-spacing:-.035em;line-height:1.1;background:linear-gradient(105deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.title small{display:block;font-size:12px;font-weight:700;letter-spacing:0;color:var(--muted);-webkit-text-fill-color:var(--muted);margin-top:4px}
+.trail{flex:1 1 300px;display:flex;gap:6px;min-width:0}
+.pip{flex:1;height:10px;border-radius:9px;background:var(--line);transition:background .3s}
+.pip.done{background:linear-gradient(90deg,#28c2b8,#5b5cf0)}
+.pip.now{background:var(--accent);opacity:.55}
+.count{font-weight:800;font-size:14px;padding:9px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);white-space:nowrap}
+
+.stage{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,8fr);gap:clamp(12px,2vw,26px);min-height:0}
+.scene{position:relative;border-radius:28px;overflow:hidden;color:#fff;min-height:300px;
+  background:radial-gradient(circle at 25% 15%,rgba(120,110,255,.45),transparent 55%),linear-gradient(160deg,var(--scene2),var(--scene1));
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:18px}
+.pill{position:absolute;left:16px;top:16px;font-size:13px;font-weight:700;padding:7px 13px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px)}
+.photo{flex:1;min-height:0;width:min(100%,300px);display:grid;place-items:end center;margin-top:46px}
+.photo img,.photo .ph{height:100%;max-height:50vh;max-width:100%;aspect-ratio:4/5;object-fit:cover;object-position:center 20%;border-radius:22px;border:3px solid rgba(255,255,255,.85);box-shadow:0 14px 34px rgba(0,0,0,.35)}
+.photo .ph{display:grid;place-items:center;font-size:80px;font-weight:800;background:rgba(255,255,255,.15)}
+.who{margin-top:8px;font-size:clamp(20px,2.2vw,30px);font-weight:800;letter-spacing:-.03em}
+
+.play{display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.2vh,20px);background:var(--panel);border:1px solid var(--line);border-radius:28px;padding:clamp(16px,2.6vw,34px)}
+.ask{margin:0;color:var(--muted);font-weight:700;font-size:clamp(14px,1.3vw,17px)}
+.example{margin:0;font-size:13px;font-weight:600;color:var(--muted)}
+.example b{color:var(--ok)}
+.bubble{position:relative;border:2px solid var(--line);border-radius:26px 26px 26px 6px;background:var(--panel2);padding:clamp(16px,2.4vw,28px);transition:border-color .2s,background .2s}
+.bubble.ok{border-color:var(--ok-line);background:var(--ok-soft)}
+.bubble.bad{border-color:var(--bad-line);animation:shake .3s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.line{display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;min-height:clamp(58px,9vh,78px)}
+.slot{min-width:clamp(70px,9vw,120px);min-height:clamp(52px,8vh,70px);padding:6px 16px;border-radius:14px;border:0;border-bottom:4px solid var(--accent);background:var(--panel);color:var(--accent);font-size:clamp(22px,2.8vw,38px);font-weight:800;letter-spacing:-.03em;opacity:.7;transition:background .15s,transform .15s}
+.slot.filled{opacity:1;background:var(--accent-soft)}
+.slot:not(:disabled):hover{background:var(--accent-soft)}
+.slot.drop{background:var(--accent-soft);transform:scale(1.05)}
+.bubble.ok .slot{border-color:var(--ok-line);background:var(--panel);color:var(--ok);opacity:1}
+.mark{font-size:clamp(30px,4vw,52px);font-weight:800;line-height:1.1;color:var(--muted)}
+.type-input{width:100%;background:var(--panel);border:2px solid var(--line);border-radius:14px;padding:14px 16px;font-size:clamp(20px,2.4vw,30px);font-weight:700;outline:none}
+.type-input:focus{border-color:var(--accent)}
+.bank{display:flex;flex-wrap:wrap;gap:10px}
+.tile{min-height:clamp(52px,8vh,68px);padding:6px 20px;border-radius:16px;border:2px solid var(--line);background:var(--panel2);font-size:clamp(20px,2.4vw,32px);font-weight:800;letter-spacing:-.03em;box-shadow:0 4px 0 var(--line);transition:transform .12s,border-color .12s,background .12s;touch-action:manipulation}
+.tile:not(:disabled):hover{transform:translateY(-3px);border-color:var(--accent);background:var(--accent-soft)}
+.tile.sel{border-color:var(--accent);background:var(--accent-soft)}
+.tile.used{opacity:.25;border-style:dashed;box-shadow:none}
+.fb{display:flex;align-items:center;gap:14px;min-height:64px;padding:10px 14px;border-radius:18px;border:1px solid var(--line);background:var(--panel2)}
+.fb.good{background:var(--ok-soft);border-color:var(--ok-line)}.fb.bad{background:var(--bad-soft);border-color:var(--bad-line)}
+.fb p{margin:0;flex:1;min-width:0;font-weight:700;font-size:14px}
+.fb.good p{color:var(--ok)}.fb.bad p{color:var(--bad)}
+.listen{display:inline-flex;align-items:center;gap:10px;min-height:46px;padding:0 16px;border-radius:14px;border:2px solid var(--ok-line);background:var(--panel);color:var(--ok);font-weight:800;font-size:14px;white-space:nowrap}
+.listen svg{width:20px;height:20px}
+.wave{display:none;gap:3px;align-items:center;height:20px}
+.wave i{width:3px;background:currentColor;border-radius:3px;height:8px;animation:bar .7s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.12s}.wave i:nth-child(3){animation-delay:.24s}.wave i:nth-child(4){animation-delay:.36s}
+@keyframes bar{50%{height:20px}}
+.listen.speaking{background:var(--ok-soft)}.listen.speaking .wave{display:flex}.listen.speaking .ico{display:none}
+
+.bottom{display:flex;gap:10px;justify-content:space-between;align-items:center;flex-wrap:wrap}
+.grp{display:flex;gap:8px;flex-wrap:wrap}
+.btn{min-height:46px;padding:0 18px;border-radius:14px;border:1px solid var(--line);background:var(--panel);font-weight:800;font-size:14px;transition:transform .15s}
+.btn:not(:disabled):hover{transform:translateY(-1px);border-color:var(--accent)}
+.btn:disabled{opacity:.4}
+.btn.primary{background:linear-gradient(110deg,#4570f2,#7a3ede);color:#fff;border-color:transparent;font-size:16px;padding:0 28px;box-shadow:0 8px 18px rgba(80,70,210,.25)}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:14px;background:var(--panel);padding:4px;gap:4px}
+.seg button{min-height:38px;border:0;border-radius:10px;background:transparent;padding:0 14px;font-weight:800;font-size:13px;color:var(--muted)}
+.seg button[aria-pressed=true]{background:linear-gradient(110deg,#4570f2,#7a3ede);color:#fff}
+
+.finish{grid-row:1/-1;display:grid;place-items:center;text-align:center;padding:28px 16px;border-radius:32px;color:#fff;background:radial-gradient(circle at 20% 10%,rgba(125,115,255,.5),transparent 50%),linear-gradient(160deg,var(--scene2),var(--scene1))}
+.finish h2{font-size:clamp(32px,5.5vw,64px);letter-spacing:-.05em;margin:0 0 6px;line-height:1}
+.finish p{margin:0 auto 18px;max-width:520px;font-weight:600;line-height:1.6;color:#d6dcff}
+.rows{display:grid;gap:8px;max-width:640px;margin:0 auto 22px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:rgba(255,255,255,.12);border-radius:14px;padding:8px 8px 8px 16px;font-weight:800;font-size:clamp(15px,1.8vw,20px);text-align:left}
+.row button{flex:0 0 42px;width:42px;height:42px;border-radius:12px;border:0;background:#fff;color:#2a2a86;display:grid;place-items:center}
+.row button svg{width:20px;height:20px}
+.row button.speaking{outline:3px solid #8df0ba}
+.finish .restart{background:#fff;color:#2a2a86;border:0}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+@media (max-width:860px){
+  .stage{grid-template-columns:1fr}
+  .scene{min-height:0;flex-direction:row;justify-content:flex-start;align-items:center;gap:14px;padding:14px 16px}
+  .photo{flex:none;width:90px;margin:0}
+  .photo img,.photo .ph{height:auto;width:90px;max-height:none;border-radius:16px;font-size:40px}
+  .pill{position:static;order:3;margin-left:auto}
+  .who{margin:0}
+}
+@media (max-width:540px){.trail{flex-basis:100%;order:3}.count{margin-left:auto}.grp{width:100%}.grp .btn{flex:1}.bottom .primary{flex:1}.fb{flex-wrap:wrap}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <h1 class="title">Put the words in order<small>Practice 6 · Build the sentence, check it, then say it aloud.</small></h1>
+    <div class="trail" id="trail" aria-hidden="true"></div>
+    <div class="count" id="count" aria-live="polite">0 of 5 correct</div>
+  </header>
+
+  <section class="stage" id="stage" aria-label="Sentence practice">
+    <div class="scene" id="scene"></div>
+    <div class="play">
+      <p class="ask" id="ask"></p>
+      <p class="example">Example: <i>Hello. Rania name's my.</i> → <b>Hello. My name's Rania.</b></p>
+      <div class="bubble" id="bubble" role="group" aria-label="Your sentence">
+        <div class="line" id="line"></div>
+        <input id="typed" class="type-input" type="text" autocomplete="off" spellcheck="false" maxlength="150" placeholder="Type your sentence here…" aria-label="Type your sentence" hidden>
+      </div>
+      <div class="bank" id="bank" role="group" aria-label="Mixed-up words"></div>
+      <div class="fb" id="fb" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </section>
+
+  <footer class="bottom" id="bottom">
+    <div class="grp">
+      <button class="btn" id="prev" type="button">← Previous</button>
+      <button class="btn" id="clear" type="button">Clear</button>
+      <button class="btn" id="hint" type="button">Hint</button>
+      <div class="seg" role="group" aria-label="Answer method">
+        <button id="m-arr" type="button" aria-pressed="true">Tap words</button>
+        <button id="m-type" type="button" aria-pressed="false">Type</button>
+      </div>
+    </div>
+    <div class="grp">
+      <button class="btn primary" id="check" type="button">Check answer</button>
+      <button class="btn primary" id="next" type="button" hidden>Next</button>
+    </div>
+  </footer>
+
+  <section class="finish" id="finish" hidden>
+    <div>
+      <h2>Great sentences!</h2>
+      <p>All five are in the right order. Listen to each one and say it aloud.</p>
+      <div class="rows" id="rows"></div>
+      <button class="btn restart" id="restart" type="button">Practice again</button>
+    </div>
+  </section>
+  <p class="sr" id="status" role="status" aria-live="polite"></p>
+</main>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const SPK = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
+const U = id => `https://images.unsplash.com/photo-${id}?fm=jpg&q=70&w=600&h=750&fit=crop&crop=faces&auto=format`;
+const PEOPLE = {
+  lina:{name:'Lina',url:U('1544005313-94ddf0286df2'),alt:'Photo of a smiling woman: Lina'},
+  christophe:{name:'Christophe',url:U('1500648767791-00dcc994a43e'),alt:'Photo of a young man: Christophe'},
+  sara:{name:'Sara',url:U('1580489944761-15a19d654956'),alt:'Photo of a smiling young woman: Sara'},
+  ahmed:{name:'Ahmed',url:U('1507003211169-0a1dd7228f2d'),alt:'Photo of a young man: Ahmed'},
+  omar:{name:'Omar',url:U('1568602471122-7832951cc4c5'),alt:'Photo of a smiling man with glasses: Omar'}
+};
+const EX = [
+  { who:'lina', tag:'Asking a question', mixed:['your','name',"What's"], correct:["What's",'your','name'], mark:'?' },
+  { who:'christophe', tag:'Answering', mixed:['My','Christophe',"name's"], correct:['My',"name's",'Christophe'], mark:'.' },
+  { who:'sara', tag:'Talking about herself', mixed:['I','from','come','Spain'], correct:['I','come','from','Spain'], mark:'.' },
+  { who:'ahmed', tag:'Asking a question', mixed:['come','from','Where','do','you'], correct:['Where','do','you','come','from'], mark:'?' },
+  { who:'omar', tag:'Talking about himself', mixed:['from','Egypt','I','come'], correct:['I','come','from','Egypt'], mark:'.' }
+];
+const drafts = EX.map(e => ({slots:Array(e.correct.length).fill(null), typed:''}));
+const solved = new Set();
+let idx=0, mode='arr', sel=null, token=0, state='';
+
+const sentence = e => e.correct.join(' ') + e.mark;
+const clean = t => String(t).replace(/[’‘]/g,"'").toLowerCase().replace(/[.!?]+/g,'').replace(/\s+/g,' ').trim();
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const finished = () => solved.has(idx);
+
+function stopAudio(){
+  token++; $('status').textContent='';
+  document.querySelectorAll('.speaking').forEach(b=>b.classList.remove('speaking'));
+  try{ if('speechSynthesis' in window) speechSynthesis.cancel(); }catch(_){}
+}
+window.stopSlideAudio = stopAudio;
+function speak(text, btn){
+  stopAudio();
+  if(!('speechSynthesis' in window)){ $('status').textContent='Audio is not supported in this browser.'; return; }
+  const my=++token, u=new SpeechSynthesisUtterance(text);
+  u.lang='en-GB'; u.rate=.82; u.pitch=1;
+  try{
+    const v=speechSynthesis.getVoices();
+    const p=v.find(x=>x.lang.toLowerCase()==='en-gb'&&x.localService)||v.find(x=>x.lang.toLowerCase()==='en-gb')||v.find(x=>x.lang.toLowerCase().startsWith('en'));
+    if(p) u.voice=p;
+  }catch(_){}
+  u.onstart=()=>{ if(my===token&&btn) btn.classList.add('speaking'); };
+  u.onend=()=>{ if(my===token&&btn) btn.classList.remove('speaking'); };
+  u.onerror=e=>{ if(btn) btn.classList.remove('speaking'); if(my===token&&e.error!=='canceled'&&e.error!=='interrupted') $('status').textContent='Audio could not be played.'; };
+  try{ speechSynthesis.speak(u); }catch(_){}
+}
+
+function setFb(text, type, withListen){
+  const f=$('fb'); f.className='fb'+(type?' '+type:'');
+  f.innerHTML=`<p>${esc(text)}</p>`+(withListen?`<button class="listen" id="again" type="button" aria-label="Hear the complete sentence again">${SPK}<span>Listen again</span></button>`:'');
+  if(withListen) $('again').addEventListener('click',()=>speak(sentence(EX[idx]),$('again')));
+}
+
+function place(tile, slot=-1){
+  if(finished()) return;
+  const d=drafts[idx]; if(d.slots.includes(tile)) return;
+  if(slot===-1||d.slots[slot]!==null) slot=d.slots.indexOf(null);
+  if(slot<0) return;
+  d.slots[slot]=tile; sel=null; state='';
+  renderBubble(); renderBank();
+  setFb(d.slots.every(v=>v!==null)?'Nice! Now check your sentence.':'Keep going. Choose the next word.');
+  if(d.slots.every(v=>v!==null)) $('check').focus();
+}
+function removeAt(slot){
+  if(finished()) return;
+  const d=drafts[idx];
+  if(d.slots[slot]===null){ if(sel!==null) place(sel,slot); return; }
+  d.slots[slot]=null; state=''; renderBubble(); renderBank(); setFb('Word removed. Place it again.');
+}
+
+function renderBank(){
+  const e=EX[idx], d=drafts[idx], bank=$('bank'); bank.replaceChildren();
+  e.mixed.forEach((w,i)=>{
+    const b=document.createElement('button');
+    const used=d.slots.includes(i);
+    b.type='button'; b.className='tile'+(used?' used':'')+(sel===i?' sel':'');
+    b.textContent=w; b.disabled=used||finished()||mode==='type'; b.draggable=!b.disabled;
+    b.setAttribute('aria-label', w+(used?', already placed':', add to sentence'));
+    b.addEventListener('click',()=>{ if(sel===i){sel=null;renderBank();return;} sel=i; place(i); });
+    b.addEventListener('dragstart',ev=>{ ev.dataTransfer.setData('text/plain',String(i)); ev.dataTransfer.effectAllowed='move'; });
+    bank.append(b);
+  });
+}
+function renderBubble(){
+  const e=EX[idx], d=drafts[idx], line=$('line');
+  $('bubble').className='bubble'+(finished()?' ok':state);
+  line.replaceChildren(); line.hidden=mode==='type';
+  $('typed').hidden=mode!=='type'; $('typed').value=d.typed; $('typed').disabled=finished();
+  if(mode==='type'){ return; }
+  d.slots.forEach((t,s)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='slot'+(t!==null?' filled':''); b.disabled=finished();
+    b.textContent = t===null ? '' : e.mixed[t];
+    b.setAttribute('aria-label', t===null?`Empty word position ${s+1}`:`Position ${s+1}: ${e.mixed[t]}. Click to remove.`);
+    b.addEventListener('click',()=>removeAt(s));
+    b.addEventListener('dragover',ev=>{ if(finished()||d.slots[s]!==null) return; ev.preventDefault(); b.classList.add('drop'); });
+    b.addEventListener('dragleave',()=>b.classList.remove('drop'));
+    b.addEventListener('drop',ev=>{ ev.preventDefault(); b.classList.remove('drop'); const id=Number(ev.dataTransfer.getData('text/plain')); if(Number.isInteger(id)&&id>=0&&id<e.mixed.length) place(id,s); });
+    line.append(b);
+  });
+  const m=document.createElement('span'); m.className='mark'; m.textContent=e.mark; m.setAttribute('aria-hidden','true'); line.append(m);
+}
+function renderScene(){
+  const e=EX[idx], p=PEOPLE[e.who];
+  $('scene').innerHTML=`<div class="pill">${esc(e.tag)}</div><div class="photo"><img src="${esc(p.url)}" alt="${esc(p.alt)}" referrerpolicy="no-referrer" onerror="this.outerHTML='<div class=&quot;ph&quot; aria-hidden=&quot;true&quot;>${p.name[0]}</div>'"></div><div class="who">${esc(p.name)}</div>`;
+}
+function renderFinish(){
+  $('stage').hidden=$('bottom').hidden=true; $('finish').hidden=false;
+  const rows=$('rows'); rows.replaceChildren();
+  EX.forEach(e=>{
+    const r=document.createElement('div'); r.className='row';
+    r.innerHTML=`<span>${esc(sentence(e))}</span><button type="button" aria-label="Listen to: ${esc(sentence(e))}">${SPK}</button>`;
+    const b=r.querySelector('button'); b.addEventListener('click',()=>speak(sentence(e),b));
+    rows.append(r);
+  });
+  $('restart').focus();
+}
+function render(){
+  stopAudio();
+  $('trail').innerHTML=EX.map((_,i)=>`<i class="pip${solved.has(i)?' done':(i===idx&&idx<EX.length?' now':'')}"></i>`).join('');
+  $('count').textContent=`${solved.size} of ${EX.length} correct`;
+  if(idx>=EX.length) return renderFinish();
+  $('finish').hidden=true; $('stage').hidden=$('bottom').hidden=false;
+  const e=EX[idx], fin=finished();
+  $('ask').textContent=`Sentence ${idx+1} of ${EX.length} · ${e.mark==='?'?'Put the words in order to make a question.':'Put the words in order to make a sentence.'}`;
+  $('m-arr').setAttribute('aria-pressed',String(mode==='arr')); $('m-type').setAttribute('aria-pressed',String(mode==='type'));
+  renderScene(); renderBubble(); renderBank();
+  $('prev').disabled=idx===0; $('clear').disabled=fin; $('hint').disabled=fin;
+  $('check').hidden=fin; $('next').hidden=!fin;
+  $('next').textContent=idx===EX.length-1?'See results':'Next sentence';
+  if(fin) setFb('Correct! Listen and say the whole sentence aloud.','good',true);
+  else setFb('Tap the words in the correct order.');
+}
+function check(){
+  if(finished()) return;
+  const e=EX[idx], d=drafts[idx]; let ans;
+  if(mode==='arr'){
+    if(d.slots.some(v=>v===null)){ setFb('Some spaces are still empty. Finish the sentence first.','bad'); return; }
+    ans=d.slots.map(i=>e.mixed[i]).join(' ');
+  } else {
+    ans=d.typed.trim();
+    if(!ans){ setFb('Type your sentence before checking.','bad'); $('typed').focus(); return; }
+  }
+  if(clean(ans)!==clean(sentence(e))){
+    state=' bad'; renderBubble(); state='';
+    setFb('Not quite. Try a different word order.','bad'); return;
+  }
+  solved.add(idx); render(); speak(sentence(e),$('again')); $('next').focus();
+}
+function restart(){
+  stopAudio(); solved.clear(); drafts.forEach(d=>{d.slots.fill(null);d.typed='';});
+  idx=0; mode='arr'; sel=null; render();
+}
+window.resetSlide=restart;
+$('m-arr').addEventListener('click',()=>{ if(mode==='arr') return; mode='arr'; sel=null; render(); });
+$('m-type').addEventListener('click',()=>{ if(mode==='type') return; mode='type'; sel=null; render(); $('typed').focus(); });
+$('typed').addEventListener('input',ev=>{ drafts[idx].typed=ev.target.value; });
+$('typed').addEventListener('keydown',ev=>{ if(ev.key==='Enter') check(); });
+$('prev').addEventListener('click',()=>{ if(idx>0){ idx--; sel=null; render(); } });
+$('next').addEventListener('click',()=>{ if(!finished()) return; idx++; sel=null; render(); });
+$('check').addEventListener('click',check);
+$('clear').addEventListener('click',()=>{ if(finished()) return; if(mode==='arr') drafts[idx].slots.fill(null); else drafts[idx].typed=''; sel=null; render(); });
+$('hint').addEventListener('click',()=>setFb(`Hint: the sentence starts with “${EX[idx].correct[0]}”.`));
+$('restart').addEventListener('click',restart);
+window.addEventListener('pagehide',stopAudio);
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) stopAudio(); });
+render();
+})();
+</script>
+</body>
+</html>

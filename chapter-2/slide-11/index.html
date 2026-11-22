@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <title>Practice 7 — Complete the Sentences | Boston English Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (() => {
+      let theme = null;
+      try {
+        if (parent !== window) theme = parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      } catch (_) {}
+      if (!theme) { try { theme = localStorage.getItem('editor-theme-preference'); } catch (_) {} }
+      if (theme !== 'dark' && theme !== 'light') theme = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      window.setTheme = next => document.documentElement.classList.toggle('dark', next === 'dark');
+    })();
+  </script>
+  <style>
+    *,*::before,*::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    :root {
+      color-scheme: light;
+      --bg: #f8fafc; --card: #ffffff; --card-alt: #f4f7fc;
+      --text: #14223a; --muted: #566983; --stroke: #d5deeb;
+      --heading-start: #384fc7; --heading-end: #2769cd;
+      --accent: #554ae6; --accent-2: #2777db;
+      --accent-soft: #eef1ff; --ink: #3745b6;
+      --good: #007f56; --good-bg: #dcfaeb; --good-border: #78d5af;
+      --bad: #aa3655; --bad-bg: #fff0f3; --bad-border: #f1b9c9;
+      --shadow: 0 20px 52px rgba(23,43,91,.055);
+    }
+    :root.dark {
+      color-scheme: dark;
+      --bg: #0f172a; --card: #1e293b; --card-alt: #17243a;
+      --text: #f8fafc; --muted: #c0cce0; --stroke: #374760;
+      --heading-start: #6861f4; --heading-end: #3c79f4;
+      --accent: #a5adff; --accent-2: #67b2ff;
+      --accent-soft: #2b3557; --ink: #c5ceff;
+      --good: #9af1c1; --good-bg: #153e35; --good-border: #368b70;
+      --bad: #ff9eaf; --bad-bg: #4a283a; --bad-border: #925069;
+      --shadow: 0 20px 52px rgba(0,0,0,.11);
+    }
+    html,body { min-height: 100%; margin: 0; }
+    body { background: var(--bg); color: var(--text); font-family: 'Plus Jakarta Sans',system-ui,sans-serif; }
+    button { font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+    button:disabled { opacity:.47; cursor: not-allowed; }
+    svg { width: 19px; height: 19px; display: block; }
+    .slide {
+      min-height: 100dvh;
+      padding: clamp(20px,3vh,32px) clamp(16px,3.5vw,48px) 30px;
+      background: radial-gradient(circle at 4% 5%, rgba(102,95,238,.13), transparent 30%),
+        radial-gradient(circle at 96% 95%,rgba(44,135,231,.08),transparent 30%), var(--bg);
+    }
+    .shell { width: min(100%,1250px); margin: auto; }
+    .header { text-align: center; margin-bottom: 18px; }
+    .eyebrow { margin: 0 0 5px; color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    h1 { font-size: clamp(36px,4.5vw,60px); letter-spacing: -.055em; font-weight: 800; line-height:1.12;
+      margin:0 0 9px; background: linear-gradient(110deg,var(--heading-start),var(--heading-end));
+      -webkit-background-clip:text; background-clip:text; color:transparent; }
+    .subtitle { font-size: clamp(13px,1.2vw,16px); font-weight: 600; color: var(--muted); line-height:1.6; margin:0; }
+    .activity { border: 1px solid var(--stroke); border-radius:22px; overflow:hidden; background:var(--card); box-shadow:var(--shadow); position:relative; }
+    .activity::before { content:""; position:absolute; height:4px; inset:0 0 auto; background:linear-gradient(90deg,#31adc8,#5267ea,#9250da); }
+    .bank-area { padding: 21px 25px 19px; border-bottom:1px solid var(--stroke); }
+    .bank-top { display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:14px; }
+    .section-title { margin:0; font-size:12px; text-transform:uppercase; letter-spacing:.12em; font-weight:800; color:var(--muted); }
+    .bank-hint { font-size:12px; color:var(--muted); font-weight:600; }
+    .word-bank { display:flex; gap:10px; flex-wrap:wrap; min-height:49px; }
+    .tile {
+      flex:none; min-width:80px; min-height:47px; padding:9px 17px;
+      border:1px solid #798eef; border-radius:12px; background:var(--accent-soft);
+      color:var(--ink); font-size:17px; line-height:1.2; font-weight:800;
+      box-shadow:0 3px 0 rgba(57,81,182,.08); touch-action:pan-y;
+      transition: transform .14s,border-color .14s,background .14s,box-shadow .14s;
+    }
+    .tile:hover { transform:translateY(-2px); border-color:#7271f2; }
+    .tile.selected { border-color:#5b41df; box-shadow:0 0 0 3px rgba(113,94,240,.24); background:var(--card); transform:translateY(-2px); }
+    .tile.used { visibility:hidden; pointer-events:none; }
+    .word-bank .all-used { font-size:14px; color:var(--good); font-weight:800; display:flex; align-items:center; gap:7px; }
+    .middle-row { padding: 12px 25px 0; display:flex; justify-content:space-between; align-items:center; gap:15px; }
+    .middle-row strong { font-size: 12px; font-weight:800; letter-spacing:.1em; color:var(--muted); text-transform:uppercase; }
+    .middle-row .hint { font-size:12px; color:var(--muted); font-weight:600; }
+    .sentence-grid { padding:12px 25px 22px; display:grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap:11px; }
+    .question { position:relative; min-width:0; min-height:101px; padding:15px 17px 13px;
+      border:1px solid var(--stroke); border-radius:15px; background:var(--card-alt); transition: border-color .15s,background .15s; }
+    .question.is-correct { border-color:var(--good-border); background:var(--good-bg); }
+    .question.is-wrong { border-color:var(--bad-border); background:var(--bad-bg); }
+    .question-top { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px; }
+    .q-label { display:flex; align-items:center; gap:8px; color:var(--muted); font-weight:800; font-size:11px; letter-spacing:.08em; text-transform:uppercase; }
+    .q-bubble { flex:0 0 25px; display:grid; place-items:center; width:25px; height:25px; border-radius:8px;
+      background:var(--accent-soft); font-size:12px; font-weight:800; color:var(--ink); letter-spacing:0; }
+    .q-right { min-width: 75px; display:flex; justify-content:flex-end; align-items:center; gap:8px; }
+    .q-feedback { font-size:11px; font-weight:800; }
+    .q-feedback.correct { color:var(--good); }
+    .q-feedback.wrong { color:var(--bad); }
+    .speak-btn { width:28px; height:28px; border:1px solid var(--good-border); background:var(--card);
+      color:var(--good); border-radius:9px; display:grid; place-items:center; }
+    .speak-btn svg { width:16px; height:16px; }
+    .speak-btn.speaking { color:#fff; background:#6454eb; border-color:#6454eb; }
+    .sentence { margin:0; font-size:clamp(15px,1.36vw,18px); font-weight:700; line-height:1.9; }
+    .slot { display:inline-flex; align-items:center; justify-content:center; vertical-align:baseline;
+      min-width:88px; min-height:34px; padding:3px 11px; margin-inline:4px;
+      border:1.5px dashed #93a4cb; border-radius:9px;
+      background:var(--card); color:var(--ink); font-size:inherit; font-weight:800;
+      line-height:1.3; transition: background .15s,border-color .15s; }
+    .slot.before-punctuation { margin-right:0; }
+    .slot.empty { color:var(--muted); }
+    .slot.empty::before { content:'?'; opacity:.65; }
+    .slot.filled { border-style:solid; border-color:#7182e0; background:var(--accent-soft); }
+    .slot.filled.is-correct { border-color:var(--good-border); background:var(--card); color:var(--good); }
+    .slot.filled.is-wrong { border-color:var(--bad-border); background:var(--card); color:var(--bad); }
+    .slot.drop-over, .slot.targeted { background:rgba(109,100,235,.16); border-color:#6b62ee; }
+    .slot:hover { border-color:#7164ef; }
+    .actions { padding:15px 25px 17px; border-top:1px solid var(--stroke); display:flex; justify-content:space-between;
+      align-items:center; flex-wrap:wrap; gap:14px; }
+    .progress-wrap { display:flex; gap:11px; align-items:center; flex-wrap:wrap; }
+    .progress-label { font-size:12px; font-weight:800; color:var(--muted); white-space:nowrap; }
+    .track { width:125px; height:8px; background:var(--stroke); border-radius:99px; overflow:hidden; }
+    .fill { width:0; height:100%; border-radius:inherit; background:linear-gradient(100deg,#3f9aeb,#7352e8); transition:width .2s; }
+    .buttons { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
+    .btn { min-height:43px; padding:9px 17px; border:1px solid var(--stroke); border-radius:11px;
+      font-size:13px; font-weight:800; background:var(--card-alt); color:var(--text); }
+    .btn.primary { color:white; background:linear-gradient(105deg,#426bf0,#7541e2); border-color:transparent; padding-inline:22px; }
+    .btn:hover:not(:disabled) { filter:brightness(1.08); }
+    .feedback { min-height:24px; margin:0; padding:0 25px 9px; text-align:center;
+      font-size:13px; color:var(--muted); font-weight:700; line-height:1.4; }
+    .feedback.good { color:var(--good); }
+    .feedback.bad { color:var(--bad); }
+    .celebration { margin:0 25px 19px; padding:13px 16px; text-align:center; border:1px solid var(--good-border);
+      background:var(--good-bg); color:var(--good); border-radius:13px; font-size:14px; line-height:1.5; font-weight:800; }
+    .drag-ghost { position:fixed; z-index:999; pointer-events:none; transform:translate(-50%,-50%);
+      padding:10px 17px; border-radius:11px; color:white; background:linear-gradient(110deg,#426bf0,#7541e2);
+      font-size:17px; font-weight:800; box-shadow:0 12px 25px rgba(0,0,0,.2); opacity:.93; }
+    @media(max-width:820px) { .sentence-grid { grid-template-columns:1fr; } .question { min-height:95px; } }
+    @media(max-width:520px) { .slide { padding:20px 12px; } .bank-area { padding:17px 14px; }
+      .middle-row { padding:13px 14px 0; } .sentence-grid { padding:12px 14px 18px; }
+      .actions { padding:13px 14px; } .feedback { padding:0 14px 9px; }
+      .tile { font-size:15px; min-width:66px; min-height:43px; padding:8px 11px; }
+      .word-bank { gap:7px; } .question { padding:13px 12px; }
+      .slot { min-width:77px; } .btn { flex:1; } .buttons { width:100%; }
+      .progress-wrap { justify-content:center; width:100%; } .celebration { margin-inline:14px; }
+    }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; } }
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <div class="shell">
+      <header class="header">
+        <p class="eyebrow">Practice 7 · Personal Information</p>
+        <h1>Complete the Sentences!</h1>
+        <p class="subtitle">Choose the missing words to complete each sentence. Use every word in the box once.</p>
+      </header>
+
+      <section class="activity" aria-label="Personal information grammar exercise">
+        <div class="bank-area">
+          <div class="bank-top">
+            <h2 class="section-title">Word Bank</h2>
+            <span class="bank-hint">Choose a word, then a blank — or drag and drop.</span>
+          </div>
+          <div class="word-bank" id="word-bank" role="group" aria-label="Available words"></div>
+        </div>
+
+        <div class="middle-row">
+          <strong>Fill in the gaps</strong>
+          <span class="hint">Tap a filled blank to change it.</span>
+        </div>
+        <div class="sentence-grid" id="sentence-grid"></div>
+        <p class="feedback" id="feedback" role="status" aria-live="polite">Choose a word from the bank to begin.</p>
+        <div class="celebration" id="celebration" hidden>✦ Excellent work! You completed all eight sentences. Try listening to them aloud!</div>
+        <footer class="actions">
+          <div class="progress-wrap">
+            <span class="progress-label" id="progress-text">0 of 8 filled</span>
+            <div class="track" role="progressbar" id="progress-bar" aria-label="Sentences filled" aria-valuemin="0" aria-valuemax="8" aria-valuenow="0">
+              <div class="fill" id="progress-fill"></div>
+            </div>
+          </div>
+          <div class="buttons">
+            <button type="button" class="btn" id="reset">Reset Activity</button>
+            <button type="button" class="btn" id="listen-all" hidden>🔊 Listen to All</button>
+            <button type="button" class="btn primary" id="check">Check Answers</button>
+          </div>
+        </footer>
+      </section>
+    </div>
+  </main>
+  <script>
+    (() => {
+      'use strict';
+      // The eight sentences and eight word tiles reproduce the supplied
+      // Practice 7 reference (including three separate copies of "am").
+      const QUESTIONS = [
+        { before:'My name', after:'Marie.', answer:'is', full:'My name is Marie.' },
+        { before:'I', after:'from France.', answer:'come', full:'I come from France.' },
+        { before:'I', after:'twenty-four years old.', answer:'am', full:'I am twenty-four years old.' },
+        { before:'My nationality is', after:'.', answer:'French', full:'My nationality is French.' },
+        { before:'I', after:'not married. I am single.', answer:'am', full:'I am not married. I am single.' },
+        { before:'I', after:'two children.', answer:'have', full:'I have two children.' },
+        { before:'I', after:'in London.', answer:'live', full:'I live in London.' },
+        { before:'I', after:'studying English at college.', answer:'am', full:'I am studying English at college.' }
+      ];
+      const WORDS = ['come','am','live','is','am','French','am','have']
+        .map((value,id) => ({value,id}));
+
+      const bank = document.getElementById('word-bank');
+      const grid = document.getElementById('sentence-grid');
+      const status = document.getElementById('feedback');
+      const fill = document.getElementById('progress-fill');
+      const progress = document.getElementById('progress-text');
+      const progressBar = document.getElementById('progress-bar');
+      const celebration = document.getElementById('celebration');
+      const listenAllButton = document.getElementById('listen-all');
+      const checkButton = document.getElementById('check');
+      const resetButton = document.getElementById('reset');
+
+      let answers = Array(QUESTIONS.length).fill(null); // word IDs, not strings: duplicate 'am' tokens matter
+      let selectedId = null;
+      let targetIndex = null;
+      let verified = Array(QUESTIONS.length).fill(null);
+      let completed = false;
+      let speechRun = 0;
+      let drag = null;
+      let suppressClickFor = null;
+
+      const ICON = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>';
+
+      function word(id) { return WORDS[id]?.value; }
+      function occupied(id) { return answers.includes(id); }
+      function feedback(text, mode='') {
+        status.textContent = text;
+        status.className = `feedback${mode ? ' ' + mode : ''}`;
+      }
+      function stopSpeech() {
+        speechRun++;
+        try { window.speechSynthesis?.cancel(); } catch (_) {}
+        document.querySelectorAll('.speak-btn').forEach(btn => btn.classList.remove('speaking'));
+      }
+      window.stopSlideAudio = stopSpeech;
+      function findVoice() {
+        const voices = window.speechSynthesis?.getVoices?.() || [];
+        return voices.find(v => v.lang.toLowerCase() === 'en-gb') || voices.find(v => v.lang.toLowerCase().startsWith('en')) || null;
+      }
+      function say(index, batchToken = null) {
+        if (batchToken === null) { stopSpeech(); batchToken = speechRun; }
+        if (batchToken !== speechRun) return Promise.resolve();
+        if (!('speechSynthesis' in window)) {
+          feedback('Speech playback is not available in this browser.');
+          return Promise.resolve();
+        }
+        const token = batchToken;
+        const utterance = new SpeechSynthesisUtterance(QUESTIONS[index].full);
+        utterance.lang='en-GB'; utterance.rate=.86; utterance.pitch=1;
+        const voice = findVoice(); if (voice) utterance.voice=voice;
+        const button = grid.querySelector(`[data-say="${index}"]`);
+        if (button) button.classList.add('speaking');
+        return new Promise(resolve => {
+          let settled = false;
+          const finish = () => {
+            if (settled) return;
+            settled = true;
+            button?.classList.remove('speaking');
+            resolve();
+          };
+          utterance.onend=finish;
+          utterance.onerror=event => {
+            if (!['canceled','interrupted'].includes(event.error) && token === speechRun)
+              feedback('Audio could not be played. Please try again.');
+            finish();
+          };
+          try { window.speechSynthesis.speak(utterance); } catch (_) { finish(); }
+          // Resolve when the audio is canceled through navigation, or when it naturally ends.
+        });
+      }
+      function renderBank() {
+        bank.replaceChildren();
+        let n=0;
+        for (const item of WORDS) {
+          if (occupied(item.id)) continue;
+          n++;
+          const btn = document.createElement('button');
+          btn.type='button'; btn.className='tile' + (item.id===selectedId ? ' selected' : '');
+          btn.textContent=item.value; btn.draggable=true;
+          btn.dataset.wordId=String(item.id);
+          btn.setAttribute('aria-pressed', String(item.id===selectedId));
+          btn.setAttribute('aria-label',`Select word ${item.value}`);
+          btn.addEventListener('click',() => {
+            if (suppressClickFor===item.id) { suppressClickFor=null; return; }
+            if (targetIndex !== null) { assign(item.id, targetIndex); return; }
+            selectedId = selectedId===item.id ? null : item.id;
+            renderBank();
+            feedback(selectedId===null ? 'Selection cleared.' : `Selected “${item.value}”. Now choose a blank.`);
+          });
+          btn.addEventListener('dragstart',ev => {
+            ev.dataTransfer?.setData('text/plain',String(item.id));
+            if (ev.dataTransfer) ev.dataTransfer.effectAllowed='move';
+            selectedId=item.id; btn.classList.add('selected');
+          });
+          btn.addEventListener('dragend',() => grid.querySelectorAll('.drop-over').forEach(x=>x.classList.remove('drop-over')));
+          bank.append(btn);
+        }
+        if (n===0) {
+          const done=document.createElement('span'); done.className='all-used';
+          done.textContent='✓ All eight words are placed.'; bank.append(done);
+        }
+      }
+      function renderQuestions() {
+        grid.replaceChildren();
+        QUESTIONS.forEach((q,i) => {
+          const card=document.createElement('article');
+          card.className='question' + (verified[i]===true ? ' is-correct' : verified[i]===false ? ' is-wrong' : '');
+          const top=document.createElement('div'); top.className='question-top';
+          const label=document.createElement('div'); label.className='q-label';
+          const number=document.createElement('span'); number.className='q-bubble'; number.textContent=String(i+1).padStart(2,'0');
+          const labelText=document.createElement('span'); labelText.textContent=`Sentence ${i+1}`;
+          label.append(number,labelText);
+          const right=document.createElement('div');right.className='q-right';
+          if (verified[i]!==null) {
+            const tag=document.createElement('span');
+            tag.className='q-feedback ' + (verified[i] ? 'correct' : 'wrong');
+            tag.textContent=verified[i] ? '✓ Correct' : 'Try again';
+            right.append(tag);
+          }
+          if (verified[i]===true) {
+            const speaker=document.createElement('button'); speaker.className='speak-btn';
+            speaker.type='button'; speaker.dataset.say=String(i); speaker.title='Hear the complete sentence';
+            speaker.setAttribute('aria-label', `Listen to sentence ${i+1}`); speaker.innerHTML=ICON;
+            speaker.addEventListener('click',() => { void say(i); });
+            right.append(speaker);
+          }
+          top.append(label,right);
+          const sentence=document.createElement('p'); sentence.className='sentence';
+          sentence.append(document.createTextNode(q.before+' '));
+          const button=document.createElement('button'); button.type='button';
+          button.dataset.slot=String(i);
+          if (/^[.,!?;:]/.test(q.after)) button.classList.add('before-punctuation');
+          button.className='slot' + (answers[i]===null ? ' empty' : ' filled')
+            + (targetIndex===i ? ' targeted' : '')
+            + (verified[i]===true ? ' is-correct' : verified[i]===false && answers[i]!==null ? ' is-wrong' : '');
+          button.setAttribute('aria-label',answers[i]===null ? `Blank in sentence ${i+1}. Choose a word from the bank.` : `Sentence ${i+1}: ${word(answers[i])}. Click to change.`);
+          if (answers[i]!==null) button.textContent=word(answers[i]);
+          button.addEventListener('click',()=> {
+            if (selectedId!==null) { assign(selectedId,i); return; }
+            if (answers[i]!==null) { remove(i); return; }
+            targetIndex=targetIndex===i ? null : i;
+            renderQuestions();
+            feedback(targetIndex===null ? 'Selection cleared.' : `Sentence ${i+1} selected. Now choose a word from the bank.`);
+          });
+          button.addEventListener('dragover',ev=>{ ev.preventDefault(); button.classList.add('drop-over'); });
+          button.addEventListener('dragleave',()=>button.classList.remove('drop-over'));
+          button.addEventListener('drop',ev=> {
+            ev.preventDefault(); button.classList.remove('drop-over');
+            const id=Number(ev.dataTransfer?.getData('text/plain'));
+            if (Number.isInteger(id) && id>=0 && id<WORDS.length) assign(id,i);
+          });
+          sentence.append(button,document.createTextNode(/^[.,!?;:]/.test(q.after) ? q.after : ' '+q.after));
+          card.append(top,sentence); grid.append(card);
+        });
+      }
+      function updateProgress() {
+        const n=answers.filter(id=>id!==null).length;
+        progress.textContent=completed ? '8 of 8 correct' : `${n} of 8 filled`;
+        progressBar.setAttribute('aria-valuenow',String(n));
+        fill.style.width=`${n/8*100}%`;
+        celebration.hidden=!completed;
+        listenAllButton.hidden=!completed;
+        checkButton.textContent=completed ? 'Check Again' : 'Check Answers';
+      }
+      function render() { renderBank(); renderQuestions(); updateProgress(); }
+      function afterEdit() {
+        verified.fill(null); completed=false; stopSpeech(); render();
+      }
+      function assign(id,index) {
+        if (id<0 || id>=WORDS.length || occupied(id)) return;
+        answers[index]=id;
+        selectedId=null; targetIndex=null;
+        afterEdit();
+        feedback(`Added “${word(id)}” to sentence ${index+1}.`);
+        const next=grid.querySelector(`[data-slot="${index}"]`);
+        next?.focus({preventScroll:true});
+      }
+      function remove(index) {
+        const prev=answers[index]; if (prev===null) return;
+        answers[index]=null; selectedId=null; targetIndex=null;
+        afterEdit();
+        feedback(`Removed “${word(prev)}” from sentence ${index+1}. Choose another word.`);
+        grid.querySelector(`[data-slot="${index}"]`)?.focus({preventScroll:true});
+      }
+      function check() {
+        stopSpeech(); targetIndex=null; selectedId=null;
+        verified=QUESTIONS.map((q,i)=>answers[i]!==null && word(answers[i])===q.answer);
+        completed=verified.every(Boolean);
+        render();
+        const n=verified.filter(Boolean).length;
+        if (completed) {
+          feedback('Perfect! All eight answers are correct. Listen to the complete sentences!', 'good');
+        } else if (answers.some(id=>id===null)) {
+          feedback(`${n} of 8 correct. Fill the remaining gaps, then check again.`, 'bad');
+        } else {
+          feedback(`${n} of 8 correct. Review the highlighted sentences and try again.`, 'bad');
+        }
+      }
+      function reset() {
+        stopSpeech(); answers=Array(QUESTIONS.length).fill(null);
+        verified=Array(QUESTIONS.length).fill(null);
+        selectedId=null; targetIndex=null; completed=false;
+        render(); feedback('Activity reset. Choose a word to begin.');
+      }
+      checkButton.addEventListener('click',check);
+      resetButton.addEventListener('click',reset);
+      listenAllButton.addEventListener('click',async () => {
+        if (!completed) return;
+        // say() cancels any prior utterance, including previous sequences.
+        stopSpeech();
+        const seq=speechRun;
+        for(let i=0;i<QUESTIONS.length;i++) {
+          if (seq!==speechRun) return;
+          await say(i,seq);
+        }
+      });
+      window.resetSlide=reset;
+      document.addEventListener('visibilitychange',()=>{ if (document.hidden) stopSpeech(); });
+      window.addEventListener('pagehide',stopSpeech);
+      render();
+    })();
+  </script>
+</body>
+</html>

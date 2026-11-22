@@ -1,0 +1,512 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>More Numbers! (20–50) | Boston English Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      let theme;
+      try {
+        if (window.parent !== window) {
+          theme = window.parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        }
+      } catch (_) {}
+      if (!theme) {
+        try { theme = localStorage.getItem('editor-theme-preference'); } catch (_) {}
+      }
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      window.setTheme = function (value) {
+        document.documentElement.classList.toggle('dark', value === 'dark');
+      };
+    })();
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+    :root {
+      color-scheme: light;
+      --page: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+      --border: #d9e0ed;
+      --track: #d7dfeb;
+      --heading-start: #384fc7;
+      --heading-end: #2769cd;
+      --accent: #4f46e5;
+    }
+    :root.dark {
+      color-scheme: dark;
+      --page: #0f172a;
+      --surface: #1e293b;
+      --text: #f8fafc;
+      --muted: #bdc9da;
+      --border: #344360;
+      --track: #40506a;
+      --heading-start: #6861f4;
+      --heading-end: #3c79f4;
+      --accent: #818cf8;
+    }
+    html, body { margin: 0; min-height: 100%; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--page); color: var(--text); }
+    button, input { font: inherit; }
+    button { cursor: pointer; }
+    button:focus-visible, input:focus-visible { outline: 3px solid #f59e0b; outline-offset: 4px; }
+    .slide {
+      min-height: 100dvh;
+      padding: clamp(24px, 4vh, 46px) clamp(14px, 4vw, 54px);
+      background:
+        radial-gradient(circle at 3% 3%, rgba(99,102,241,.13), transparent 30%),
+        radial-gradient(circle at 96% 96%, rgba(52,141,224,.09), transparent 30%),
+        var(--page);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .content { width: 100%; max-width: 1120px; margin: auto; }
+    .header { text-align: center; margin-bottom: clamp(16px, 3.1vh, 30px); }
+    .eyebrow {
+      margin: 0 0 9px;
+      color: var(--accent);
+      font-size: 12px;
+      letter-spacing: .15em;
+      font-weight: 800;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(36px, 5.4vw, 70px);
+      line-height: 1.15;
+      letter-spacing: -.055em;
+      font-weight: 800;
+      background: linear-gradient(105deg, var(--heading-start), var(--heading-end));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .description {
+      margin: 12px auto 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: clamp(14px, 1.4vw, 18px);
+      font-weight: 600;
+      max-width: 800px;
+    }
+    .video-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: clamp(9px, 1.3vw, 16px);
+      box-shadow: 0 22px 60px rgba(12, 24, 48, .1);
+    }
+    .video-stage {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 15px;
+      background: #0d1730;
+      isolation: isolate;
+    }
+    video { width: 100%; height: 100%; object-fit: contain; display: block; background: #0b132a; }
+    .video-cover {
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(8px, 2vh, 20px);
+      color: white;
+      background:
+        radial-gradient(circle at 22% 24%, rgba(105,112,250,.28), transparent 32%),
+        radial-gradient(circle at 85% 78%, rgba(22,174,204,.19), transparent 33%),
+        linear-gradient(125deg, #121c40, #0d1730);
+      pointer-events: none;
+    }
+    .video-cover::before, .video-cover::after {
+      content: '';
+      position: absolute;
+      width: min(26vw, 240px);
+      aspect-ratio: 1;
+      border: 2px solid rgba(145,163,253,.13);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .video-cover::before { top: -12%; left: -4%; }
+    .video-cover::after { bottom: -18%; right: -6%; }
+    .cover-tag {
+      background: rgba(255,255,255,.10);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      padding: 8px 18px;
+      font-weight: 800;
+      letter-spacing: .13em;
+      font-size: clamp(9px, 1vw, 13px);
+      color: #d5e0ff;
+    }
+    .cover-heading {
+      font-weight: 800;
+      letter-spacing: -.065em;
+      font-size: clamp(29px, 5.5vw, 74px);
+      line-height: 1.2;
+      text-align: center;
+      color: #fff;
+    }
+    .cover-heading span { color: #9da5ff; }
+    .cover-subtitle { font-weight: 600; font-size: clamp(12px, 1.55vw, 18px); color: #d7e2fa; }
+    .center-play {
+      position: absolute;
+      z-index: 3;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: clamp(66px, 7vw, 88px);
+      height: clamp(66px, 7vw, 88px);
+      border: 2px solid rgba(255,255,255,.45);
+      border-radius: 50%;
+      color: white;
+      background: linear-gradient(135deg, #4c73ee, #733cdc);
+      box-shadow: 0 12px 30px rgba(0,0,0,.27);
+      display: grid;
+      place-items: center;
+      transition: transform .17s ease, filter .17s ease;
+    }
+    .center-play:not(:disabled):hover { transform: translate(-50%, -50%) scale(1.07); filter: brightness(1.12); }
+    .center-play svg { width: 29px; height: 29px; fill: currentColor; margin-left: 5px; }
+    button:disabled { cursor: not-allowed; opacity: .65; }
+    .video-error {
+      position: absolute;
+      z-index: 4;
+      inset: 0;
+      background: #111a35;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      text-align: center;
+      gap: 12px;
+    }
+    .video-error strong { font-size: clamp(20px, 2.8vw, 30px); }
+    .video-error p { font-size: 14px; color: #d0d9f2; line-height: 1.65; margin: 0; max-width: 550px; }
+    .video-error code { color: #c7d2fe; }
+    .player-controls { padding: 16px 11px 4px; }
+    .seek {
+      display: block; width: 100%; height: 7px;
+      margin: 0 0 13px; border-radius: 99px;
+      appearance: none; -webkit-appearance: none;
+      background: linear-gradient(to right, #6657ef 0, #6657ef var(--seek, 0%), var(--track) var(--seek, 0%), var(--track) 100%);
+      cursor: pointer;
+    }
+    .seek::-webkit-slider-thumb {
+      appearance: none; -webkit-appearance: none;
+      width: 16px; height: 16px; border-radius: 50%;
+      background: #6657ef; border: 3px solid #fff;
+      box-shadow: 0 0 0 1px rgba(77,65,192,.25);
+    }
+    .seek::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: #6657ef; border: 3px solid white; }
+    .controls-row { display: flex; gap: 13px; align-items: center; }
+    .play-pause {
+      flex: 0 0 50px; width: 50px; height: 48px;
+      display: grid; place-items: center;
+      background: linear-gradient(120deg, #466ff0, #733ad8);
+      color: white; border: none; border-radius: 13px;
+    }
+    .play-pause svg { width: 23px; height: 23px; fill: currentColor; }
+    .time { font-size: 14px; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .spacer { flex: 1; min-width: 8px; }
+    .icon-button {
+      width: 40px; height: 40px; flex: 0 0 40px;
+      display: grid; place-items: center;
+      color: var(--text); background: var(--surface);
+      border: 1px solid var(--border); border-radius: 11px;
+    }
+    .icon-button:hover, .icon-button[aria-pressed="true"] { border-color: #7d79ee; background: rgba(99,102,241,.10); }
+    .icon-button svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+    .volume { width: clamp(62px, 11vw, 112px); accent-color: #6657ef; cursor: pointer; }
+    .player-hint { color: var(--muted); margin: 13px auto 0; text-align: center; font-weight: 600; font-size: 12px; }
+    .status { text-align: center; color: var(--muted); font-size: 12px; min-height: 1.4em; margin: 8px auto 0; }
+    @media (max-width: 640px) {
+      .slide { align-items: flex-start; }
+      .video-card { border-radius: 15px; }
+      .video-stage { border-radius: 10px; }
+      .player-controls { padding: 12px 3px 1px; }
+      .controls-row { gap: 8px; }
+      .play-pause { flex-basis: 43px; height: 42px; }
+      .time { font-size: 12px; }
+      .icon-button { width: 37px; height: 37px; flex-basis: 37px; }
+      .volume { width: 58px; }
+      .cover-heading { font-size: clamp(27px, 6.1vw, 44px); }
+    }
+    @media (max-width: 400px) {
+      .volume { display: none; }
+      .controls-row { gap: 6px; }
+    }
+    @media (prefers-reduced-motion: reduce) { .center-play { transition: none; } }
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <div class="content">
+      <header class="header">
+        <p class="eyebrow">LESSON 2 · NUMBERS 20–50</p>
+        <h1>More Numbers!</h1>
+        <p class="description">Watch and listen to the numbers from 20 to 50. Say each number aloud as you hear it.</p>
+      </header>
+
+      <section class="video-card" id="video-card" aria-label="Numbers 20 to 50 video player">
+        <div class="video-stage" id="video-stage">
+          <video id="lesson-video" preload="metadata" playsinline aria-label="English numbers 20 to 50 lesson">
+            <source src="./assets/numbers-20-50.mp4" type="video/mp4">
+            Your browser does not support HTML5 video.
+          </video>
+
+          <div class="video-cover" id="video-cover" aria-hidden="true">
+            <div class="cover-tag">UNIT 1 · LESSON 2 · NUMBERS</div>
+            <div class="cover-heading">20 <span>– 50</span></div>
+            <div class="cover-subtitle">Watch · Listen · Repeat</div>
+          </div>
+
+          <button class="center-play" id="center-play" type="button" aria-label="Play video" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+          </button>
+
+          <div class="video-error" id="video-error" role="alert" hidden>
+            <strong>Video unavailable</strong>
+            <p>Place the video file at <code>chapter-2/slide-12/assets/numbers-20-50.mp4</code> and make sure it is a supported MP4.</p>
+          </div>
+        </div>
+
+        <div class="player-controls">
+          <input class="seek" id="seek" type="range" min="0" max="1000" value="0" step="1" disabled aria-label="Video playback position">
+          <div class="controls-row">
+            <button class="play-pause" id="play-pause" type="button" aria-label="Play video" disabled>
+              <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
+              <svg id="pause-icon" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg>
+            </button>
+            <span class="time" id="video-time" aria-live="off">0:00 / 0:00</span>
+            <div class="spacer"></div>
+            <button class="icon-button" id="mute" type="button" aria-label="Mute video" aria-pressed="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M11 5 6 9H3v6h3l5 4V5Z"></path>
+                <path id="sound-wave" d="M15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"></path>
+                <path id="mute-cross" d="M16 9l5 6M21 9l-5 6" hidden></path>
+              </svg>
+            </button>
+            <input class="volume" id="volume" type="range" min="0" max="1" step="0.05" value="1" aria-label="Video volume">
+            <button class="icon-button" id="fullscreen" type="button" aria-label="Enter video fullscreen">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4"></path></svg>
+            </button>
+          </div>
+        </div>
+      </section>
+      <p class="player-hint">Listen carefully, pause when you need to, and practice saying each number.</p>
+      <p class="status" id="video-status" role="status" aria-live="polite"></p>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+      const $ = id => document.getElementById(id);
+      const video = $('lesson-video');
+      const stage = $('video-stage');
+      const cover = $('video-cover');
+      const centerPlay = $('center-play');
+      const playButton = $('play-pause');
+      const playIcon = $('play-icon');
+      const pauseIcon = $('pause-icon');
+      const seek = $('seek');
+      const volume = $('volume');
+      const muteButton = $('mute');
+      const soundWave = $('sound-wave');
+      const muteCross = $('mute-cross');
+      const fullscreenButton = $('fullscreen');
+      const timeLabel = $('video-time');
+      const errorBox = $('video-error');
+      const status = $('video-status');
+
+      let hasStarted = false;
+      let hasError = false;
+      let lastVolume = 1;
+      let isSeeking = false;
+
+      const formatTime = seconds => {
+        if (!Number.isFinite(seconds)) return '0:00';
+        const s = Math.max(0, Math.floor(seconds));
+        const minutes = Math.floor(s / 60);
+        const rest = String(s % 60).padStart(2, '0');
+        return `${minutes}:${rest}`;
+      };
+
+      function updateTime() {
+        const duration = Number.isFinite(video.duration) ? video.duration : 0;
+        if (!isSeeking) {
+          const pct = duration ? video.currentTime / duration : 0;
+          seek.value = String(Math.round(pct * 1000));
+          seek.style.setProperty('--seek', `${pct * 100}%`);
+        }
+        timeLabel.textContent = `${formatTime(video.currentTime)} / ${formatTime(duration)}`;
+      }
+
+      function updatePlayState() {
+        const playing = !video.paused && !video.ended;
+        playIcon.hidden = playing;
+        pauseIcon.hidden = !playing;
+        playButton.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
+        centerPlay.hidden = playing || hasError;
+        centerPlay.setAttribute('aria-label', video.ended ? 'Replay video' : 'Play video');
+        cover.hidden = hasStarted || hasError;
+      }
+
+      function updateVolume() {
+        const muted = video.muted || video.volume === 0;
+        muteButton.setAttribute('aria-label', muted ? 'Unmute video' : 'Mute video');
+        muteButton.setAttribute('aria-pressed', String(muted));
+        soundWave.hidden = muted;
+        muteCross.hidden = !muted;
+        volume.value = muted ? '0' : String(video.volume);
+      }
+
+      async function togglePlayback() {
+        if (hasError) return;
+        if (!video.paused && !video.ended) {
+          video.pause();
+          return;
+        }
+        try {
+          await video.play();
+        } catch (error) {
+          if (error.name !== 'AbortError') {
+            status.textContent = 'Playback could not start. Please try again.';
+          }
+        }
+      }
+
+      function showError() {
+        hasError = true;
+        video.pause();
+        errorBox.hidden = false;
+        cover.hidden = true;
+        centerPlay.hidden = true;
+        centerPlay.disabled = true;
+        playButton.disabled = true;
+        seek.disabled = true;
+        updatePlayState();
+        status.textContent = '';
+      }
+
+      video.addEventListener('loadedmetadata', () => {
+        if (hasError) return;
+        const available = Number.isFinite(video.duration) && video.duration > 0;
+        playButton.disabled = !available;
+        centerPlay.disabled = !available;
+        seek.disabled = !available;
+        status.textContent = '';
+        updateTime();
+        updatePlayState();
+      });
+      video.addEventListener('canplay', () => {
+        if (hasError) return;
+        playButton.disabled = false;
+        centerPlay.disabled = false;
+      });
+      video.addEventListener('play', () => {
+        hasStarted = true;
+        status.textContent = '';
+        updatePlayState();
+      });
+      video.addEventListener('pause', updatePlayState);
+      video.addEventListener('ended', () => {
+        updateTime();
+        updatePlayState();
+      });
+      video.addEventListener('timeupdate', updateTime);
+      video.addEventListener('durationchange', updateTime);
+      video.addEventListener('volumechange', updateVolume);
+      video.addEventListener('error', () => {
+        // The bundled MP4 is supplied separately; show an explicit missing-media message.
+        if (video.error) showError();
+      });
+
+      centerPlay.addEventListener('click', togglePlayback);
+      playButton.addEventListener('click', togglePlayback);
+      video.addEventListener('click', togglePlayback);
+
+      seek.addEventListener('input', () => {
+        if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+        isSeeking = true;
+        const percent = Number(seek.value) / 1000;
+        seek.style.setProperty('--seek', `${percent * 100}%`);
+        timeLabel.textContent = `${formatTime(percent * video.duration)} / ${formatTime(video.duration)}`;
+        video.currentTime = percent * video.duration;
+      });
+      seek.addEventListener('change', () => {
+        isSeeking = false;
+        updateTime();
+      });
+      seek.addEventListener('pointerup', () => { isSeeking = false; updateTime(); });
+
+      volume.addEventListener('input', () => {
+        const value = Number(volume.value);
+        video.volume = value;
+        video.muted = value === 0;
+        if (value > 0) lastVolume = value;
+      });
+      muteButton.addEventListener('click', () => {
+        if (video.muted || video.volume === 0) {
+          video.muted = false;
+          video.volume = lastVolume > 0 ? lastVolume : 1;
+        } else {
+          lastVolume = video.volume;
+          video.muted = true;
+        }
+        updateVolume();
+      });
+
+      fullscreenButton.addEventListener('click', async () => {
+        try {
+          if (document.fullscreenElement === stage) await document.exitFullscreen();
+          else await stage.requestFullscreen();
+        } catch (_) {
+          status.textContent = 'Fullscreen is unavailable in this reader.';
+        }
+      });
+      document.addEventListener('fullscreenchange', () => {
+        const expanded = document.fullscreenElement === stage;
+        fullscreenButton.setAttribute('aria-label', expanded ? 'Exit video fullscreen' : 'Enter video fullscreen');
+      });
+
+      function stopAudio() {
+        video.pause();
+        updatePlayState();
+      }
+      function resetSlide() {
+        video.pause();
+        try { video.currentTime = 0; } catch (_) {}
+        hasStarted = false;
+        isSeeking = false;
+        status.textContent = '';
+        updateTime();
+        updatePlayState();
+      }
+      window.stopSlideAudio = stopAudio;
+      window.resetSlide = resetSlide;
+      window.addEventListener('pagehide', stopAudio);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) stopAudio(); });
+
+      updateVolume();
+      updateTime();
+      updatePlayState();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Practice 2 — Numbers 1–20 Match-Up | Boston English Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (function () {
+      let theme = null;
+      try {
+        if (window.parent !== window) {
+          theme = window.parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+        }
+      } catch (_) {}
+      if (!theme) { try { theme = localStorage.getItem('editor-theme-preference'); } catch (_) {} }
+      if (theme !== 'light' && theme !== 'dark') {
+        theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      window.setTheme = function (next) {
+        document.documentElement.classList.toggle('dark', next === 'dark');
+      };
+    })();
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    :root {
+      color-scheme: light;
+      --page: #f8fafc; --surface: #ffffff; --surface-2: #f3f6fd;
+      --text: #14223a; --muted: #586b84; --border: #d6dfed;
+      --heading-start: #384fc7; --heading-end: #2769cd;
+      --indigo: #574be4; --indigo-light: #eef0ff;
+      --word-bg: #ffffff; --word-hover: #eef3ff;
+      --completed-bg: #dcfaeb; --completed-border: #35bc87; --completed-text: #065f46;
+      --shadow: 0 12px 34px rgba(23,39,78,.055);
+    }
+    :root.dark {
+      color-scheme: dark;
+      --page: #0f172a; --surface: #1e293b; --surface-2: #152138;
+      --text: #f8fafc; --muted: #b3c2d9; --border: #364660;
+      --heading-start: #6861f4; --heading-end: #3c79f4;
+      --indigo: #818cf8; --indigo-light: #28345b;
+      --word-bg: #1b2b43; --word-hover: #29395c;
+      --completed-bg: #143d35; --completed-border: #27b281; --completed-text: #bcf7db;
+      --shadow: 0 12px 34px rgba(0,0,0,.095);
+    }
+    html, body { margin: 0; min-height: 100%; }
+    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--page); color: var(--text); }
+    button { font: inherit; cursor: pointer; }
+    button:focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+    svg { display: block; }
+    .slide {
+      min-height: 100dvh;
+      padding: clamp(16px,2.5vh,30px) clamp(15px,3vw,40px) 28px;
+      background:
+        radial-gradient(ellipse at 8% 9%, rgba(89,91,245,.13), transparent 30%),
+        radial-gradient(ellipse at 92% 82%, rgba(33,147,216,.08), transparent 34%), var(--page);
+    }
+    .layout { max-width: 1230px; margin: 0 auto; }
+    .intro { text-align: center; margin-bottom: 18px; }
+    .eyebrow {
+      margin: 0 0 5px; font-size: 12px; text-transform: uppercase; letter-spacing: .15em;
+      font-weight: 800; color: var(--heading-start);
+    }
+    h1 {
+      margin: 0 0 8px; font-weight: 800;
+      font-size: clamp(34px,4.4vw,56px); line-height: 1.11; letter-spacing: -.055em;
+      background: linear-gradient(105deg,var(--heading-start),var(--heading-end));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .subtitle { margin: 0 auto; max-width: 850px; color: var(--muted); font-size: 14px; line-height: 1.65; font-weight: 600; }
+    .topbar {
+      display: flex; align-items: center; gap: 16px; justify-content: space-between; flex-wrap: wrap;
+      margin-bottom: 14px; padding: 11px 16px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: 16px; box-shadow: var(--shadow);
+    }
+    .round-label { display: flex; align-items: center; gap: 9px; font-weight: 800; font-size: 13px; white-space: nowrap; }
+    .round-dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; background: #34c79b; box-shadow: 0 0 0 4px rgba(52,199,155,.13); }
+    .progress-group { display: flex; align-items: center; gap: 11px; flex: 1 1 220px; justify-content: center; }
+    .progress-group .count { white-space: nowrap; font-weight: 800; font-size: 12px; color: var(--muted); }
+    .progress-track { width: min(220px,100%); height: 10px; border-radius: 999px; background: var(--border); overflow: hidden; }
+    .progress-fill { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#4e75ef,#8349e8); transition: width .35s ease; }
+    .music-btn { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); border-radius: 11px; min-height: 36px; padding: 7px 11px; font-size: 12px; font-weight: 800; }
+    .music-btn svg { width: 16px; height: 16px; }
+    .music-btn[aria-pressed="true"] { background: var(--indigo-light); color: var(--indigo); border-color: #7771e8; }
+    .play-area { display: grid; grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr); gap: 16px; align-items: stretch; }
+    .panel { border: 1px solid var(--border); border-radius: 21px; background: var(--surface); box-shadow: var(--shadow); min-width: 0; padding: 15px; }
+    .panel-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 12px; }
+    .panel-title h2 { margin: 0; font-size: 13px; font-weight: 800; letter-spacing: .085em; text-transform: uppercase; }
+    .panel-title .micro { color: var(--muted); font-size: 11px; font-weight: 700; text-align: right; }
+    .number-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 11px; min-height: 318px; align-content: start; }
+    .tile-wrap { position: relative; min-width: 0; }
+    .number-tile {
+      width: 100%; height: 150px; position: relative; display: grid; place-items: center; isolation: isolate;
+      border: 1px solid color-mix(in srgb, var(--tile-accent), transparent 42%);
+      border-radius: 18px; color: #ffffff; overflow: hidden; cursor: grab;
+      background: linear-gradient(145deg, var(--tile-accent), var(--tile-dark));
+      box-shadow: 0 7px 0 color-mix(in srgb, var(--tile-dark), #000 12%);
+      transition: transform .16s ease, box-shadow .16s ease, outline .12s ease;
+      touch-action: none; user-select: none;
+    }
+    .number-tile::before {
+      content: ''; position: absolute; width: 115px; height: 115px; border: 1px solid rgba(255,255,255,.22);
+      border-radius: 50%; right: -42px; top: -61px; box-shadow: 0 0 0 20px rgba(255,255,255,.045);
+    }
+    .number-tile::after {
+      content: '✦'; position: absolute; bottom: 8px; left: 12px; font-size: 16px; color: rgba(255,255,255,.68);
+    }
+    .number-tile:hover { transform: translateY(-3px); box-shadow: 0 10px 0 color-mix(in srgb, var(--tile-dark), #000 12%); }
+    .number-tile:active { cursor: grabbing; }
+    .number-tile.selected { outline: 4px solid #fbbf24; outline-offset: 2px; transform: translateY(-3px); }
+    .num-glyph { font-size: clamp(45px,5.1vw,75px); font-weight: 800; line-height: 1; letter-spacing: -.07em; text-shadow: 0 2px 3px rgba(12,33,72,.08); }
+    .tile-star { position: absolute; top: 10px; left: 11px; width: 18px; height: 18px; opacity: .85; }
+    .speak-btn {
+      position: absolute; right: 8px; top: 8px; z-index: 2; width: 31px; height: 31px;
+      display: grid; place-items: center; padding: 0; border: 1px solid rgba(255,255,255,.33);
+      border-radius: 9px; background: rgba(7,27,66,.2); color: white;
+      backdrop-filter: blur(3px);
+    }
+    .speak-btn:hover { background: rgba(255,255,255,.22); }
+    .speak-btn svg { width: 17px; height: 17px; }
+    .bank-empty { grid-column: 1 / -1; min-height: 260px; display: flex; flex-direction: column; gap: 12px; justify-content: center; align-items: center; border-radius: 18px; border: 1px dashed #39b58b; background: var(--completed-bg); color: var(--completed-text); text-align: center; font-weight: 800; padding: 16px; }
+    .bank-empty .big-check { font-size: 50px; line-height: 1; }
+    .word-grid { display: grid; gap: 9px; }
+    .word-target {
+      display: flex; gap: 12px; align-items: center; min-height: 69px; width: 100%;
+      text-align: left; background: var(--word-bg); color: var(--text); border: 1.5px solid var(--border);
+      border-radius: 14px; padding: 10px 14px; position: relative; transition: background .15s,border-color .15s,transform .15s;
+    }
+    .word-target:not(:disabled):hover, .word-target.hovered { background: var(--word-hover); border-color: #7e88ed; }
+    .word-target.valid-drop { border-color: #6366f1; background: var(--indigo-light); transform: scale(1.015); }
+    .word-target .word { flex: 1; font-size: clamp(17px,1.8vw,24px); font-weight: 800; line-height: 1.15; letter-spacing: -.025em; }
+    .word-target .landing {
+      display: inline-grid; place-items: center; flex: 0 0 50px; min-height: 44px;
+      color: #8a96aa; background: var(--surface-2); border: 1px dashed #a7b4ca;
+      border-radius: 10px; font-size: 18px; font-weight: 800;
+    }
+    .word-target:disabled { cursor: default; opacity: 1; }
+    .word-target.matched { border-color: var(--completed-border); background: var(--completed-bg); color: var(--completed-text); }
+    .word-target.matched .landing { background: rgba(43,167,121,.12); color: var(--completed-text); border-color: var(--completed-border); border-style: solid; }
+    .word-target.matched .check { font-weight: 900; font-size: 16px; }
+    .word-target.wrong { animation: wiggle .34s ease; border-color: #f87171; }
+    @keyframes wiggle { 0%,100% {transform:translateX(0);} 25% {transform:translateX(-5px);} 75% {transform:translateX(5px);} }
+    .bottom-bar { margin-top: 13px; display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .feedback { flex: 1 1 320px; min-height: 44px; display: flex; align-items: center; font-size: 13px; font-weight: 700; line-height: 1.55; color: var(--muted); }
+    .feedback.good { color: var(--completed-text); }
+    .feedback.bad { color: #d35b54; }
+    .buttons { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .action { display: inline-flex; gap: 8px; align-items: center; justify-content: center; min-height: 43px; padding: 9px 17px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .action.primary { border: 1px solid transparent; background: linear-gradient(105deg,#4f70ee,#7542dc); color: white; box-shadow: 0 5px 15px rgba(74,81,217,.18); }
+    .action.primary:disabled { opacity: .45; box-shadow: none; cursor: not-allowed; }
+    .action:enabled:hover { filter: brightness(1.08); }
+    .action svg { width: 16px; height: 16px; }
+    .done-view { display: none; text-align: center; padding: 27px 18px 36px; background: var(--surface); border: 1px solid var(--border); border-radius: 21px; box-shadow: var(--shadow); }
+    .done-view.show { display: block; }
+    .done-icon { width: 102px; height: 102px; display: grid; place-items: center; border-radius: 27px; background: linear-gradient(140deg,#38b5e8,#654de8); color: white; margin: 0 auto 22px; box-shadow: 0 10px 25px rgba(83,91,226,.23); transform: rotate(-6deg); }
+    .done-icon svg { width: 66px; height: 66px; }
+    .done-view h2 { font-size: clamp(27px,3.6vw,44px); margin: 0 0 12px; letter-spacing: -.04em; color: var(--text); }
+    .done-view p { color: var(--muted); max-width: 540px; margin: 0 auto 23px; line-height: 1.75; font-weight: 600; }
+    .drag-ghost { position: fixed; z-index: 99999; pointer-events: none; display: grid; place-items: center; width: 80px; height: 79px; border-radius: 19px; background: linear-gradient(140deg,#4887f7,#6c4bd8); color: #fff; font-size: 44px; font-weight: 800; box-shadow: 0 18px 36px rgba(0,0,0,.28); transform: translate(-50%,-50%); opacity: .95; }
+    .drag-ghost::after { content: '✦'; position: absolute; right: 8px; top: 5px; font-size: 15px; }
+    @media (max-width: 790px) {
+      .play-area { grid-template-columns: 1fr; }
+      .number-grid { grid-template-columns: repeat(5,minmax(0,1fr)); min-height: 0; }
+      .number-tile { height: 111px; }
+      .num-glyph { font-size: clamp(36px,7vw,58px); }
+      .word-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    }
+    @media (max-width: 540px) {
+      .intro { margin-bottom: 13px; }
+      .topbar { padding: 10px; gap: 10px; }
+      .progress-group { order: 3; flex: 1 1 100%; }
+      .number-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }
+      .number-tile { height: 103px; }
+      .word-grid { grid-template-columns: 1fr; }
+      .panel { padding: 12px; }
+      .word-target { min-height: 60px; }
+      .bottom-bar { justify-content: center; }
+      .buttons { width: 100%; justify-content: center; }
+      .buttons .action { flex: 1 1 130px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
+  </style>
+</head>
+<body>
+  <main class="slide">
+    <div class="layout">
+      <header class="intro">
+        <p class="eyebrow">Practice 2 · Warm-Up</p>
+        <h1>Match the Numbers!</h1>
+        <p class="subtitle">Let's review numbers <strong>1–20</strong>. Drag a number onto its matching English word, or tap a number and then tap its word.</p>
+      </header>
+
+      <section class="topbar" aria-label="Game progress and sound settings">
+        <div class="round-label"><span class="round-dot" aria-hidden="true"></span><span id="round-display">Round 1 of 4</span></div>
+        <div class="progress-group">
+          <span class="count" id="matched-count">0 / 20 matched</span>
+          <div class="progress-track" id="progressbar" role="progressbar" aria-label="Numbers matched" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+        <button id="music-toggle" class="music-btn" type="button" aria-pressed="false" aria-label="Turn background music on">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+          <span id="music-label">Music: Off</span>
+        </button>
+      </section>
+
+      <div id="game-view">
+        <div class="play-area">
+          <section class="panel" aria-labelledby="numbers-heading">
+            <div class="panel-title">
+              <h2 id="numbers-heading">Your Numbers</h2>
+              <span class="micro">Pick, drag or listen</span>
+            </div>
+            <div id="number-grid" class="number-grid" aria-label="Numbers available to match"></div>
+          </section>
+          <section class="panel" aria-labelledby="words-heading">
+            <div class="panel-title">
+              <h2 id="words-heading">Matching Words</h2>
+              <span class="micro">Find the correct English word</span>
+            </div>
+            <div id="word-grid" class="word-grid" aria-label="English number words to match"></div>
+          </section>
+        </div>
+        <div class="bottom-bar">
+          <div class="feedback" id="feedback" role="status" aria-live="polite">Choose a number to begin. You can also press its speaker icon to hear it.</div>
+          <div class="buttons">
+            <button class="action" type="button" id="hint-btn">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6m-5 4h4m-7-13a5 5 0 0 1 10 0c0 2.6-2 3.6-2 6H9c0-2.4-2-3.4-2-6Z"/></svg>Hint
+            </button>
+            <button class="action" type="button" id="reset-btn">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11a9 9 0 1 1 2.6 6.4"/><path d="M3 4v7h7"/></svg>Start Again
+            </button>
+            <button class="action primary" type="button" id="next-btn" disabled>Next Round →</button>
+          </div>
+        </div>
+      </div>
+
+      <section id="done-view" class="done-view" aria-label="Exercise complete" hidden>
+        <div class="done-icon" aria-hidden="true">
+          <svg viewBox="0 0 80 80" fill="none"><path d="M40 8 47 27l20-2-13 16 8 19-22-8-21 8 7-19-13-16 20 2Z" fill="white" stroke="white" stroke-width="3" stroke-linejoin="round"/><path d="M32 40h2m12 0h2m-14 8q7 7 14 0" stroke="#5846c9" stroke-width="3" stroke-linecap="round"/></svg>
+        </div>
+        <h2>You're a Number Star!</h2>
+        <p>Fantastic work! You matched all <strong>20 numbers</strong> with their English words. Keep practicing and you'll remember them even faster!</p>
+        <button class="action primary" id="play-again" type="button">↻ Play Again</button>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+      const WORDS = ['one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'];
+      const COLORS = [
+        ['#3f94eb','#1966c8'], ['#7967eb','#5540c0'], ['#27b6ac','#138788'],
+        ['#df9c30','#b76d16'], ['#e877a4','#cb4987']
+      ];
+      const $ = id => document.getElementById(id);
+      const numberGrid = $('number-grid');
+      const wordGrid = $('word-grid');
+      const feedback = $('feedback');
+      const nextButton = $('next-btn');
+      const musicButton = $('music-toggle');
+      const musicLabel = $('music-label');
+      const progressBar = $('progressbar');
+      const progressFill = $('progress-fill');
+      const roundDisplay = $('round-display');
+      const matchedCount = $('matched-count');
+      const gameView = $('game-view');
+      const doneView = $('done-view');
+
+      let round = 0;
+      let matched = new Set();
+      let order = [];
+      let selected = null;
+      let drag = null;
+      let suppressClickFor = null;
+      let musicOn = false;
+      let musicTimer = null;
+      let musicStep = 0;
+      let audioContext = null;
+      let hintTimer = null;
+      let finished = false;
+
+      const SOUND_ICON = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6"/><path d="M18 6a9 9 0 0 1 0 12"/></svg>';
+      const STAR_ICON = '<svg class="tile-star" aria-hidden="true" viewBox="0 0 24 24" fill="white"><path d="M12 1.5 14.8 9l7.7 3-7.7 2.7L12 22.5l-2.8-7.8L1.5 12l7.7-3Z"/></svg>';
+      const tileNum = () => Array.from({length:5}, (_,i) => round * 5 + i + 1);
+      const shuffled = a => {
+        for (let i=a.length-1;i>0;i--) {
+          const j=Math.floor(Math.random()*(i+1));
+          [a[i],a[j]]=[a[j],a[i]];
+        }
+        return a;
+      };
+
+      function setFeedback(message, type='') {
+        feedback.textContent = message;
+        feedback.className = 'feedback' + (type ? ' ' + type : '');
+      }
+
+      function make(tag, cls, text) {
+        const e=document.createElement(tag);
+        if (cls) e.className=cls;
+        if (text !== undefined) e.textContent=text;
+        return e;
+      }
+
+      function overallProgress() {
+        const value=round * 5 + matched.size;
+        matchedCount.textContent=`${value} / 20 matched`;
+        progressBar.setAttribute('aria-valuenow', String(value));
+        progressFill.style.width=`${value*5}%`;
+        roundDisplay.textContent=`Round ${round+1} of 4`;
+        nextButton.disabled=matched.size!==5;
+        nextButton.textContent=round===3 ? 'See Results →' : 'Next Round →';
+      }
+
+      function render() {
+        numberGrid.replaceChildren();
+        const available=shuffled(tileNum().filter(number => !matched.has(number)));
+        available.forEach((number,i) => {
+          const [color,dark]=COLORS[(number-1)%COLORS.length];
+          const wrap=make('div','tile-wrap');
+          const btn=make('button','number-tile'+(selected===number?' selected':''));
+          btn.type='button';
+          btn.dataset.number=number;
+          btn.style.setProperty('--tile-accent',color);
+          btn.style.setProperty('--tile-dark',dark);
+          btn.setAttribute('aria-label',`Select number ${number}`);
+          btn.setAttribute('aria-pressed',String(selected===number));
+          btn.innerHTML=STAR_ICON;
+          btn.append(make('span','num-glyph',String(number)));
+          btn.addEventListener('click',()=>{
+            if(suppressClickFor===number){suppressClickFor=null;return;}
+            selected=selected===number?null:number;
+            setFeedback(selected!==null?`Number ${selected} selected. Choose its English word.`:'Selection cleared.');
+            updateSelection();
+          });
+          btn.addEventListener('pointerdown',e=>startDrag(e,number,btn));
+          const sound=make('button','speak-btn');
+          sound.type='button';
+          sound.innerHTML=SOUND_ICON;
+          sound.setAttribute('aria-label',`Hear number ${number}`);
+          sound.title=`Hear ${number} — ${WORDS[number-1]}`;
+          sound.addEventListener('click',e=>{e.stopPropagation();speak(number);});
+          wrap.append(btn,sound);
+          numberGrid.append(wrap);
+        });
+        if(!available.length){
+          const box=make('div','bank-empty');
+          box.innerHTML='<span class="big-check" aria-hidden="true">★</span><span>All five matched!<br>Ready for the next round?</span>';
+          numberGrid.append(box);
+        }
+
+        wordGrid.replaceChildren();
+        for (const number of order) {
+          const target=make('button','word-target'+(matched.has(number)?' matched':''));
+          target.type='button';
+          target.dataset.number=number;
+          target.disabled=matched.has(number);
+          target.setAttribute('aria-label',`Match a number to ${WORDS[number-1]}`);
+          target.append(make('span','word',WORDS[number-1]));
+          target.append(make('span','landing',matched.has(number)?String(number):'?'));
+          if(matched.has(number)) target.append(make('span','check','✓'));
+          target.addEventListener('click',()=>{
+            if(selected===null){setFeedback('Select a number card first, then choose its word.');return;}
+            attempt(selected,number);
+          });
+          wordGrid.append(target);
+        }
+        overallProgress();
+      }
+
+      function updateSelection(){
+        numberGrid.querySelectorAll('.number-tile').forEach(el=>{
+          const active=Number(el.dataset.number)===selected;
+          el.classList.toggle('selected',active);
+          el.setAttribute('aria-pressed',String(active));
+        });
+      }
+
+      function attempt(number,wordNumber) {
+        if(matched.has(number) || matched.has(wordNumber)) return;
+        const target=wordGrid.querySelector(`[data-number="${wordNumber}"]`);
+        if(number!==wordNumber){
+          setFeedback(`Not quite! ${number} is ${WORDS[number-1]}. Try again.`, 'bad');
+          playSound('wrong');
+          target?.classList.add('wrong');
+          setTimeout(()=>target?.classList.remove('wrong'),380);
+          return;
+        }
+        matched.add(number);
+        selected=null;
+        playSound('correct');
+        render();
+        if(matched.size===5){
+          setFeedback(round===3 ? 'Amazing! All 20 numbers are matched. Open your results!' : `Great work! Round ${round+1} complete. Let's keep going!`, 'good');
+        } else {
+          setFeedback(`Perfect match! ${number} = ${WORDS[number-1]}.`, 'good');
+        }
+      }
+
+      function makeGhost(number, x, y) {
+        const g=make('div','drag-ghost',String(number));
+        g.style.left=x+'px';g.style.top=y+'px';
+        document.body.append(g);
+        return g;
+      }
+      function startDrag(e,number,button){
+        if(e.button!==0 && e.pointerType==='mouse')return;
+        drag={id:e.pointerId,number,button,x:e.clientX,y:e.clientY,moved:false,ghost:null};
+        try {button.setPointerCapture(e.pointerId);} catch (_){}
+      }
+      function moveDrag(e){
+        if(!drag || drag.id!==e.pointerId) return;
+        if(!drag.moved && Math.hypot(e.clientX-drag.x,e.clientY-drag.y)>9){
+          drag.moved=true;
+          drag.ghost=makeGhost(drag.number,e.clientX,e.clientY);
+        }
+        if(drag.moved){
+          e.preventDefault();
+          drag.ghost.style.left=e.clientX+'px';drag.ghost.style.top=e.clientY+'px';
+          wordGrid.querySelectorAll('.word-target').forEach(el=>el.classList.remove('valid-drop'));
+          const candidate=document.elementFromPoint(e.clientX,e.clientY)?.closest('.word-target:not(:disabled)');
+          candidate?.classList.add('valid-drop');
+        }
+      }
+      function finishDrag(e){
+        if(!drag || drag.id!==e.pointerId)return;
+        const d=drag;
+        drag=null;
+        const candidate=d.moved?document.elementFromPoint(e.clientX,e.clientY)?.closest('.word-target:not(:disabled)'):null;
+        d.ghost?.remove();
+        wordGrid.querySelectorAll('.valid-drop').forEach(el=>el.classList.remove('valid-drop'));
+        if(d.moved){
+          suppressClickFor=d.number;
+          setTimeout(()=>{if(suppressClickFor===d.number)suppressClickFor=null;},60);
+          if(candidate)attempt(d.number,Number(candidate.dataset.number));
+          else setFeedback('Drop the number onto an English word, or tap the number and then its word.');
+        }
+      }
+      window.addEventListener('pointermove',moveDrag,{passive:false});
+      window.addEventListener('pointerup',finishDrag);
+      window.addEventListener('pointercancel',e=>{
+        if(drag?.id===e.pointerId){drag.ghost?.remove();drag=null;}
+      });
+
+      function audio(){
+        const Constructor=window.AudioContext||window.webkitAudioContext;
+        if(!Constructor)return null;
+        try{
+          if(!audioContext || audioContext.state==='closed')audioContext=new Constructor();
+          if(audioContext.state==='suspended')audioContext.resume().catch(()=>{});
+          return audioContext;
+        }catch(_){return null;}
+      }
+      function tone(frequency,when=0,duration=.16,volume=.025,shape='sine'){
+        const ctx=audio();
+        if(!ctx)return;
+        const now=ctx.currentTime+when;
+        const osc=ctx.createOscillator();
+        const amp=ctx.createGain();
+        osc.type=shape;osc.frequency.value=frequency;
+        amp.gain.setValueAtTime(.00001,now);
+        amp.gain.exponentialRampToValueAtTime(volume,now+.016);
+        amp.gain.exponentialRampToValueAtTime(.00001,now+duration);
+        osc.connect(amp);amp.connect(ctx.destination);
+        osc.start(now);osc.stop(now+duration+.025);
+      }
+      function playSound(kind){
+        if(kind==='correct'){
+          tone(659.25,0,.12,.028,'sine');tone(880,.105,.19,.031,'sine');
+        } else if(kind==='wrong'){
+          tone(261.63,0,.11,.016,'triangle');
+        } else if(kind==='round'){
+          [523.25,659.25,783.99].forEach((f,i)=>tone(f,i*.12,.22,.028,'sine'));
+        } else if(kind==='complete'){
+          [523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*.15,.3,.033,'sine'));
+        }
+      }
+      function musicTick(){
+        // An original, quiet eight-note tune generated in the browser; no external media.
+        const notes=[392,493.88,587.33,493.88,440,523.25,493.88,392];
+        tone(notes[musicStep%notes.length],0,.31,.008,'sine');
+        musicStep++;
+      }
+      function setMusic(enabled){
+        musicOn=!!enabled;
+        if(musicTimer!==null){clearInterval(musicTimer);musicTimer=null;}
+        if(musicOn){musicTick();musicTimer=setInterval(musicTick,480);}
+        musicButton.setAttribute('aria-pressed',String(musicOn));
+        musicButton.setAttribute('aria-label',musicOn?'Turn background music off':'Turn background music on');
+        musicLabel.textContent=musicOn?'Music: On':'Music: Off';
+      }
+      musicButton.addEventListener('click',()=>setMusic(!musicOn));
+
+      function speak(number){
+        if(!('speechSynthesis' in window)){
+          setFeedback('This browser does not support spoken pronunciation.');return;
+        }
+        window.speechSynthesis.cancel();
+        const utterance=new SpeechSynthesisUtterance(WORDS[number-1]);
+        utterance.lang='en-GB';utterance.rate=.83;utterance.pitch=1;
+        const voices=window.speechSynthesis.getVoices();
+        const preferred=voices.find(v=>v.lang==='en-GB')||voices.find(v=>v.lang.startsWith('en'));
+        if(preferred)utterance.voice=preferred;
+        utterance.onerror=e=>{if(e.error!=='canceled'&&e.error!=='interrupted')setFeedback('Pronunciation playback is unavailable.');};
+        setFeedback(`Listen and repeat: ${number} — ${WORDS[number-1]}.`);
+        window.speechSynthesis.speak(utterance);
+      }
+
+      $('hint-btn').addEventListener('click',()=>{
+        if(selected===null){setFeedback('Select a number first, then press Hint.');return;}
+        const target=wordGrid.querySelector(`[data-number="${selected}"]`);
+        if(target && !target.disabled){
+          target.classList.add('valid-drop');
+          setFeedback(`Hint: ${selected} is written “${WORDS[selected-1]}”.`);
+          if(hintTimer)clearTimeout(hintTimer);
+          hintTimer=setTimeout(()=>target.classList.remove('valid-drop'),1800);
+        }
+      });
+      nextButton.addEventListener('click',()=>{
+        if(matched.size!==5)return;
+        if(round===3){
+          finished=true;
+          gameView.hidden=true;
+          doneView.hidden=false;
+          doneView.classList.add('show');
+          playSound('complete');
+          return;
+        }
+        round++;
+        selected=null;
+        matched.clear();
+        order=shuffled(tileNum());
+        render();
+        setFeedback('New round! Find the matching English words.');
+        playSound('round');
+      });
+      function reset(){
+        stopSlideAudio();
+        if(hintTimer){clearTimeout(hintTimer);hintTimer=null;}
+        drag?.ghost?.remove();drag=null;
+        round=0;selected=null;matched=new Set();finished=false;
+        order=shuffled(tileNum());
+        gameView.hidden=false;doneView.hidden=true;doneView.classList.remove('show');
+        render();
+        setFeedback('Choose a number to begin. You can also press its speaker icon to hear it.');
+      }
+      $('reset-btn').addEventListener('click',reset);
+      $('play-again').addEventListener('click',reset);
+      function stopSlideAudio(){
+        setMusic(false);
+        try{window.speechSynthesis?.cancel();}catch(_){}
+        if(audioContext){const old=audioContext;audioContext=null;old.close().catch(()=>{});}
+      }
+      window.stopSlideAudio=stopSlideAudio;
+      window.resetSlide=reset;
+      window.addEventListener('pagehide',stopSlideAudio);
+      order=shuffled(tileNum());
+      render();
+    })();
+  </script>
+</body>
+</html>

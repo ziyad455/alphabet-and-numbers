@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<title>Listening — Greetings and Goodbyes | Boston English Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+(() => {
+  let theme;
+  try { if (parent !== window) theme = parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light'; } catch (_) {}
+  if (!theme) { try { theme = localStorage.getItem('editor-theme-preference'); } catch (_) {} }
+  if (theme !== 'dark' && theme !== 'light') theme = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+  document.documentElement.classList.toggle('dark', theme === 'dark');
+  window.setTheme = t => document.documentElement.classList.toggle('dark', t === 'dark');
+})();
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+:root{color-scheme:light;--page:#f6f8fd;--surface:#fff;--alt:#eef2ff;--text:#10192c;--muted:#52617c;--stroke:#d6dfed;--accent:#4a45e0;--accent-soft:#e4e8ff;--grad:linear-gradient(110deg,#416df1,#753be2);--ok:#0e9468;--shadow:0 24px 60px rgba(35,54,112,.10)}
+:root.dark{color-scheme:dark;--page:#0b1222;--surface:#162036;--alt:#1d2944;--text:#f8fafc;--muted:#b6c4dc;--stroke:#33425f;--accent:#a3a6ff;--accent-soft:#2b3359;--ok:#34d399;--shadow:0 24px 60px rgba(0,0,0,.35)}
+html,body{margin:0;min-height:100%}
+body{background:var(--page);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
+.slide{min-height:100dvh;padding:clamp(14px,2vw,28px);background:radial-gradient(circle at 0 0,rgba(99,102,241,.14),transparent 32%),radial-gradient(circle at 100% 100%,rgba(56,189,248,.08),transparent 36%),var(--page);display:flex;flex-direction:column;gap:clamp(12px,1.6vw,20px)}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;max-width:1500px;width:100%;margin:0 auto}
+h1{margin:0;font-size:clamp(26px,3.2vw,44px);font-weight:800;letter-spacing:-.045em;line-height:1.1;background:linear-gradient(110deg,#384fc7,#7a4de6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.dark h1{background-image:linear-gradient(110deg,#8d8aff,#5a98ff);-webkit-background-clip:text;background-clip:text}
+.sub{margin:4px 0 0;color:var(--muted);font-weight:600;font-size:clamp(14px,1.3vw,17px)}
+.progress{display:flex;align-items:center;gap:12px;font-weight:800;font-size:14px;color:var(--muted)}
+.bar{width:clamp(90px,12vw,160px);height:9px;border-radius:9px;background:var(--stroke);overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:var(--grad);transition:width .35s}
+.ghost{border:1px solid var(--stroke);background:var(--surface);border-radius:12px;min-height:40px;padding:8px 14px;font-weight:800;font-size:13px}
+.ghost:hover{border-color:var(--accent)}
+.main{flex:1;display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(12px,1.6vw,22px);max-width:1500px;width:100%;margin:0 auto;min-height:0}
+/* STAGE */
+.stage{position:relative;overflow:hidden;border-radius:28px;background:#172541;color:#fff;min-height:440px;box-shadow:var(--shadow);display:flex;flex-direction:column;justify-content:flex-end;isolation:isolate}
+.photo{position:absolute;inset:0;z-index:-2}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transform:scale(1.04);transition:opacity .6s,transform 1.2s}
+.photo img.on{opacity:1;transform:scale(1)}
+.stage::before{content:'';position:absolute;inset:0;z-index:-1;background:linear-gradient(to top,rgba(10,16,38,.94) 0%,rgba(10,16,38,.72) 38%,rgba(10,16,38,.1) 72%,rgba(10,16,38,.35) 100%)}
+.chip{position:absolute;top:18px;left:18px;display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;background:rgba(15,23,42,.55);backdrop-filter:blur(8px);font-weight:800;font-size:14px}
+.chip .dot{width:9px;height:9px;border-radius:50%;background:#34d399;box-shadow:0 0 0 4px rgba(52,211,153,.2)}
+.copy{padding:clamp(20px,3vw,44px) clamp(20px,3vw,44px) 10px}
+.word{margin:0;font-size:clamp(44px,6.2vw,96px);font-weight:800;letter-spacing:-.055em;line-height:1.04;text-wrap:balance;text-shadow:0 2px 24px rgba(0,0,0,.35)}
+.note{margin:12px 0 0;font-size:clamp(17px,1.7vw,24px);font-weight:600;color:#dbe4fb;max-width:34ch;line-height:1.4}
+.controls{display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:14px clamp(20px,3vw,44px) clamp(20px,2.6vw,34px)}
+.play{position:relative;width:88px;height:88px;border-radius:50%;border:0;background:var(--grad);color:#fff;display:grid;place-items:center;box-shadow:0 10px 30px rgba(84,70,235,.5);transition:transform .15s}
+.play:hover{transform:scale(1.05)}.play:active{transform:scale(.96)}
+.play svg{width:38px;height:38px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.play .i-stop{display:none}.speaking .play .i-stop{display:block}.speaking .play .i-play{display:none}
+.play::after{content:'';position:absolute;inset:0;border-radius:50%;border:2px solid #9ab6ff;opacity:0}
+.speaking .play::after{animation:ring 1.4s ease-out infinite}
+@keyframes ring{from{transform:scale(1);opacity:.9}to{transform:scale(1.7);opacity:0}}
+.pill{min-height:56px;padding:0 20px;border-radius:99px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.12);backdrop-filter:blur(6px);color:#fff;font-weight:800;font-size:16px;display:inline-flex;align-items:center;gap:10px;transition:background .15s}
+.pill:hover{background:rgba(255,255,255,.22)}
+.pill[aria-pressed=true]{background:#fff;color:#2c2fa8;border-color:#fff}
+.wave{display:flex;gap:4px;align-items:center;height:40px;margin-left:auto}
+.wave i{display:block;width:5px;height:10px;border-radius:9px;background:#9ab6ff;opacity:.5}
+.wave i:nth-child(2n){height:22px}.wave i:nth-child(3n){height:34px}
+.speaking .wave i{opacity:1;animation:wave .6s ease-in-out infinite alternate}
+.speaking .wave i:nth-child(2n){animation-delay:-.4s}.speaking .wave i:nth-child(3n){animation-delay:-.2s}
+@keyframes wave{from{transform:scaleY(.4)}to{transform:scaleY(1.15)}}
+/* RAIL */
+.rail{display:flex;flex-direction:column;gap:12px;min-width:0}
+.tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:6px;background:var(--surface);border:1px solid var(--stroke);border-radius:18px}
+.tab{border:0;background:transparent;border-radius:13px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:6px;font-weight:800;font-size:clamp(14px,1.25vw,17px);color:var(--muted)}
+.tab[aria-selected=true]{background:var(--grad);color:#fff;box-shadow:0 6px 18px rgba(84,70,235,.3)}
+.pips{display:flex;gap:4px}.pips i{width:14px;height:5px;border-radius:5px;background:currentColor;opacity:.25}.pips i.on{opacity:1}
+.desc{margin:0 4px;color:var(--muted);font-weight:600;font-size:15px;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.all{border:1.5px solid var(--accent);background:transparent;color:var(--accent);border-radius:99px;min-height:40px;padding:0 16px;font-weight:800;font-size:14px;display:inline-flex;align-items:center;gap:8px}
+.all:hover{background:var(--accent-soft)}
+.all svg,.row .spk svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;flex:1}
+.list li{flex:1;display:flex}
+.row{position:relative;width:100%;border:1px solid var(--stroke);background:var(--surface);border-radius:18px;padding:8px 14px 8px 8px;display:flex;align-items:center;gap:14px;text-align:left;min-height:68px;transition:transform .15s,border-color .15s,background .15s}
+.row:hover{border-color:var(--accent);transform:translateX(3px)}
+.row[aria-current=true]{background:var(--accent-soft);border-color:var(--accent)}
+.row.live{box-shadow:0 0 0 3px rgba(99,102,241,.3)}
+.thumb{position:relative;flex:0 0 56px;width:56px;height:56px;border-radius:50%;overflow:hidden;background:var(--alt);display:grid;place-items:center;font-weight:800;color:var(--accent)}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.thumb .tick{position:absolute;inset:0;background:rgba(14,148,104,.82);color:#fff;display:none;place-items:center;font-size:24px;font-weight:800}
+.row.heard .thumb .tick{display:grid}
+.rt{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}
+.rt b{font-size:clamp(19px,1.8vw,26px);font-weight:800;letter-spacing:-.035em;line-height:1.2}
+.rt span{font-size:14px;font-weight:600;color:var(--muted);line-height:1.35}
+.spk{width:40px;height:40px;border-radius:50%;background:var(--alt);color:var(--accent);display:grid;place-items:center;flex-shrink:0}
+.row[aria-current=true] .spk{background:var(--accent);color:#fff}
+/* EVENING vs NIGHT */
+.pair{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.pairbtn{border:1px solid var(--stroke);background:var(--surface);border-radius:16px;padding:10px 14px;text-align:left;display:flex;align-items:center;gap:12px}
+.pairbtn:hover,.pairbtn.on{border-color:var(--accent);background:var(--accent-soft)}
+.pairbtn .em{font-size:30px;line-height:1}
+.pairbtn b{display:block;font-size:16px;font-weight:800}
+.pairbtn span span{font-size:13px;font-weight:600;color:var(--muted);line-height:1.35;display:block}
+.status{margin:0;min-height:20px;text-align:center;font-weight:700;font-size:14px;color:var(--muted)}
+.fallback .photo{background:linear-gradient(135deg,#403caf,#172541)}
+@media(max-width:980px){.main{grid-template-columns:1fr}.stage{min-height:min(62vw,460px)}.list li{flex:none}}
+@media(max-width:520px){.play{width:72px;height:72px}.pill{min-height:48px;padding:0 14px;font-size:14px}.wave{display:none}.pair{grid-template-columns:1fr}.row{gap:10px}.thumb{flex-basis:48px;width:48px;height:48px}.stage{min-height:420px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="slide">
+  <header class="top">
+    <div><h1>Greetings &amp; Goodbyes</h1><p class="sub">Tap a phrase. Listen. Then say it out loud.</p></div>
+    <div class="progress"><span id="heard-count">0 / 14 heard</span><span class="bar" aria-hidden="true"><i id="heard-fill"></i></span><button type="button" class="ghost" id="reset">Start again</button></div>
+  </header>
+
+  <div class="main">
+    <section class="stage" id="stage" aria-label="Phrase player">
+      <div class="photo" id="photo"><img alt="" id="imgA"><img alt="" id="imgB"></div>
+      <div class="chip"><span class="dot"></span><span id="cat">Introductions</span></div>
+      <div class="copy">
+        <h2 class="word" id="word" aria-live="off">My name is...</h2>
+        <p class="note" id="note"></p>
+      </div>
+      <div class="controls">
+        <button type="button" class="play" id="play" aria-label="Hear this phrase">
+          <svg class="i-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"/></svg>
+          <svg class="i-stop" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2.5" fill="currentColor"/></svg>
+        </button>
+        <button type="button" class="pill" id="slow" aria-label="Hear this phrase slowly"><span aria-hidden="true">🐢</span> Slowly</button>
+        <div class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+    </section>
+
+    <section class="rail" aria-label="Phrases">
+      <div class="tabs" role="tablist" aria-label="Categories" id="tabs"></div>
+      <p class="desc"><span id="desc"></span>
+        <button type="button" class="all" id="all"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m7 5 12 7-12 7V5Z"/></svg><span id="all-label">Play all</span></button></p>
+      <ul class="list" id="list" role="tabpanel"></ul>
+      <div class="pair" aria-label="Good evening or good night?">
+        <button type="button" class="pairbtn" data-id="evening"><span class="em" aria-hidden="true">🌆</span><span><b>Good evening</b><span>Hello, when you meet someone.</span></span></button>
+        <button type="button" class="pairbtn" data-id="night"><span class="em" aria-hidden="true">🌙</span><span><b>Good night</b><span>Goodbye, before bed.</span></span></button>
+      </div>
+      <p class="status" id="status" role="status" aria-live="polite">Choose a phrase or press the big button.</p>
+    </section>
+  </div>
+</main>
+<script>
+(() => {
+'use strict';
+const P = (n, w, h) => `https://images.pexels.com/photos/${n}/pexels-photo-${n}.jpeg?auto=compress&cs=tinysrgb&w=${w}&h=${h}&fit=crop`;
+const groups = {
+  intro:{title:'Introductions',desc:'Say who you are. Ask about someone.',phrases:[
+    {id:'name',img:7319161,alt:'Woman showing a blank name tag',text:'My name is...',say:'My name is Sara.',note:'Example: My name is Sara.'},
+    {id:'from',img:8542358,alt:'Person holding a globe',text:'I come from...',say:'I come from Egypt.',note:'Example: I come from Egypt.'},
+    {id:'your-name',img:7887174,alt:'Two people smiling as they talk',text:"What's your name?",say:"What's your name?",note:'Ask someone their name.'},
+    {id:'your-country',img:346885,alt:'Person holding a globe in the mountains',text:'Where are you from?',say:'Where are you from?',note:'Ask where someone comes from.'}]},
+  greet:{title:'Greetings',desc:'Use these when you meet someone.',phrases:[
+    {id:'hello',img:5537584,alt:'Two people waving hello',text:'Hello!',say:'Hello!',note:'A friendly greeting.'},
+    {id:'hi',img:5368941,alt:'Two friends greeting each other outdoors',text:'Hi!',say:'Hi!',note:'Informal: friends and people you know.'},
+    {id:'morning',img:1133504,alt:'Sunrise over mountains',text:'Good morning!',say:'Good morning!',note:'When you meet someone in the morning.'},
+    {id:'afternoon',img:37189431,alt:'People enjoying a sunny city park',text:'Good afternoon!',say:'Good afternoon!',note:'When you meet someone in the afternoon.'},
+    {id:'evening',img:4045714,alt:'Sun setting over the mountains',text:'Good evening!',say:'Good evening!',note:'When you meet someone in the evening.'}]},
+  bye:{title:'Goodbyes',desc:'Use these when you leave.',phrases:[
+    {id:'goodbye',img:25461678,alt:'People waving farewell at an airport',text:'Goodbye!',say:'Goodbye!',note:'A polite way to leave.'},
+    {id:'bye',img:10385375,alt:'Woman waving goodbye from a car',text:'Bye!',say:'Bye!',note:'Informal: short and friendly.'},
+    {id:'see-you',img:7578962,alt:'People waving at each other',text:'See you!',say:'See you!',note:'Informal: you hope to meet again.'},
+    {id:'see-later',img:10487717,alt:'Person waving while walking away',text:'See you later!',say:'See you later!',note:'Informal: you expect to meet again.'},
+    {id:'night',img:8406467,alt:'Woman resting in bed at night',text:'Good night!',say:'Good night!',note:'Goodbye, especially before bed.'}]}
+};
+const $ = id => document.getElementById(id);
+const all = Object.values(groups).flatMap(g => g.phrases);
+const heard = new Set();
+let groupKey = 'intro', activeId = 'name', token = 0, timer = null, speaking = false, groupPlaying = false, slowOn = false, cur = null;
+const find = id => all.find(p => p.id === id);
+const catOf = id => Object.keys(groups).find(k => groups[k].phrases.some(p => p.id === id));
+const status = t => { $('status').textContent = t; };
+
+function getVoice(){
+  if (!('speechSynthesis' in window)) return null;
+  const v = speechSynthesis.getVoices();
+  return v.find(x => x.lang.toLowerCase()==='en-gb' && /natural|neural|google|microsoft/i.test(x.name)) || v.find(x => x.lang.toLowerCase()==='en-gb') || v.find(x => /^en-/i.test(x.lang)) || null;
+}
+function setPhoto(p){
+  const a = $('imgA'), b = $('imgB');
+  const next = cur === a ? b : a, prev = cur;
+  if (cur && cur.dataset.id === p.id) return;
+  next.onload = () => { $('stage').classList.remove('fallback'); next.classList.add('on'); if (prev) prev.classList.remove('on'); cur = next; };
+  next.onerror = () => { $('stage').classList.add('fallback'); if (prev) prev.classList.remove('on'); cur = next; };
+  next.dataset.id = p.id; next.alt = p.alt; next.src = P(p.img, 1100, 800);
+}
+function renderTabs(){
+  const box = $('tabs'); box.replaceChildren();
+  Object.entries(groups).forEach(([k,g]) => {
+    const t = document.createElement('button');
+    t.type='button'; t.className='tab'; t.id='tab-'+k; t.setAttribute('role','tab');
+    t.setAttribute('aria-selected', String(k===groupKey)); t.tabIndex = k===groupKey?0:-1; t.dataset.k = k;
+    t.setAttribute('aria-controls','list');
+    const pips = g.phrases.map(p => `<i class="${heard.has(p.id)?'on':''}"></i>`).join('');
+    t.innerHTML = `<span>${g.title}</span><span class="pips" aria-hidden="true">${pips}</span>`;
+    t.addEventListener('click', () => setGroup(k));
+    t.addEventListener('keydown', e => {
+      const keys = Object.keys(groups), i = keys.indexOf(k);
+      if (!['ArrowLeft','ArrowRight','Home','End'].includes(e.key)) return;
+      e.preventDefault();
+      const n = e.key==='Home'?0:e.key==='End'?keys.length-1:(i+(e.key==='ArrowRight'?1:-1)+keys.length)%keys.length;
+      setGroup(keys[n]); $('tab-'+keys[n]).focus();
+    });
+    box.append(t);
+  });
+}
+function renderList(){
+  const ul = $('list'); ul.replaceChildren(); ul.setAttribute('aria-labelledby','tab-'+groupKey);
+  groups[groupKey].phrases.forEach(p => {
+    const li = document.createElement('li'), b = document.createElement('button');
+    b.type='button'; b.className='row'+(heard.has(p.id)?' heard':'')+(speaking&&p.id===activeId?' live':'');
+    b.setAttribute('aria-current', String(p.id===activeId));
+    b.setAttribute('aria-label', `Hear: ${p.text}. ${p.note}`);
+    b.innerHTML = `<span class="thumb"><span>${p.text.slice(0,2)}</span><img alt="" loading="lazy" src="${P(p.img,120,120)}"><span class="tick" aria-hidden="true">✓</span></span><span class="rt"><b></b><span></span></span><span class="spk" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15 9a5 5 0 0 1 0 6"/></svg></span>`;
+    b.querySelector('b').textContent = p.text; b.querySelector('.rt span').textContent = p.note;
+    b.querySelector('img').addEventListener('error', e => e.target.remove());
+    b.addEventListener('click', () => { stop(true); say(p.id); });
+    li.append(b); ul.append(li);
+  });
+}
+function updateStage(){
+  const p = find(activeId);
+  $('word').textContent = p.text; $('note').textContent = p.note; $('cat').textContent = groups[catOf(activeId)].title;
+  $('stage').classList.toggle('speaking', speaking);
+  $('play').setAttribute('aria-label', speaking ? 'Stop audio' : 'Hear this phrase');
+  $('slow').setAttribute('aria-pressed', String(slowOn));
+  $('all-label').textContent = groupPlaying ? 'Stop' : 'Play all';
+  document.querySelectorAll('.pairbtn').forEach(b => b.classList.toggle('on', b.dataset.id === activeId));
+  $('heard-count').textContent = `${heard.size} / ${all.length} heard`;
+  $('heard-fill').style.width = `${heard.size/all.length*100}%`;
+  setPhoto(p);
+}
+function refresh(){ renderTabs(); renderList(); updateStage(); }
+function setGroup(k, cancel = true){
+  if (cancel) stop(true);
+  groupKey = k; if (catOf(activeId) !== k) activeId = groups[k].phrases[0].id;
+  $('desc').textContent = groups[k].desc; refresh();
+}
+function stop(silent){
+  token++; groupPlaying = false; speaking = false; slowOn = false;
+  if (timer !== null){ clearTimeout(timer); timer = null; }
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+  if (!silent) status('Audio stopped. Choose a phrase to continue.');
+  refresh();
+}
+function say(id, slow = false, after = null){
+  const p = find(id); if (!p) return;
+  if (!('speechSynthesis' in window) || !('SpeechSynthesisUtterance' in window)){ status('Speech is not available in this browser.'); return; }
+  if (timer !== null){ clearTimeout(timer); timer = null; }
+  const my = ++token; speechSynthesis.cancel();
+  speaking = false; slowOn = slow;
+  if (catOf(id) !== groupKey){ groupKey = catOf(id); $('desc').textContent = groups[groupKey].desc; }
+  activeId = id; refresh();
+  const u = new SpeechSynthesisUtterance(p.say);
+  u.lang = 'en-GB'; u.rate = slow ? .67 : .86; const v = getVoice(); if (v) u.voice = v;
+  u.onstart = () => { if (my !== token) return; speaking = true; heard.add(id); refresh(); status(slow ? `Slowly: ${p.say}` : `Playing: ${p.say}`); };
+  u.onend = () => {
+    if (my !== token) return;
+    speaking = false; slowOn = false; refresh();
+    if (after) timer = setTimeout(() => { timer = null; if (my === token) after(); }, 650);
+    else { groupPlaying = false; refresh(); status('Your turn! Say it out loud.'); }
+  };
+  u.onerror = e => {
+    if (my !== token) return;
+    speaking = false; groupPlaying = false; slowOn = false; refresh();
+    if (!['interrupted','canceled'].includes(e.error)) status('Could not play the audio. Please try again.');
+  };
+  speechSynthesis.speak(u);
+}
+function playGroup(){
+  stop(true); groupPlaying = true;
+  const q = groups[groupKey].phrases.map(p => p.id); let i = 0;
+  const next = () => {
+    if (!groupPlaying) return;
+    if (i >= q.length){ groupPlaying = false; speaking = false; refresh(); status('Great listening! Now say each phrase yourself.'); return; }
+    say(q[i++], false, next);
+  };
+  next();
+}
+$('play').addEventListener('click', () => { if (speaking) stop(); else { stop(true); say(activeId); } });
+$('slow').addEventListener('click', () => { stop(true); say(activeId, true); });
+$('all').addEventListener('click', () => { if (groupPlaying) stop(); else playGroup(); });
+document.querySelectorAll('.pairbtn').forEach(b => b.addEventListener('click', () => { stop(true); say(b.dataset.id); }));
+$('reset').addEventListener('click', () => window.resetSlide());
+window.stopSlideAudio = () => stop(true);
+window.resetSlide = () => { stop(true); heard.clear(); activeId = 'name'; setGroup('intro'); status('Choose a phrase or press the big button.'); };
+window.addEventListener('pagehide', () => stop(true));
+document.addEventListener('visibilitychange', () => { if (document.hidden) stop(true); });
+if ('speechSynthesis' in window) speechSynthesis.onvoiceschanged = () => {};
+setGroup('intro', false);
+})();
+</script>
+</body>
+</html>

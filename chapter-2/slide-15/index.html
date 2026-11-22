@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0f172a">
+  <title>Lesson Complete | Boston English Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    (() => {
+      let theme = null;
+      try {
+        if (parent !== window) theme = parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
+      } catch (_) {}
+      if (!theme) { try { theme = localStorage.getItem('editor-theme-preference'); } catch (_) {} }
+      if (theme !== 'dark' && theme !== 'light') theme = matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+      window.setTheme = next => document.documentElement.classList.toggle('dark', next === 'dark');
+    })();
+  </script>
+<style>
+*,*::before,*::after{box-sizing:border-box}[hidden]{display:none!important}
+:root{color-scheme:light;--bg:#f8fafc;--card:#fff;--text:#14223a;--muted:#566983;--border:#d5deeb;--soft:#eef1ff;--accent:#554ae6;--start:#384fc7;--end:#2769cd;--good:#007f56;--good-bg:#dcfaeb;--bad:#aa3655}
+:root.dark{color-scheme:dark;--bg:#0f172a;--card:#1e293b;--text:#f8fafc;--muted:#c0cce0;--border:#374760;--soft:#2b3557;--accent:#a5adff;--start:#6861f4;--end:#3c79f4;--good:#9af1c1;--good-bg:#153e35;--bad:#ff9eaf}
+body{margin:0;background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',system-ui,sans-serif}button{font:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #f59e0b;outline-offset:4px}button:disabled{cursor:default}
+main{min-height:100dvh;padding:clamp(24px,4vh,48px) clamp(16px,4vw,54px);background:radial-gradient(circle at 4% 4%,rgba(99,102,241,.12),transparent 32%),var(--bg);display:flex;align-items:center;justify-content:center}.content{width:100%;max-width:1080px}header{text-align:center;margin-bottom:24px}.eyebrow{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.13em;margin:0 0 10px}h1{font-size:clamp(34px,5vw,62px);line-height:1.12;letter-spacing:-.05em;margin:0;background:linear-gradient(105deg,var(--start),var(--end));background-clip:text;-webkit-background-clip:text;color:transparent} .subtitle{color:var(--muted);font-size:clamp(14px,1.5vw,18px);line-height:1.6;margin:12px 0 0}.primary{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:12px 26px;border:1px solid #7c6dff;border-radius:14px;background:linear-gradient(110deg,#5949ec,#7431d4);color:white;font-weight:800}.primary:hover{filter:brightness(1.1)}.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:20px}.status{text-align:center;color:var(--muted);font-size:14px;min-height:1.5em;margin:14px 0 0}
+.content{text-align:center;max-width:900px}header{margin-bottom:10px}h2{font-size:clamp(20px,2.5vw,28px);margin:10px 0 0}.hero{display:block;max-width:100%;width:min(490px,56vh);height:auto;margin:10px auto;object-fit:contain}.message{max-width:650px;margin:12px auto;color:var(--muted);font-size:clamp(14px,1.6vw,18px);line-height:1.6}.recap{list-style:none;display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:16px 0;padding:0}.recap li{border:1px solid var(--border);background:var(--card);padding:8px 12px;border-radius:12px;font-size:13px;font-weight:700}.closing{color:var(--muted);font-size:13px;margin:14px 0 0}@media(max-width:500px){.hero{width:min(100%,380px)}.recap{gap:6px}.recap li{font-size:12px}}</style></head><body><main><div class="content"><header><p class="eyebrow">UNIT 1 · LESSON 2 COMPLETE</p><h1>You Did It!</h1><h2>Great Job!</h2></header><img class="hero" src="assets/lesson-complete.png" width="1000" height="667" alt="Sara and Ahmed smiling, waving, and giving thumbs-up to celebrate finishing the lesson"><p class="message">You've finished Hello, I'm...! Keep practicing your greetings, introductions, and English numbers.</p><ul class="recap" aria-label="What you learned"><li>Greetings &amp; Goodbyes</li><li>Introducing Yourself</li><li>I'm, You're, He's &amp; She's</li><li>Numbers 20–50</li></ul><div class="actions"><button class="primary" id="restart" type="button">Start Again</button></div><p class="closing">Keep learning. Keep growing.</p><p class="status" id="navigation-status" role="status"></p></div></main><script>function navigateTo(path,status){try{const reader=window.parent;if(reader!==window && typeof reader.goToSlidePath==='function' && reader.goToSlidePath(path))return;}catch(_){}document.getElementById(status).textContent='Open this lesson in the reader to continue.';}window.stopSlideAudio=()=>{};window.resetSlide=()=>{document.getElementById('navigation-status').textContent=''};document.getElementById('restart').addEventListener('click',()=>navigateTo('chapter-2/slide-1/index.html','navigation-status'));</script></body></html>

@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0f172a">
+<title>Practices 3–5 · I'm, You're, He's, She's | Boston English Center</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+(function () {
+  let t = null;
+  try { if (window.parent !== window) t = window.parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light'; } catch (_) {}
+  if (!t) { try { t = localStorage.getItem('editor-theme-preference'); } catch (_) {} }
+  if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  document.documentElement.classList.toggle('dark', t === 'dark');
+  window.setTheme = function (theme) { document.documentElement.classList.toggle('dark', theme === 'dark'); };
+})();
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+:root{
+  color-scheme:light;
+  --page:#f6f7fb;--panel:#fff;--panel2:#eef1fa;--text:#12203a;--muted:#55678a;--line:#d5ddee;
+  --accent:#4a3fe0;--accent2:#2f6df0;--accent-soft:#e9ecff;
+  --ok:#007a56;--ok-soft:#d7f7e8;--ok-line:#5fcf9f;
+  --bad:#a8294c;--bad-soft:#ffeaf0;--bad-line:#f0a9bf;
+  --scene1:#0f1b3d;--scene2:#2a2a86;
+}
+:root.dark{
+  color-scheme:dark;
+  --page:#0b1223;--panel:#1a2438;--panel2:#141d31;--text:#f4f7fc;--muted:#b6c4dc;--line:#33435f;
+  --accent:#b0b9ff;--accent2:#7fa8ff;--accent-soft:#2a3258;
+  --ok:#8df0ba;--ok-soft:#10382f;--ok-line:#2a8a6c;
+  --bad:#ff9db1;--bad-soft:#4a2638;--bad-line:#a14b69;
+  --scene1:#0a1330;--scene2:#23237a;
+}
+html,body{margin:0;min-height:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:var(--page);color:var(--text)}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid #f5a30b;outline-offset:3px}
+svg{display:block}
+
+.app{min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto;gap:clamp(10px,2vh,18px);
+  padding:clamp(12px,2.2vh,24px) clamp(12px,2.6vw,40px);max-width:1360px;margin:auto}
+
+/* Top: title + journey */
+.top{display:flex;align-items:center;gap:clamp(10px,2vw,28px);flex-wrap:wrap}
+.title{margin:0;font-size:clamp(20px,2.4vw,32px);font-weight:800;letter-spacing:-.035em;line-height:1.1;
+  background:linear-gradient(105deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.title small{display:block;font-size:12px;font-weight:700;letter-spacing:0;color:var(--muted);-webkit-text-fill-color:var(--muted);margin-top:4px}
+.journey{flex:1 1 380px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;min-width:0}
+.leg{display:flex;flex-direction:column;gap:7px;text-align:left;padding:9px 12px;border:1px solid var(--line);border-radius:14px;background:var(--panel);min-width:0;transition:border-color .2s,background .2s}
+.leg:disabled{opacity:.55;cursor:default}
+.leg:not(:disabled):hover{border-color:var(--accent)}
+.leg[aria-selected=true]{border-color:var(--accent);background:var(--accent-soft)}
+.leg-name{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dots{display:flex;gap:4px}
+.dot{flex:1;height:7px;border-radius:9px;background:var(--line);transition:background .3s}
+.dot.done{background:linear-gradient(90deg,#28c2b8,#5b5cf0)}
+.dot.now{background:var(--accent);opacity:.55}
+.stars{font-weight:800;font-size:15px;padding:9px 14px;border:1px solid var(--line);border-radius:14px;background:var(--panel);white-space:nowrap}
+.stars b{color:#d99a0b}
+
+/* Stage */
+.stage{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:clamp(12px,2vw,26px);min-height:0}
+.scene{position:relative;border-radius:28px;overflow:hidden;color:#fff;
+  background:radial-gradient(circle at 25% 15%,rgba(120,110,255,.45),transparent 55%),linear-gradient(160deg,var(--scene2),var(--scene1));
+  display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:18px;min-height:320px}
+.scene .pill{position:absolute;left:16px;top:16px;font-size:13px;font-weight:700;padding:7px 13px;border-radius:99px;background:rgba(255,255,255,.14);backdrop-filter:blur(6px);max-width:calc(100% - 32px)}
+.scene .bubble{position:absolute;right:16px;top:58px;max-width:55%;background:#fff;color:#14233c;border-radius:18px 18px 4px 18px;padding:10px 14px;box-shadow:0 8px 22px rgba(0,0,0,.25)}
+.bubble span{display:block;font-size:11px;font-weight:700;color:#5a6a8c}
+.bubble strong{font-size:clamp(17px,1.8vw,24px);letter-spacing:-.02em}
+.art{width:min(100%,360px);flex:1;min-height:0;display:grid;place-items:end center;margin-top:44px}
+.art svg,.art img{width:100%;height:100%;max-height:52vh;object-fit:cover}
+.art img{width:auto;max-width:100%}
+.art img{border-radius:22px;aspect-ratio:4/5;object-position:center 20%;box-shadow:0 14px 34px rgba(0,0,0,.35);border:3px solid rgba(255,255,255,.85)}
+.nameplate{margin-top:8px;font-size:clamp(22px,2.4vw,32px);font-weight:800;letter-spacing:-.03em}
+.badge{position:absolute;right:18px;bottom:62px;font-size:13px;font-weight:800;background:rgba(255,255,255,.95);color:#22305a;padding:7px 12px;border-radius:12px;box-shadow:0 6px 16px rgba(0,0,0,.25)}
+
+.play{display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,2.4vh,22px);background:var(--panel);border:1px solid var(--line);border-radius:28px;padding:clamp(16px,2.6vw,34px)}
+.ask{margin:0;color:var(--muted);font-weight:700;font-size:clamp(14px,1.3vw,17px)}
+.full{margin:0;color:var(--muted);font-weight:700;font-size:clamp(16px,1.6vw,21px)}
+.full s{text-decoration-thickness:2px}
+.sentence{margin:0;font-size:clamp(30px,4.2vw,58px);line-height:1.28;font-weight:800;letter-spacing:-.045em;overflow-wrap:anywhere}
+.slot{display:inline-block;min-width:1.5em;padding:0 .22em;border-radius:.22em;border:3px dashed var(--accent);color:var(--accent);background:var(--accent-soft);text-align:center;vertical-align:baseline;transition:background .25s,color .25s,border-color .25s}
+.slot.filled{border-style:solid;border-color:var(--ok-line);background:var(--ok-soft);color:var(--ok);animation:pop .35s cubic-bezier(.3,1.6,.5,1)}
+@keyframes pop{from{transform:scale(.8)}to{transform:scale(1)}}
+.options{display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:12px}
+.opt{position:relative;min-height:clamp(68px,11vh,100px);border-radius:20px;border:2px solid var(--line);background:var(--panel2);font-weight:800;font-size:clamp(24px,3vw,40px);letter-spacing:-.03em;
+  transition:transform .15s,border-color .15s,background .15s}
+.opt kbd{position:absolute;left:10px;top:8px;font:700 11px 'Plus Jakarta Sans',sans-serif;color:var(--muted);opacity:.8}
+.opt:not(:disabled):hover{transform:translateY(-3px);border-color:var(--accent);background:var(--accent-soft)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-soft);border-color:var(--ok-line);color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad-line);color:var(--bad);animation:shake .3s}
+.opt.dim{opacity:.45}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.fb{display:flex;align-items:center;gap:14px;min-height:72px;padding:10px 14px;border-radius:18px;border:1px solid var(--line);background:var(--panel2)}
+.fb.good{background:var(--ok-soft);border-color:var(--ok-line)}
+.fb.bad{background:var(--bad-soft);border-color:var(--bad-line)}
+.fb p{margin:0}
+.fb-main{flex:1;min-width:0}
+.fb-title{font-weight:800;font-size:15px}
+.fb-sub{font-weight:600;font-size:13px;color:var(--muted);margin-top:2px}
+.fb.good .fb-title{color:var(--ok)}.fb.bad .fb-title{color:var(--bad)}
+.listen{display:inline-flex;align-items:center;gap:10px;min-height:48px;padding:0 16px;border-radius:14px;border:2px solid var(--ok-line);background:var(--panel);color:var(--ok);font-weight:800;font-size:14px;white-space:nowrap}
+.listen svg{width:20px;height:20px}
+.wave{display:none;gap:3px;align-items:center;height:20px}
+.wave i{width:3px;background:currentColor;border-radius:3px;height:8px;animation:bar .7s ease-in-out infinite}
+.wave i:nth-child(2){animation-delay:.12s}.wave i:nth-child(3){animation-delay:.24s}.wave i:nth-child(4){animation-delay:.36s}
+@keyframes bar{50%{height:20px}}
+.listen.speaking{background:var(--ok-soft)}
+.listen.speaking .wave{display:flex}.listen.speaking .ico{display:none}
+
+.bottom{display:flex;gap:10px;justify-content:space-between;align-items:center}
+.btn{min-height:48px;padding:0 20px;border-radius:14px;border:1px solid var(--line);background:var(--panel);font-weight:800;font-size:14px;transition:transform .15s,filter .15s}
+.btn:not(:disabled):hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primary{background:linear-gradient(110deg,#4570f2,#7a3ede);color:#fff;border-color:transparent;font-size:16px;padding:0 28px;box-shadow:0 8px 18px rgba(80,70,210,.25)}
+.btn.primary:disabled{box-shadow:none}
+.hint{color:var(--muted);font-size:12px;font-weight:600}
+
+/* Finish */
+.done-screen{grid-row:1/-1;display:grid;place-items:center;text-align:center;padding:30px 16px;border-radius:32px;color:#fff;
+  background:radial-gradient(circle at 20% 10%,rgba(125,115,255,.5),transparent 50%),linear-gradient(160deg,var(--scene2),var(--scene1))}
+.done-screen h2{font-size:clamp(34px,6vw,72px);letter-spacing:-.05em;margin:6px 0;line-height:1}
+.done-screen p{margin:0 auto;max-width:520px;font-weight:600;line-height:1.6;color:#d6dcff}
+.big{font-size:clamp(60px,12vw,140px);font-weight:800;letter-spacing:-.06em;line-height:1}
+.big small{font-size:.3em;color:#bcc4ff;letter-spacing:0}
+.recap{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin:20px 0 26px}
+.recap span{padding:9px 15px;border-radius:99px;background:rgba(255,255,255,.14);font-weight:800;font-size:14px}
+.done-screen .btn{background:#fff;color:#2a2a86;border:0}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+@media (max-width:860px){
+  .stage{grid-template-columns:1fr}
+  .scene{min-height:0;flex-direction:row;align-items:flex-end;justify-content:space-between;padding:14px 16px 0;gap:8px}
+  .art{width:40%;max-width:200px;margin-top:46px;flex:none}
+  .art svg,.art img{max-height:30vh}
+  .nameplate{position:absolute;left:18px;bottom:14px;margin:0}
+  .scene .bubble{top:56px;right:16px;max-width:52%}
+  .badge{bottom:14px;right:14px}
+  .scene{min-height:230px}
+}
+@media (max-width:540px){
+  .journey{flex-basis:100%;order:3}
+  .stars{margin-left:auto}
+  .leg-name{font-size:12px}
+  .options{grid-template-columns:1fr 1fr}
+  .opt:last-child:nth-child(odd){grid-column:1/-1}
+  .fb{flex-wrap:wrap}
+  .hint{display:none}
+  .btn.primary{flex:1}
+}
+@media (max-height:620px) and (min-width:861px){.scene{min-height:0}.opt{min-height:60px}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<main class="app">
+  <header class="top">
+    <h1 class="title">I'm, You're, He's, She's<small>Pick the word. Hear the whole sentence. Say it aloud.</small></h1>
+    <div class="journey" id="journey" role="tablist" aria-label="Practice sections"></div>
+    <div class="stars" aria-label="Correct answers"><b aria-hidden="true">★</b> <span id="score">0 / 16</span></div>
+  </header>
+
+  <section class="stage" id="stage" aria-label="Grammar practice">
+    <div class="scene" id="scene"></div>
+    <div class="play">
+      <p class="ask" id="ask"></p>
+      <p class="full" id="full" hidden></p>
+      <p class="sentence" id="sentence" aria-live="off"></p>
+      <div class="options" id="options" role="group" aria-label="Answer choices"></div>
+      <div class="fb" id="fb" aria-live="polite" aria-atomic="true"></div>
+    </div>
+  </section>
+
+  <footer class="bottom" id="bottom">
+    <button class="btn" id="reset" type="button">Start again</button>
+    <span class="hint">Tip: press 1, 2 or 3 to answer. Press Enter for next.</span>
+    <button class="btn primary" id="next" type="button" disabled>Next</button>
+  </footer>
+
+  <section class="done-screen" id="finish" hidden>
+    <div>
+      <div class="big" id="finish-score">16<small> / 16</small></div>
+      <h2>Great speaking!</h2>
+      <p>You can now use <strong>I'm, you're, he's</strong> and <strong>she's</strong> in short, natural sentences.</p>
+      <div class="recap"><span>✓ He or she?</span><span>✓ Make it short</span><span>✓ Complete it</span></div>
+      <button class="btn" id="again" type="button">Practice again</button>
+    </div>
+  </section>
+  <p class="sr" id="status" role="status" aria-live="polite"></p>
+</main>
+
+<script>
+(() => {
+'use strict';
+const $ = id => document.getElementById(id);
+const SPK = '<svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg><span class="wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span>';
+
+/* Real photos (Unsplash, free licence, direct links). If one fails to load, the built-in illustration is shown instead. */
+const U = (id) => `https://images.unsplash.com/photo-${id}?fm=jpg&q=70&w=700&h=875&fit=crop&crop=faces&auto=format`;
+const PHOTOS = {
+  ahmed: { url: U('1507003211169-0a1dd7228f2d'), alt: 'Photo of a young man in a white T-shirt: Ahmed' },
+  sara:  { url: U('1580489944761-15a19d654956'), alt: 'Photo of a smiling young woman in a white top: Sara' },
+  omar:  { url: U('1500648767791-00dcc994a43e'), alt: 'Photo of a young man with a beard: Omar' },
+  lina:  { url: U('1544005313-94ddf0286df2'),   alt: 'Photo of a smiling woman in a striped shirt: Lina' }
+};
+
+const S = [
+ { name:'He or she?', label:'Practice 3', ask:'Look at the person. Is it he or she?', mode:'person', items:[
+  { who:'ahmed', name:'Ahmed', tag:'Ahmed is a boy', correct:'He', options:['He','She'], sentence:"He's Ahmed." },
+  { who:'sara', name:'Sara', tag:'Sara is a girl', correct:'She', options:['He','She'], sentence:"She's Sara." },
+  { who:'omar', name:'Omar', tag:'Omar is a boy', correct:'He', options:['She','He'], sentence:"He's Omar." },
+  { who:'lina', name:'Lina', tag:'Lina is a girl', correct:'She', options:['He','She'], sentence:"She's Lina." } ]},
+ { name:'Make it short', label:'Practice 4', ask:'Say it with a short form.', mode:'short', items:[
+  { who:'sara', name:'Sara', tag:'Sara talks about herself', prompt:'I am Sara.', correct:"I'm", options:["I'm","You're","She's"], sentence:"I'm Sara." },
+  { who:'ahmed', name:'Ahmed', tag:'Talking to Ahmed', prompt:'You are Ahmed.', correct:"You're", options:["He's","You're","I'm"], sentence:"You're Ahmed." },
+  { who:'omar', name:'Omar', tag:'Talking about Omar', prompt:'He is Omar.', correct:"He's", options:["She's","I'm","He's"], sentence:"He's Omar." },
+  { who:'lina', name:'Lina', tag:'Talking about Lina', prompt:'She is Lina.', correct:"She's", options:["You're","She's","He's"], sentence:"She's Lina." },
+  { who:'sara', name:'Sara', tag:'Sara talks about herself', badge:'📍 Morocco', prompt:'I am from Morocco.', correct:"I'm", options:["You're","I'm","He's"], sentence:"I'm from Morocco." },
+  { who:'lina', name:'Lina', tag:'Talking about Lina', badge:'📚 Student', prompt:'She is a student.', correct:"She's", options:["He's","She's","I'm"], sentence:"She's a student." } ]},
+ { name:'Complete it', label:'Practice 5', ask:'Choose the missing word.', mode:'complete', items:[
+  { who:'sara', name:'Sara', tag:'Sara says hello', prompt:'Hello! ___ Sara.', correct:"I'm", options:["I'm","You're","He's"], sentence:"Hello! I'm Sara." },
+  { who:'ahmed', name:'Ahmed', tag:'Talking about Ahmed', badge:'📍 Morocco', prompt:'This is Ahmed. ___ from Morocco.', correct:"He's", options:["She's","He's","I'm"], sentence:"This is Ahmed. He's from Morocco." },
+  { who:'lina', name:'Lina', tag:'Talking about Lina', badge:'📚 Student', prompt:'This is Lina. ___ a student.', correct:"She's", options:["You're","I'm","She's"], sentence:"This is Lina. She's a student." },
+  { who:'ahmed', name:'Ahmed', tag:'Talking to Ahmed', badge:'🤝 Friend', prompt:'Ahmed, ___ my friend.', correct:"You're", options:["You're","He's","She's"], sentence:"Ahmed, you're my friend." },
+  { who:'omar', name:'Omar', tag:'Omar says hi', badge:'👋 New', prompt:'Hi! ___ new here.', correct:"I'm", options:["She's","I'm","You're"], sentence:"Hi! I'm new here." },
+  { who:'omar', name:'Omar', tag:'Talking about Omar', badge:'🎂 20', prompt:'This is Omar. ___ twenty years old.', correct:"He's", options:["You're","She's","He's"], sentence:"This is Omar. He's twenty years old." } ]}
+];
+const TOTAL = S.reduce((n,s)=>n+s.items.length,0);
+let st=0, idx=[0,0,0], done=S.map(s=>s.items.map(()=>false)), tried=new Set(), finished=false, token=0;
+
+const esc = s => String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const q = () => S[st].items[idx[st]];
+const answered = () => done[st][idx[st]];
+const count = () => done.flat().filter(Boolean).length;
+const unlocked = i => i===0 || S.slice(0,i).every((_,k)=>done[k].every(Boolean));
+
+/* Illustrations (self-contained SVG) */
+function avatar(type){
+  const P={ahmed:{skin:'#e2a17b',hair:'#25263d',top:'#35b077',bg:'#ddf7e7',style:'short'},
+    sara:{skin:'#d99a72',hair:'#3f293a',top:'#db6b8f',bg:'#ffe6ef',style:'bob'},
+    omar:{skin:'#b97752',hair:'#272a36',top:'#567cf0',bg:'#e4ebff',style:'curly'},
+    lina:{skin:'#d79a79',hair:'#5841aa',top:'#6f54cc',bg:'#efe5ff',style:'scarf'}};
+  const p=P[type]||P.ahmed; let hair='';
+  if(p.style==='scarf') hair=`<path d="M82 104c-9-40 12-67 49-67 35 0 51 26 46 67l-14 45-12-9 0-30-44 1v29l-12 10Z" fill="${p.hair}"/><path d="M91 80q32-49 68-3l-3 17q-31-16-62-1Z" fill="${p.hair}"/>`;
+  else if(p.style==='bob') hair=`<path d="M84 98Q73 42 128 39q56-3 49 56l-3 36h-19V83l-56 2 4 46H86Z" fill="${p.hair}"/>`;
+  else if(p.style==='curly') hair=`<path d="M83 97q-15-35 12-48 6-23 25-16 21-20 39 1 30-1 28 31 12 17-4 34l-11-8-4-19-64 11-11 15Z" fill="${p.hair}"/><circle cx="96" cy="58" r="13" fill="${p.hair}"/><circle cx="123" cy="45" r="16" fill="${p.hair}"/><circle cx="150" cy="51" r="15" fill="${p.hair}"/>`;
+  else hair=`<path d="M84 90q-12-53 44-55 56 0 47 53l-9-8-5-19q-24 20-68 20Z" fill="${p.hair}"/>`;
+  return `<svg viewBox="0 0 260 218" role="img" aria-label="Cartoon portrait of ${esc(type)}"><circle cx="130" cy="112" r="98" fill="${p.bg}"/>
+  <path d="M60 218q4-73 67-76 76-5 82 76Z" fill="${p.top}"/><path d="M126 123v25" stroke="${p.skin}" stroke-width="22" stroke-linecap="round"/>${hair}
+  <ellipse cx="130" cy="103" rx="40" ry="49" fill="${p.skin}"/><ellipse cx="90" cy="105" rx="7" ry="12" fill="${p.skin}"/><ellipse cx="170" cy="105" rx="7" ry="12" fill="${p.skin}"/>
+  <path d="M108 98q7-5 15 0m14 0q8-5 15 0" fill="none" stroke="#523a42" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="117" cy="104" r="3.5" fill="#253248"/><circle cx="144" cy="104" r="3.5" fill="#253248"/>
+  <path d="M123 121q8 8 17 0" stroke="#9e4e5f" stroke-width="3.3" fill="none" stroke-linecap="round"/>
+  <circle cx="106" cy="119" r="7" fill="#ec8e8f" opacity=".5"/><circle cx="155" cy="119" r="7" fill="#ec8e8f" opacity=".5"/></svg>`;
+}
+function art(item){
+  const p=PHOTOS[item.who];
+  if(!p||!p.url) return avatar(item.who);
+  return `<img src="${esc(p.url)}" alt="${esc(p.alt)}" referrerpolicy="no-referrer" onerror="this.outerHTML=window.__fallback('${item.who}')">`;
+}
+window.__fallback = avatar;
+
+/* Speech */
+function stopAudio(){
+  token++;
+  $('status').textContent='';
+  const b=$('repeat'); if(b) b.classList.remove('speaking');
+  try{ if('speechSynthesis' in window) speechSynthesis.cancel(); }catch(_){}
+}
+window.stopSlideAudio = stopAudio;
+function speak(text){
+  stopAudio();
+  if(!('speechSynthesis' in window)){ $('status').textContent='Audio is not supported in this browser.'; return; }
+  const my=++token, u=new SpeechSynthesisUtterance(text);
+  u.lang='en-GB'; u.rate=.82; u.pitch=1; u.volume=1;
+  try{
+    const v=speechSynthesis.getVoices();
+    const pick=v.find(x=>x.lang.toLowerCase()==='en-gb'&&x.localService)||v.find(x=>x.lang.toLowerCase()==='en-gb')||v.find(x=>x.lang.toLowerCase().startsWith('en'));
+    if(pick) u.voice=pick;
+  }catch(_){}
+  const on=()=>{ if(my!==token) return; const b=$('repeat'); if(b) b.classList.add('speaking'); };
+  const off=()=>{ if(my!==token) return; const b=$('repeat'); if(b) b.classList.remove('speaking'); };
+  u.onstart=on; u.onend=off;
+  u.onerror=e=>{ off(); if(my===token&&e.error!=='canceled'&&e.error!=='interrupted') $('status').textContent='Audio could not be played. Read the sentence aloud.'; };
+  try{ speechSynthesis.speak(u); }catch(_){ off(); }
+}
+
+/* Rendering */
+function renderJourney(){
+  const j=$('journey'); j.replaceChildren();
+  S.forEach((s,i)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='leg'; b.disabled=!unlocked(i);
+    b.setAttribute('role','tab'); b.setAttribute('aria-selected',String(i===st&&!finished));
+    b.setAttribute('aria-label',`${s.label}: ${s.name}, ${done[i].filter(Boolean).length} of ${s.items.length} done`);
+    b.innerHTML=`<span class="leg-name">${esc(s.label)} · ${esc(s.name)}</span><span class="dots">${s.items.map((_,k)=>`<i class="dot${done[i][k]?' done':(i===st&&k===idx[i]&&!finished?' now':'')}"></i>`).join('')}</span>`;
+    b.addEventListener('click',()=>{ if(!unlocked(i)) return; stopAudio(); st=i; finished=false; tried=new Set(); render(); });
+    j.append(b);
+  });
+  $('score').textContent=`${count()} / ${TOTAL}`;
+}
+function renderScene(item,mode){
+  const bubble = mode==='short' ? `<div class="bubble"><span>Full form</span><strong>${esc(item.prompt)}</strong></div>` : '';
+  $('scene').innerHTML=`<div class="pill">${esc(item.tag)}</div>${bubble}<div class="art">${art(item)}</div><div class="nameplate">${esc(item.name)}</div>${item.badge?`<div class="badge">${esc(item.badge)}</div>`:''}`;
+}
+function renderSentence(item){
+  const ok=answered(), s=item.sentence, i=s.toLowerCase().indexOf(item.correct.toLowerCase());
+  const pre=s.slice(0,i), post=s.slice(i+item.correct.length);
+  $('sentence').innerHTML=`${esc(pre)}<span class="slot${ok?' filled':''}">${ok?esc(s.slice(i,i+item.correct.length)):'?'}</span>${esc(post)}`;
+}
+function renderOptions(item){
+  const o=$('options'); o.replaceChildren(); o.style.setProperty('--n',item.options.length);
+  item.options.forEach((c,k)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='opt'; b.dataset.c=c;
+    b.setAttribute('aria-label',`Answer ${k+1}: ${c}`);
+    b.innerHTML=`<kbd aria-hidden="true">${k+1}</kbd>${esc(c)}`;
+    if(answered()){ b.disabled=true; b.classList.add(c===item.correct?'right':'dim'); }
+    else if(tried.has(c)){ b.disabled=true; b.classList.add('wrong'); b.setAttribute('aria-label',`${c}, not correct`); }
+    b.addEventListener('click',()=>pick(c));
+    o.append(b);
+  });
+}
+function renderFeedback(item){
+  const f=$('fb'); f.className='fb';
+  if(answered()){
+    f.classList.add('good');
+    f.innerHTML=`<div class="fb-main"><p class="fb-title">Correct! Listen and repeat:</p><p class="fb-sub">${esc(item.sentence)}</p></div><button class="listen" id="repeat" type="button" aria-label="Hear the complete sentence again">${SPK}<span>Listen again</span></button>`;
+    $('repeat').addEventListener('click',()=>speak(item.sentence));
+  } else if(tried.size){
+    f.classList.add('bad');
+    f.innerHTML=`<div class="fb-main"><p class="fb-title">Not quite. Try another word.</p><p class="fb-sub">Hint: ${esc(item.tag)}.</p></div>`;
+  } else {
+    f.innerHTML=`<div class="fb-main"><p class="fb-title">Your turn</p><p class="fb-sub">Choose a word. You will hear the full sentence.</p></div>`;
+  }
+}
+function render(){
+  renderJourney();
+  $('finish').hidden=!finished;
+  ['stage','bottom'].forEach(id=>$(id).hidden=finished);
+  if(finished){ $('finish-score').innerHTML=`${count()}<small> / ${TOTAL}</small>`; return; }
+  const s=S[st], item=q();
+  $('ask').textContent=s.ask;
+  const full=$('full'); full.hidden=s.mode!=='short';
+  if(s.mode==='short') full.innerHTML=`Full form: <s>${esc(item.prompt)}</s>`;
+  renderScene(item,s.mode); renderSentence(item); renderOptions(item); renderFeedback(item);
+  const last=idx[st]===s.items.length-1;
+  $('next').disabled=!answered();
+  $('next').textContent = last ? (st===S.length-1?'Finish':'Next practice') : 'Next question';
+}
+
+function pick(c){
+  const item=q(); if(answered()||tried.has(c)) return;
+  if(c!==item.correct){
+    tried.add(c); renderOptions(item); renderFeedback(item);
+    const w=[...$('options').children].find(e=>e.dataset.c===c); if(w) w.focus();
+    return;
+  }
+  done[st][idx[st]]=true; tried=new Set();
+  render(); speak(item.sentence);
+  $('next').focus({preventScroll:true});
+}
+function next(){
+  if(!answered()) return;
+  stopAudio();
+  if(idx[st]<S[st].items.length-1) idx[st]++;
+  else if(st<S.length-1) st++;
+  else finished=true;
+  tried=new Set(); render();
+  const f=finished?$('again'):$('options').querySelector('.opt'); if(f) f.focus({preventScroll:true});
+}
+function resetSlide(){
+  stopAudio(); st=0; idx=[0,0,0]; finished=false; tried=new Set();
+  done=S.map(s=>s.items.map(()=>false)); render();
+}
+window.resetSlide=resetSlide;
+$('next').addEventListener('click',next);
+$('reset').addEventListener('click',resetSlide);
+$('again').addEventListener('click',resetSlide);
+document.addEventListener('keydown',e=>{
+  if(finished||e.ctrlKey||e.metaKey||e.altKey) return;
+  if(/^[1-4]$/.test(e.key)){ const o=q().options[+e.key-1]; if(o) pick(o); }
+  else if(e.key==='Enter'&&answered()&&document.activeElement===document.body){ next(); }
+});
+window.addEventListener('pagehide',stopAudio);
+document.addEventListener('visibilitychange',()=>{ if(document.hidden) stopAudio(); });
+render();
+})();
+</script>
+</body>
+</html>

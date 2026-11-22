@@ -1,0 +1,499 @@
+{
+  "duration": 206.766667,
+  "voices": {
+    "ahmed": {
+      "id": "CwhRBWXzGAHq8TQ4Fs17",
+      "name": "Roger"
+    },
+    "sara": {
+      "id": "EXAVITQu4vr4xnSDxMaL",
+      "name": "Sarah"
+    },
+    "narrator": {
+      "id": "hpp4J3VqNfWAUOO0d1Us",
+      "name": "Bella"
+    }
+  },
+  "cues": [
+    {
+      "id": "D01",
+      "voice": "ahmed",
+      "text": "Hello! I'm Ahmed.",
+      "start": 16.35,
+      "max_dur": 2.25,
+      "again": 49.85
+    },
+    {
+      "id": "D02",
+      "voice": "sara",
+      "text": "Hi, Ahmed! I'm Sara.",
+      "start": 19.35,
+      "max_dur": 3.25,
+      "again": 56.1
+    },
+    {
+      "id": "D03",
+      "voice": "ahmed",
+      "text": "Nice to meet you.",
+      "start": 22.85,
+      "max_dur": 1.5,
+      "again": 64.6
+    },
+    {
+      "id": "D04",
+      "voice": "sara",
+      "text": "Nice to meet you, too.",
+      "start": 24.85,
+      "max_dur": 2.25,
+      "again": 69.1
+    },
+    {
+      "id": "D05",
+      "voice": "ahmed",
+      "text": "Where are you from?",
+      "start": 27.6,
+      "max_dur": 1.25,
+      "again": 75.35
+    },
+    {
+      "id": "D06",
+      "voice": "sara",
+      "text": "I'm from Egypt. And you?",
+      "start": 29.35,
+      "max_dur": 3.0,
+      "again": 79.35
+    },
+    {
+      "id": "D07",
+      "voice": "ahmed",
+      "text": "I'm from Jordan.",
+      "start": 32.85,
+      "max_dur": 1.5,
+      "again": 86.85
+    },
+    {
+      "id": "D08",
+      "voice": "sara",
+      "text": "What's your job?",
+      "start": 34.6,
+      "max_dur": 1.25,
+      "again": 91.35
+    },
+    {
+      "id": "D09",
+      "voice": "ahmed",
+      "text": "I'm a teacher. And you?",
+      "start": 36.35,
+      "max_dur": 2.5,
+      "again": 95.35
+    },
+    {
+      "id": "D10",
+      "voice": "sara",
+      "text": "I'm an engineer.",
+      "start": 39.35,
+      "max_dur": 1.5,
+      "again": 101.85
+    },
+    {
+      "id": "D11",
+      "voice": "ahmed",
+      "text": "Goodbye, Sara!",
+      "start": 41.1,
+      "max_dur": 1.75,
+      "again": 106.1
+    },
+    {
+      "id": "D12",
+      "voice": "sara",
+      "text": "Bye! See you!",
+      "start": 43.35,
+      "max_dur": 2.0,
+      "again": 111.35
+    },
+    {
+      "id": "T01",
+      "voice": "narrator",
+      "text": "Welcome to Unit one, lesson two.",
+      "start": 0.75,
+      "max_dur": 1.9,
+      "again": null
+    },
+    {
+      "id": "T02",
+      "voice": "narrator",
+      "text": "Hello! I'm...",
+      "start": 3.25,
+      "max_dur": 1.3,
+      "again": null
+    },
+    {
+      "id": "T03",
+      "voice": "narrator",
+      "text": "Today we'll learn to introduce ourselves!",
+      "start": 4.7,
+      "max_dur": 2.0,
+      "again": null
+    },
+    {
+      "id": "T04",
+      "voice": "narrator",
+      "text": "I am.",
+      "start": 7.3,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "T05",
+      "voice": "narrator",
+      "text": "You are.",
+      "start": 8.3,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "T06",
+      "voice": "narrator",
+      "text": "He is.",
+      "start": 9.4,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "T07",
+      "voice": "narrator",
+      "text": "She is.",
+      "start": 10.4,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "T08",
+      "voice": "narrator",
+      "text": "Listen to Ahmed and Sara.",
+      "start": 12.6,
+      "max_dur": 2.0,
+      "again": null
+    },
+    {
+      "id": "T09",
+      "voice": "narrator",
+      "text": "Now, listen and repeat!",
+      "start": 46.4,
+      "max_dur": 2.2,
+      "again": null
+    },
+    {
+      "id": "G01",
+      "voice": "narrator",
+      "text": "I am.",
+      "start": 118.25,
+      "max_dur": 0.6,
+      "again": null
+    },
+    {
+      "id": "G02",
+      "voice": "narrator",
+      "text": "I'm.",
+      "start": 119.75,
+      "max_dur": 0.6,
+      "again": null
+    },
+    {
+      "id": "G03",
+      "voice": "narrator",
+      "text": "I'm Ahmed. I'm a teacher.",
+      "start": 120.75,
+      "max_dur": 2.8,
+      "again": null
+    },
+    {
+      "id": "G04",
+      "voice": "narrator",
+      "text": "You are.",
+      "start": 124.75,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "G05",
+      "voice": "narrator",
+      "text": "You're.",
+      "start": 126.45,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "G06",
+      "voice": "narrator",
+      "text": "You're Sara. You're an engineer.",
+      "start": 127.5,
+      "max_dur": 3.0,
+      "again": null
+    },
+    {
+      "id": "G07",
+      "voice": "narrator",
+      "text": "He is.",
+      "start": 131.75,
+      "max_dur": 0.6,
+      "again": null
+    },
+    {
+      "id": "G08",
+      "voice": "narrator",
+      "text": "He's.",
+      "start": 133.25,
+      "max_dur": 0.6,
+      "again": null
+    },
+    {
+      "id": "G09",
+      "voice": "narrator",
+      "text": "He's Ahmed. He's from Jordan.",
+      "start": 134.25,
+      "max_dur": 3.1,
+      "again": null
+    },
+    {
+      "id": "G10",
+      "voice": "narrator",
+      "text": "She is.",
+      "start": 138.75,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "G11",
+      "voice": "narrator",
+      "text": "She's.",
+      "start": 140.45,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "G12",
+      "voice": "narrator",
+      "text": "She's Sara. She's from Egypt.",
+      "start": 141.5,
+      "max_dur": 3.2,
+      "again": null
+    },
+    {
+      "id": "R01",
+      "voice": "narrator",
+      "text": "Let's remember!",
+      "start": 146.25,
+      "max_dur": 1.0,
+      "again": null
+    },
+    {
+      "id": "R02",
+      "voice": "narrator",
+      "text": "I am. I'm.",
+      "start": 147.25,
+      "max_dur": 1.0,
+      "again": null
+    },
+    {
+      "id": "R03",
+      "voice": "narrator",
+      "text": "You are. You're.",
+      "start": 148.25,
+      "max_dur": 1.0,
+      "again": null
+    },
+    {
+      "id": "R04",
+      "voice": "narrator",
+      "text": "He is. He's.",
+      "start": 149.25,
+      "max_dur": 1.0,
+      "again": null
+    },
+    {
+      "id": "R05",
+      "voice": "narrator",
+      "text": "She is. She's.",
+      "start": 150.25,
+      "max_dur": 1.5,
+      "again": null
+    },
+    {
+      "id": "R06",
+      "voice": "narrator",
+      "text": "I'm.",
+      "start": 154,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "R07",
+      "voice": "narrator",
+      "text": "You're.",
+      "start": 155.25,
+      "max_dur": 0.7,
+      "again": null
+    },
+    {
+      "id": "R08",
+      "voice": "narrator",
+      "text": "He's.",
+      "start": 156.75,
+      "max_dur": 0.6,
+      "again": null
+    },
+    {
+      "id": "R09",
+      "voice": "narrator",
+      "text": "She's.",
+      "start": 157.75,
+      "max_dur": 0.6,
+      "again": null
+    },
+    {
+      "id": "A01",
+      "voice": "narrator",
+      "text": "A or an?",
+      "start": 161.5,
+      "max_dur": 1.0,
+      "again": null
+    },
+    {
+      "id": "A02",
+      "voice": "narrator",
+      "text": "Let's look at jobs.",
+      "start": 162.5,
+      "max_dur": 1.3,
+      "again": null
+    },
+    {
+      "id": "A03",
+      "voice": "narrator",
+      "text": "A teacher.",
+      "start": 164.25,
+      "max_dur": 1.3,
+      "again": null
+    },
+    {
+      "id": "A04",
+      "voice": "narrator",
+      "text": "A doctor.",
+      "start": 165.75,
+      "max_dur": 1.3,
+      "again": null
+    },
+    {
+      "id": "A05",
+      "voice": "narrator",
+      "text": "An engineer.",
+      "start": 167.5,
+      "max_dur": 1.4,
+      "again": null
+    },
+    {
+      "id": "A06",
+      "voice": "narrator",
+      "text": "An artist.",
+      "start": 169.25,
+      "max_dur": 1.5,
+      "again": null
+    },
+    {
+      "id": "A07",
+      "voice": "narrator",
+      "text": "Use an before a, e, i, o, u.",
+      "start": 171.25,
+      "max_dur": 2.6,
+      "again": null
+    },
+    {
+      "id": "A08",
+      "voice": "narrator",
+      "text": "An engineer.",
+      "start": 174,
+      "max_dur": 1.3,
+      "again": null
+    },
+    {
+      "id": "A09",
+      "voice": "narrator",
+      "text": "An artist.",
+      "start": 175.3,
+      "max_dur": 1.3,
+      "again": null
+    },
+    {
+      "id": "A10",
+      "voice": "narrator",
+      "text": "Vowel? Use an!",
+      "start": 176.8,
+      "max_dur": 1.6,
+      "again": null
+    },
+    {
+      "id": "Y01",
+      "voice": "narrator",
+      "text": "Your turn!",
+      "start": 179.5,
+      "max_dur": 1.3,
+      "again": null
+    },
+    {
+      "id": "Y02",
+      "voice": "narrator",
+      "text": "What's your name?",
+      "start": 181.3,
+      "max_dur": 1.4,
+      "again": null
+    },
+    {
+      "id": "Y03",
+      "voice": "narrator",
+      "text": "Where are you from?",
+      "start": 186.75,
+      "max_dur": 1.5,
+      "again": null
+    },
+    {
+      "id": "Y04",
+      "voice": "narrator",
+      "text": "What's your job?",
+      "start": 192.25,
+      "max_dur": 1.3,
+      "again": null
+    },
+    {
+      "id": "E01",
+      "voice": "narrator",
+      "text": "Great job!",
+      "start": 198.75,
+      "max_dur": 1.2,
+      "again": null
+    },
+    {
+      "id": "E02",
+      "voice": "narrator",
+      "text": "Hello! I'm... Goodbye!",
+      "start": 200.25,
+      "max_dur": 2.2,
+      "again": null
+    },
+    {
+      "id": "E03",
+      "voice": "narrator",
+      "text": "Goodbye!",
+      "start": 203,
+      "max_dur": 1.1,
+      "again": null
+    },
+    {
+      "id": "E04",
+      "voice": "narrator",
+      "text": "See you next time!",
+      "start": 204.4,
+      "max_dur": 1.4,
+      "again": null
+    }
+  ]
+}
