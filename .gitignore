@@ -3,3 +3,8 @@ node_modules/
 prototypes/astryx/
 dist/
 design-lab/
+numbers-1-20-gemini-voice-kit/generated-voice/
+numbers-1-20-gemini-voice-kit/source-video.mp4
+numbers-1-20-gemini-voice-kit/numbers-1-20-cleaned-audio.mp4
+numbers-1-20-gemini-voice-kit/numbers-1-20-gemini-voice.mp4
+__pycache__/
