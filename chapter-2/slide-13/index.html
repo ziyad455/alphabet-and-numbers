@@ -3,510 +3,569 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>More Numbers! (20–50) | Boston English Center</title>
+  <meta name="theme-color" content="#0f172a">
+  <title>Practices 8–10 · Numbers 20–50 | Boston English Center</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script>
-    (function () {
+    (() => {
       let theme;
       try {
         if (window.parent !== window) {
           theme = window.parent.document.documentElement.classList.contains('dark') ? 'dark' : 'light';
         }
       } catch (_) {}
-      if (!theme) {
-        try { theme = localStorage.getItem('editor-theme-preference'); } catch (_) {}
-      }
-      if (theme !== 'light' && theme !== 'dark') {
-        theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-      }
+      if (!theme) { try { theme = localStorage.getItem('editor-theme-preference'); } catch (_) {} }
+      if (!theme) theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
       document.documentElement.classList.toggle('dark', theme === 'dark');
-      window.setTheme = function (value) {
-        document.documentElement.classList.toggle('dark', value === 'dark');
-      };
+      window.setTheme = mode => document.documentElement.classList.toggle('dark', mode === 'dark');
     })();
   </script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; }
+    * { box-sizing: border-box; }
     [hidden] { display: none !important; }
     :root {
       color-scheme: light;
-      --page: #f8fafc;
-      --surface: #ffffff;
-      --text: #0f172a;
-      --muted: #475569;
-      --border: #d9e0ed;
-      --track: #d7dfeb;
-      --heading-start: #384fc7;
-      --heading-end: #2769cd;
-      --accent: #4f46e5;
+      --bg: #f8fafc; --panel: #ffffff; --soft: #f2f5fc; --soft-2: #ebeffb;
+      --ink: #18243c; --muted: #586b89; --border: #d4def0;
+      --accent: #4f46e5; --accent-2: #3069d6; --start: #384fc7; --end: #2769cd;
+      --success: #067659; --success-bg: #d6f8e9; --success-border: #69dcb3;
+      --error: #b42335; --error-bg: #fff0f2; --error-border: #f3a2ad;
+      --shadow: 0 16px 45px rgba(26,45,91,.065);
     }
     :root.dark {
       color-scheme: dark;
-      --page: #0f172a;
-      --surface: #1e293b;
-      --text: #f8fafc;
-      --muted: #bdc9da;
-      --border: #344360;
-      --track: #40506a;
-      --heading-start: #6861f4;
-      --heading-end: #3c79f4;
-      --accent: #818cf8;
+      --bg: #0f172a; --panel: #1e293b; --soft: #142037; --soft-2: #283753;
+      --ink: #f7f9ff; --muted: #b5c5dd; --border: #35445f;
+      --accent: #8d84ff; --accent-2: #5e9cfa; --start: #6861f4; --end: #3c79f4;
+      --success: #bef6d9; --success-bg: #0c4b3a; --success-border: #198768;
+      --error: #ffb2bd; --error-bg: #4b2637; --error-border: #c45f76;
+      --shadow: 0 15px 40px rgba(0,0,0,.12);
     }
-    html, body { margin: 0; min-height: 100%; }
-    body { font-family: 'Plus Jakarta Sans', system-ui, sans-serif; background: var(--page); color: var(--text); }
+    html, body { min-height: 100%; margin: 0; }
+    body { background: var(--bg); color: var(--ink); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
     button, input { font: inherit; }
     button { cursor: pointer; }
-    button:focus-visible, input:focus-visible { outline: 3px solid #f59e0b; outline-offset: 4px; }
+    button:focus-visible, input:focus-visible { outline: 3px solid #eab308; outline-offset: 3px; }
+    button:disabled { cursor: not-allowed; opacity: .47; }
     .slide {
-      min-height: 100dvh;
-      padding: clamp(24px, 4vh, 46px) clamp(14px, 4vw, 54px);
-      background:
-        radial-gradient(circle at 3% 3%, rgba(99,102,241,.13), transparent 30%),
-        radial-gradient(circle at 96% 96%, rgba(52,141,224,.09), transparent 30%),
-        var(--page);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      min-height: 100dvh; padding: clamp(18px,3vh,32px) clamp(16px,3.5vw,54px) 28px;
+      background: radial-gradient(circle at 5% 5%, rgba(99,102,241,.105),transparent 31%),
+        radial-gradient(circle at 94% 94%, rgba(43,141,225,.075),transparent 28%),var(--bg);
     }
-    .content { width: 100%; max-width: 1120px; margin: auto; }
-    .header { text-align: center; margin-bottom: clamp(16px, 3.1vh, 30px); }
-    .eyebrow {
-      margin: 0 0 9px;
-      color: var(--accent);
-      font-size: 12px;
-      letter-spacing: .15em;
-      font-weight: 800;
+    .layout { max-width: 1280px; margin: 0 auto; }
+    .intro { text-align: center; margin: 0 auto 18px; }
+    .eyebrow { color: var(--accent); font-size: 12px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: .13em; margin: 0 0 8px; }
+    h1 { margin: 0 0 7px; font-weight: 800; font-size: clamp(36px,4.8vw,66px);
+      letter-spacing: -.055em; line-height: 1.1; background: linear-gradient(100deg,var(--start),var(--end));
+      -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .subheading { margin: 0 auto; max-width: 780px; line-height: 1.6; font-size: clamp(13px,1.2vw,16px); font-weight: 600; color: var(--muted); }
+    .topline { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 12px; }
+    .tabs { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; flex: 1; }
+    .tab { min-width: 0; display: flex; align-items: center; gap: 10px; padding: 11px 14px;
+      border: 1px solid var(--border); border-radius: 14px; background: var(--panel); color: var(--muted);
+      font-weight: 800; font-size: 13px; text-align: left; }
+    .tab[aria-current="step"] { background: color-mix(in srgb,var(--accent) 9%, var(--panel));
+      color: var(--ink); border-color: #7777fb; box-shadow: inset 0 0 0 1px rgba(111,93,238,.25); }
+    .tab.done { border-color: var(--success-border); }
+    .tab-index { display: grid; place-items: center; width: 30px; height: 30px; flex: none;
+      border-radius: 10px; color: #fff; background: linear-gradient(135deg,#4679ef,#7442e9); font-size: 12px; }
+    .tab.done .tab-index { background: #089c73; }
+    .tab small { display: block; margin-top: 2px; font-weight: 600; color: var(--muted); font-size: 11px; }
+    .score { width: 110px; align-self: stretch; border: 1px solid var(--border); background: var(--panel);
+      border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 7px; color: var(--ink); font-weight: 800; font-size: 14px; white-space: nowrap; }
+    .score svg { color: #e4a115; width: 18px; height: 18px; }
+    .board { overflow: hidden; border: 1px solid var(--border); border-radius: 24px;
+      box-shadow: var(--shadow); background: var(--panel); position: relative; }
+    .board::before { content: ''; position: absolute; inset: 0 0 auto; height: 4px;
+      background: linear-gradient(90deg,#24bbbd,#4676eb,#823fea); }
+    .board-heading { padding: 23px 27px 17px; display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 20px; border-bottom: 1px solid var(--border); }
+    .kicker { color: #009993; font-size: 11px; font-weight: 800; letter-spacing: .12em; margin: 0 0 6px; text-transform: uppercase; }
+    .dark .kicker { color: #49d6ce; }
+    .board-heading h2 { margin: 0; font-size: clamp(22px,2.2vw,29px); font-weight: 800; letter-spacing: -.03em; }
+    .question-info { margin-left: auto; min-width: 180px; padding-top: 5px; }
+    .question-info span { display: block; text-align: right; font-size: 12px; font-weight: 800; color: var(--muted); margin-bottom: 9px; }
+    .track { height: 8px; border-radius: 999px; overflow: hidden; background: var(--soft-2); }
+    .fill { height: 100%; width: 0; background: linear-gradient(90deg,#29b8c9,#7650ed); border-radius: inherit; transition: width .25s ease; }
+    .body { padding: clamp(20px,2.2vw,29px); min-height: 340px; }
+    .listen-columns { display: grid; grid-template-columns: minmax(280px,.9fr) minmax(380px,1.25fr); gap: 22px; }
+    .hearing-panel { min-height: 304px; border-radius: 22px; background: linear-gradient(145deg,#203a86,#352c96 73%,#562db0);
+      color: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 11px; padding: 27px 18px; position: relative; overflow: hidden; }
+    .hearing-panel::before { content: ''; width: 225px; height: 225px; border: 1px solid rgba(255,255,255,.1);
+      border-radius: 50%; position: absolute; right: -98px; top: -90px; }
+    .hearing-panel::after { content: ''; width: 180px; height: 180px; border-radius: 50%;
+      background: rgba(255,255,255,.055); position: absolute; left: -90px; bottom: -105px; }
+    .hearing-panel > * { position: relative; z-index: 1; }
+    .hearing-panel .tiny { letter-spacing: .13em; font-size: 11px; font-weight: 800; opacity: .82; }
+    .big-audio { width: 84px; height: 84px; border: 1px solid rgba(255,255,255,.65); border-radius: 50%;
+      color: #fff; display: grid; place-items: center; background: rgba(255,255,255,.17);
+      box-shadow: 0 0 0 10px rgba(255,255,255,.06); transition: transform .18s,background .18s; }
+    .big-audio:hover { transform: scale(1.065); background: rgba(255,255,255,.28); }
+    .big-audio.speaking { animation: pulse 1.3s ease-in-out infinite; }
+    .big-audio svg { width: 38px; height: 38px; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 18px rgba(255,255,255,.07); } }
+    .hearing-panel h3 { margin: 9px 0 0; font-size: clamp(21px,2.4vw,29px); font-weight: 800; text-align: center; }
+    .hearing-panel p { font-size: 13px; opacity: .83; font-weight: 600; margin: 0; text-align: center; }
+    .audio-actions { display: flex; gap: 8px; margin-top: 5px; }
+    .audio-small { display: inline-flex; align-items: center; gap: 7px; min-height: 37px;
+      border: 1px solid rgba(255,255,255,.3); border-radius: 11px;
+      color: #fff; background: rgba(255,255,255,.11); font-weight: 800; font-size: 12px; padding: 8px 13px; }
+    .audio-small[aria-pressed="true"] { background: #fff; color: #352c96; }
+    .answer-side { display: flex; flex-direction: column; justify-content: center; gap: 13px; }
+    .panel-label { color: var(--muted); font-weight: 800; font-size: 13px; }
+    .options { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; }
+    .option { min-height: 101px; border: 1px solid var(--border); background: var(--soft);
+      border-radius: 17px; color: var(--ink); font-size: clamp(34px,3.1vw,51px); font-weight: 800;
+      line-height: 1.2; transition: transform .12s,border-color .12s,background .12s; }
+    .option:hover:not(:disabled) { border-color: #7a71f1; transform: translateY(-2px); }
+    .option.correct { border: 2px solid var(--success-border); background: var(--success-bg); color: var(--success); }
+    .option.incorrect { border: 2px solid var(--error-border); background: var(--error-bg); color: var(--error); }
+    .status { background: var(--soft); border-radius: 13px; color: var(--muted);
+      padding: 12px 15px; min-height: 48px; font-size: 13px; font-weight: 700; line-height: 1.6;
+      display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+    .status.good { color: var(--success); background: var(--success-bg); }
+    .status.bad { color: var(--error); background: var(--error-bg); }
+    .status strong { font-weight: 800; }
+    .inline-listen { border: 1px solid currentColor; border-radius: 9px; background: transparent;
+      color: inherit; display: inline-flex; gap: 5px; align-items: center; padding: 4px 8px; font-size: 11px; font-weight: 800; }
+    .inline-listen svg { width: 15px; height: 15px; }
+    .matching { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .match-col { border: 1px solid var(--border); background: var(--soft);
+      border-radius: 18px; padding: 16px; min-width: 0; }
+    .match-head { display: flex; justify-content: space-between; gap: 8px; align-items: center; margin-bottom: 11px;
+      color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+    .match-head span { letter-spacing: normal; font-size: 11px; text-transform: none; font-weight: 600; }
+    .match-items { display: grid; gap: 9px; }
+    .match-card { min-height: 55px; width: 100%; border-radius: 13px; border: 1px solid var(--border);
+      background: var(--panel); color: var(--ink); font-size: 16px; font-weight: 800;
+      padding: 9px 13px; display: flex; gap: 10px; align-items: center;
+      justify-content: center; transition: transform .12s,border-color .12s; }
+    .match-card:hover:not(:disabled) { border-color: #7777ef; transform: translateY(-1px); }
+    .match-card.active { border: 2px solid #7769f1; background: color-mix(in srgb,var(--accent) 10%,var(--panel)); }
+    .match-card.matched { color: var(--success); border-color: var(--success-border); background: var(--success-bg); }
+    .match-card.wrong { border-color: var(--error-border); background: var(--error-bg); color: var(--error); }
+    .match-card .tick { font-size: 13px; }
+    .match-card.digit { font-size: 22px; }
+    .matching-wrap { display: grid; gap: 11px; }
+    .writing { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.25fr); gap: 25px; align-items: stretch; }
+    .number-display { border-radius: 22px; background: var(--soft); border: 1px solid var(--border);
+      min-height: 270px; padding: 25px; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 8px; }
+    .number-display span { color: var(--muted); font-size: 12px; letter-spacing: .1em; font-weight: 800; text-transform: uppercase; }
+    .number-display strong { font-size: clamp(76px,9vw,118px); line-height: 1.1;
+      color: var(--accent-2); letter-spacing: -.065em; }
+    .write-side { align-self: center; display: grid; gap: 12px; }
+    .write-side label { font-size: 14px; font-weight: 800; }
+    .write-input { width: 100%; min-height: 66px; background: var(--soft); border: 2px solid var(--border);
+      color: var(--ink); border-radius: 14px; padding: 15px 19px; font-size: clamp(20px,2vw,25px);
+      font-weight: 700; outline: none; }
+    .write-input:focus { border-color: var(--accent); }
+    .write-input::placeholder { color: var(--muted); opacity: .65; font-weight: 500; }
+    .writing-hint { font-size: 12px; font-weight: 600; color: var(--muted); }
+    .write-actions { display: flex; flex-wrap: wrap; gap: 9px; }
+    .foot { border-top: 1px solid var(--border); padding: 15px 25px; display: flex; align-items: center;
+      justify-content: space-between; gap: 18px; }
+    .foot-note { max-width: 730px; color: var(--muted); font-size: 12px; font-weight: 600; line-height: 1.6; }
+    .foot-buttons { display: flex; gap: 8px; margin-left: auto; flex: none; }
+    .btn { padding: 10px 17px; min-height: 43px; border-radius: 12px; border: 1px solid var(--border);
+      background: var(--panel); color: var(--ink); font-size: 12px; font-weight: 800; white-space: nowrap; }
+    .btn.primary { background: linear-gradient(110deg,#456cf0,#7442dc); border-color: transparent; color: #fff; }
+    .btn:hover:not(:disabled) { filter: brightness(1.075); }
+    .finish { text-align: center; padding: 38px 25px 43px; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+    .finish-icon { width: 83px; height: 83px; background: #fef3c7; color: #b45309; border-radius: 25px;
+      display: grid; place-items: center; font-size: 46px; box-shadow: 0 8px 24px rgba(180,83,9,.12); }
+    .finish h2 { font-size: clamp(31px,4vw,45px); margin: 0; color: var(--ink); }
+    .finish p { color: var(--muted); font-size: 15px; margin: 0; line-height: 1.7; max-width: 620px; }
+    .finish-stats { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 11px;
+      max-width: 640px; width: 100%; margin: 12px 0; }
+    .finish-stat { border: 1px solid var(--border); border-radius: 15px; padding: 15px 10px; background: var(--soft); }
+    .finish-stat strong { display: block; color: var(--accent-2); font-size: 25px; }
+    .finish-stat span { font-size: 12px; color: var(--muted); font-weight: 700; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+    @media (max-width: 900px) {
+      .listen-columns, .writing { grid-template-columns: 1fr; }
+      .hearing-panel { min-height: 210px; }
+      .number-display { min-height: 160px; }
+      .number-display strong { font-size: 78px; }
+      .score { width: 92px; }
+      .board-heading { padding: 20px; }
+      .body { padding: 19px; }
     }
-    h1 {
-      margin: 0;
-      font-size: clamp(36px, 5.4vw, 70px);
-      line-height: 1.15;
-      letter-spacing: -.055em;
-      font-weight: 800;
-      background: linear-gradient(105deg, var(--heading-start), var(--heading-end));
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-    .description {
-      margin: 12px auto 0;
-      color: var(--muted);
-      line-height: 1.6;
-      font-size: clamp(14px, 1.4vw, 18px);
-      font-weight: 600;
-      max-width: 800px;
-    }
-    .video-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 22px;
-      padding: clamp(9px, 1.3vw, 16px);
-      box-shadow: 0 22px 60px rgba(12, 24, 48, .1);
-    }
-    .video-stage {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 16 / 9;
-      overflow: hidden;
-      border-radius: 15px;
-      background: #0d1730;
-      isolation: isolate;
-    }
-    video { width: 100%; height: 100%; object-fit: contain; display: block; background: #0b132a; }
-    .video-cover {
-      position: absolute;
-      z-index: 1;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: clamp(8px, 2vh, 20px);
-      color: white;
-      background:
-        radial-gradient(circle at 22% 24%, rgba(105,112,250,.28), transparent 32%),
-        radial-gradient(circle at 85% 78%, rgba(22,174,204,.19), transparent 33%),
-        linear-gradient(125deg, #121c40, #0d1730);
-      pointer-events: none;
-    }
-    .video-cover::before, .video-cover::after {
-      content: '';
-      position: absolute;
-      width: min(26vw, 240px);
-      aspect-ratio: 1;
-      border: 2px solid rgba(145,163,253,.13);
-      border-radius: 50%;
-      pointer-events: none;
-    }
-    .video-cover::before { top: -12%; left: -4%; }
-    .video-cover::after { bottom: -18%; right: -6%; }
-    .cover-tag {
-      background: rgba(255,255,255,.10);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 999px;
-      padding: 8px 18px;
-      font-weight: 800;
-      letter-spacing: .13em;
-      font-size: clamp(9px, 1vw, 13px);
-      color: #d5e0ff;
-    }
-    .cover-heading {
-      font-weight: 800;
-      letter-spacing: -.065em;
-      font-size: clamp(29px, 5.5vw, 74px);
-      line-height: 1.2;
-      text-align: center;
-      color: #fff;
-    }
-    .cover-heading span { color: #9da5ff; }
-    .cover-subtitle { font-weight: 600; font-size: clamp(12px, 1.55vw, 18px); color: #d7e2fa; }
-    .center-play {
-      position: absolute;
-      z-index: 3;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: clamp(66px, 7vw, 88px);
-      height: clamp(66px, 7vw, 88px);
-      border: 2px solid rgba(255,255,255,.45);
-      border-radius: 50%;
-      color: white;
-      background: linear-gradient(135deg, #4c73ee, #733cdc);
-      box-shadow: 0 12px 30px rgba(0,0,0,.27);
-      display: grid;
-      place-items: center;
-      transition: transform .17s ease, filter .17s ease;
-    }
-    .center-play:not(:disabled):hover { transform: translate(-50%, -50%) scale(1.07); filter: brightness(1.12); }
-    .center-play svg { width: 29px; height: 29px; fill: currentColor; margin-left: 5px; }
-    button:disabled { cursor: not-allowed; opacity: .65; }
-    .video-error {
-      position: absolute;
-      z-index: 4;
-      inset: 0;
-      background: #111a35;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 30px;
-      text-align: center;
-      gap: 12px;
-    }
-    .video-error strong { font-size: clamp(20px, 2.8vw, 30px); }
-    .video-error p { font-size: 14px; color: #d0d9f2; line-height: 1.65; margin: 0; max-width: 550px; }
-    .video-error code { color: #c7d2fe; }
-    .player-controls { padding: 16px 11px 4px; }
-    .seek {
-      display: block; width: 100%; height: 7px;
-      margin: 0 0 13px; border-radius: 99px;
-      appearance: none; -webkit-appearance: none;
-      background: linear-gradient(to right, #6657ef 0, #6657ef var(--seek, 0%), var(--track) var(--seek, 0%), var(--track) 100%);
-      cursor: pointer;
-    }
-    .seek::-webkit-slider-thumb {
-      appearance: none; -webkit-appearance: none;
-      width: 16px; height: 16px; border-radius: 50%;
-      background: #6657ef; border: 3px solid #fff;
-      box-shadow: 0 0 0 1px rgba(77,65,192,.25);
-    }
-    .seek::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: #6657ef; border: 3px solid white; }
-    .controls-row { display: flex; gap: 13px; align-items: center; }
-    .play-pause {
-      flex: 0 0 50px; width: 50px; height: 48px;
-      display: grid; place-items: center;
-      background: linear-gradient(120deg, #466ff0, #733ad8);
-      color: white; border: none; border-radius: 13px;
-    }
-    .play-pause svg { width: 23px; height: 23px; fill: currentColor; }
-    .time { font-size: 14px; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .spacer { flex: 1; min-width: 8px; }
-    .icon-button {
-      width: 40px; height: 40px; flex: 0 0 40px;
-      display: grid; place-items: center;
-      color: var(--text); background: var(--surface);
-      border: 1px solid var(--border); border-radius: 11px;
-    }
-    .icon-button:hover, .icon-button[aria-pressed="true"] { border-color: #7d79ee; background: rgba(99,102,241,.10); }
-    .icon-button svg { width: 20px; height: 20px; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
-    .volume { width: clamp(62px, 11vw, 112px); accent-color: #6657ef; cursor: pointer; }
-    .player-hint { color: var(--muted); margin: 13px auto 0; text-align: center; font-weight: 600; font-size: 12px; }
-    .status { text-align: center; color: var(--muted); font-size: 12px; min-height: 1.4em; margin: 8px auto 0; }
     @media (max-width: 640px) {
-      .slide { align-items: flex-start; }
-      .video-card { border-radius: 15px; }
-      .video-stage { border-radius: 10px; }
-      .player-controls { padding: 12px 3px 1px; }
-      .controls-row { gap: 8px; }
-      .play-pause { flex-basis: 43px; height: 42px; }
-      .time { font-size: 12px; }
-      .icon-button { width: 37px; height: 37px; flex-basis: 37px; }
-      .volume { width: 58px; }
-      .cover-heading { font-size: clamp(27px, 6.1vw, 44px); }
+      .slide { padding: 19px 12px 30px; }
+      .topline { align-items: stretch; flex-direction: column-reverse; }
+      .score { width: 100%; min-height: 40px; }
+      .tabs { gap: 5px; }
+      .tab { gap: 6px; padding: 9px 6px; border-radius: 11px; font-size: 10px; }
+      .tab-index { width: 22px; height: 22px; border-radius: 7px; font-size: 10px; }
+      .tab small { font-size: 9px; }
+      .board-heading { flex-direction: column; gap: 13px; padding: 18px; }
+      .question-info { width: 100%; }
+      .question-info span { text-align: left; margin-bottom: 7px; }
+      .body { padding: 14px; min-height: 0; }
+      .listen-columns { gap: 14px; }
+      .hearing-panel { min-height: 215px; padding: 22px 12px; }
+      .big-audio { width: 65px; height: 65px; }
+      .big-audio svg { width: 29px; height: 29px; }
+      .option { min-height: 76px; font-size: 32px; }
+      .matching { gap: 8px; }
+      .match-col { padding: 8px; border-radius: 12px; }
+      .match-card { min-height: 54px; padding: 8px 4px; font-size: 12px; }
+      .match-card.digit { font-size: 20px; }
+      .match-head { font-size: 10px; }
+      .match-head span { display: none; }
+      .write-side { gap: 10px; }
+      .foot { flex-direction: column; align-items: stretch; gap: 11px; padding: 13px 15px; }
+      .foot-buttons { justify-content: flex-end; margin-left: 0; }
+      .finish-stats { gap: 6px; }
+      .finish-stat { padding: 12px 4px; }
+      .finish-stat strong { font-size: 20px; }
+      .finish-stat span { font-size: 10px; }
     }
-    @media (max-width: 400px) {
-      .volume { display: none; }
-      .controls-row { gap: 6px; }
-    }
-    @media (prefers-reduced-motion: reduce) { .center-play { transition: none; } }
+    @media (prefers-reduced-motion: reduce) { *,*::before,*::after { animation: none !important; transition: none !important; } }
   </style>
 </head>
 <body>
-  <main class="slide">
-    <div class="content">
-      <header class="header">
-        <p class="eyebrow">LESSON 2 · NUMBERS 20–50</p>
-        <h1>More Numbers!</h1>
-        <p class="description">Watch and listen to the numbers from 20 to 50. Say each number aloud as you hear it.</p>
-      </header>
-
-      <section class="video-card" id="video-card" aria-label="Numbers 20 to 50 video player">
-        <div class="video-stage" id="video-stage">
-          <video id="lesson-video" preload="metadata" playsinline aria-label="English numbers 20 to 50 lesson">
-            <source src="./assets/numbers-20-50.mp4" type="video/mp4">
-            Your browser does not support HTML5 video.
-          </video>
-
-          <div class="video-cover" id="video-cover" aria-hidden="true">
-            <div class="cover-tag">UNIT 1 · LESSON 2 · NUMBERS</div>
-            <div class="cover-heading">20 <span>– 50</span></div>
-            <div class="cover-subtitle">Watch · Listen · Repeat</div>
-          </div>
-
-          <button class="center-play" id="center-play" type="button" aria-label="Play video" disabled>
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
-          </button>
-
-          <div class="video-error" id="video-error" role="alert" hidden>
-            <strong>Video unavailable</strong>
-            <p>Place the video file at <code>chapter-2/slide-12/assets/numbers-20-50.mp4</code> and make sure it is a supported MP4.</p>
-          </div>
-        </div>
-
-        <div class="player-controls">
-          <input class="seek" id="seek" type="range" min="0" max="1000" value="0" step="1" disabled aria-label="Video playback position">
-          <div class="controls-row">
-            <button class="play-pause" id="play-pause" type="button" aria-label="Play video" disabled>
-              <svg id="play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"></path></svg>
-              <svg id="pause-icon" viewBox="0 0 24 24" aria-hidden="true" hidden><rect x="6" y="5" width="4" height="14"></rect><rect x="14" y="5" width="4" height="14"></rect></svg>
-            </button>
-            <span class="time" id="video-time" aria-live="off">0:00 / 0:00</span>
-            <div class="spacer"></div>
-            <button class="icon-button" id="mute" type="button" aria-label="Mute video" aria-pressed="false">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M11 5 6 9H3v6h3l5 4V5Z"></path>
-                <path id="sound-wave" d="M15 9a5 5 0 0 1 0 6M18 6a9 9 0 0 1 0 12"></path>
-                <path id="mute-cross" d="M16 9l5 6M21 9l-5 6" hidden></path>
-              </svg>
-            </button>
-            <input class="volume" id="volume" type="range" min="0" max="1" step="0.05" value="1" aria-label="Video volume">
-            <button class="icon-button" id="fullscreen" type="button" aria-label="Enter video fullscreen">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 4H4v4M16 4h4v4M4 16v4h4M20 16v4h-4"></path></svg>
-            </button>
-          </div>
-        </div>
-      </section>
-      <p class="player-hint">Listen carefully, pause when you need to, and practice saying each number.</p>
-      <p class="status" id="video-status" role="status" aria-live="polite"></p>
-    </div>
-  </main>
-
-  <script>
-    (function () {
-      'use strict';
-      const $ = id => document.getElementById(id);
-      const video = $('lesson-video');
-      const stage = $('video-stage');
-      const cover = $('video-cover');
-      const centerPlay = $('center-play');
-      const playButton = $('play-pause');
-      const playIcon = $('play-icon');
-      const pauseIcon = $('pause-icon');
-      const seek = $('seek');
-      const volume = $('volume');
-      const muteButton = $('mute');
-      const soundWave = $('sound-wave');
-      const muteCross = $('mute-cross');
-      const fullscreenButton = $('fullscreen');
-      const timeLabel = $('video-time');
-      const errorBox = $('video-error');
-      const status = $('video-status');
-
-      let hasStarted = false;
-      let hasError = false;
-      let lastVolume = 1;
-      let isSeeking = false;
-
-      const formatTime = seconds => {
-        if (!Number.isFinite(seconds)) return '0:00';
-        const s = Math.max(0, Math.floor(seconds));
-        const minutes = Math.floor(s / 60);
-        const rest = String(s % 60).padStart(2, '0');
-        return `${minutes}:${rest}`;
-      };
-
-      function updateTime() {
-        const duration = Number.isFinite(video.duration) ? video.duration : 0;
-        if (!isSeeking) {
-          const pct = duration ? video.currentTime / duration : 0;
-          seek.value = String(Math.round(pct * 1000));
-          seek.style.setProperty('--seek', `${pct * 100}%`);
+<main class="slide"><div class="layout">
+  <header class="intro">
+    <p class="eyebrow">Practices 8, 9 &amp; 10 · Numbers</p>
+    <h1>Numbers 20–50</h1>
+    <p class="subheading">Listen, match, and write numbers in English. Complete all three activities!</p>
+  </header>
+  <div class="topline">
+    <nav class="tabs" aria-label="Numbers practice activities" id="tabs"></nav>
+    <div class="score" aria-label="Overall progress"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="m12 2 3.1 6.6 7.2.9-5.2 5 .9 7.2L12 18.4l-6 3.3.9-7.2-5.2-5 7.2-.9z"/></svg><span id="total-score">0 / 30</span></div>
+  </div>
+  <section class="board" id="board" aria-label="Numbers practice">
+    <header class="board-heading" id="board-heading">
+      <div><p class="kicker" id="stage-kicker">Practice 8 · Listening</p><h2 id="stage-title">What number do you hear?</h2></div>
+      <div class="question-info"><span id="question-count">Question 1 of 10</span><div class="track" role="progressbar" id="stage-progress" aria-label="Current activity progress" aria-valuemin="0" aria-valuemax="10" aria-valuenow="0"><div class="fill" id="stage-fill"></div></div></div>
+    </header>
+    <div class="body" id="body"></div>
+    <footer class="foot" id="footer">
+      <span class="foot-note" id="foot-note">Press the speaker, listen carefully, then choose the correct number.</span>
+      <div class="foot-buttons" id="footer-buttons"></div>
+    </footer>
+  </section>
+  <p id="sr-status" class="visually-hidden" role="status" aria-live="polite"></p>
+</div></main>
+<script>
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const LISTEN = [
+    { n:20, options:[20,30,40,50] },
+    { n:33, options:[30,33,23,43] },
+    { n:42, options:[32,42,40,22] },
+    { n:29, options:[29,39,20,49] },
+    { n:50, options:[40,30,50,45] },
+    { n:36, options:[30,26,36,46] },
+    { n:41, options:[41,44,31,21] },
+    { n:27, options:[37,27,47,20] },
+    { n:48, options:[38,28,48,40] },
+    { n:45, options:[45,35,25,50] }
+  ];
+  const MATCH = [
+    [{n:24},{n:30},{n:38},{n:43},{n:50}],
+    [{n:21},{n:34},{n:40},{n:47},{n:29}]
+  ];
+  const WRITE = [22,35,40,46,28,31,49,50,27,44];
+  const NAMES = Object.freeze({20:'twenty',30:'thirty',40:'forty',50:'fifty'});
+  const ONES = Object.freeze(['','one','two','three','four','five','six','seven','eight','nine']);
+  const TENS = Object.freeze({2:'twenty',3:'thirty',4:'forty',5:'fifty'});
+  const count = n => NAMES[n] || `${TENS[Math.floor(n/10)]}-${ONES[n%10]}`;
+  const canon = t => (t || '').toLowerCase().normalize('NFKC').replace(/[-–—]/g, ' ').replace(/[^a-z\s]/g, ' ').replace(/\s+/g, ' ').trim();
+  let stage = 0;
+  let listenIndex = 0;
+  let listenCorrect = new Set();
+  let listenBad = null;
+  let listenSpeed = false;
+  let matchRound = 0;
+  let matchCorrect = [new Set(),new Set()];
+  let matchSelected = null;
+  let matchBad = null;
+  let writeIndex = 0;
+  let writeCorrect = new Set();
+  let writeBad = false;
+  let writeHint = false;
+  let answers = Array(WRITE.length).fill('');
+  let finished = false;
+  let speech = null;
+  let speechActive = false;
+  let speechVoice = null;
+  let messageText = '';
+  let messageKind = '';
+  const icons = {
+    volume: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4V5Z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18 5a10 10 0 0 1 0 14"/></svg>',
+    check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="m5 12 4 4L19 6"/></svg>'
+  };
+  const el = (tag,cls,text) => {
+    const e = document.createElement(tag);
+    if (cls) e.className=cls;
+    if (text !== undefined) e.textContent=String(text);
+    return e;
+  };
+  const btn = (label,cls,callback,disabled=false) => {
+    const b = el('button',cls,label); b.type='button';b.disabled=disabled;
+    b.addEventListener('click',callback);return b;
+  };
+  function chooseVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    const vs = speechSynthesis.getVoices();
+    return vs.find(v => v.lang?.toLowerCase().startsWith('en-gb')) ||
+      vs.find(v => v.lang?.toLowerCase().startsWith('en-us')) ||
+      vs.find(v => v.lang?.toLowerCase().startsWith('en')) || null;
+  }
+  function stopAudio() {
+    if ('speechSynthesis' in window) speechSynthesis.cancel();
+    if (speech) {speech.onend=null;speech.onerror=null;speech=null;}
+    speechActive=false;
+    document.querySelectorAll('.big-audio.speaking').forEach(b=>b.classList.remove('speaking'));
+  }
+  function speak(text, slow=false, onDone) {
+    stopAudio();
+    if (!('speechSynthesis' in window)) {announce('Speech is not available in this browser.');return;}
+    speech = new SpeechSynthesisUtterance(text);
+    speech.lang='en-GB';speech.rate=slow ? 0.68 : .87;speech.pitch=1.03;
+    speechVoice=chooseVoice();if (speechVoice) speech.voice=speechVoice;
+    const current=speech;
+    speech.onstart=()=>{speechActive=true;document.querySelectorAll('.big-audio').forEach(b=>b.classList.add('speaking'));};
+    const done=()=>{if(speech===current){speechActive=false;document.querySelectorAll('.big-audio.speaking').forEach(b=>b.classList.remove('speaking'));onDone?.();}};
+    speech.onend=done;
+    speech.onerror=e=>{done();if(!['canceled','interrupted'].includes(e.error))announce('Audio could not be played. Please try again.');};
+    speechSynthesis.speak(speech);
+  }
+  if ('speechSynthesis' in window) speechSynthesis.addEventListener?.('voiceschanged',chooseVoice);
+  function announce(t){$('sr-status').textContent=t;}
+  function feedback(t='',kind=''){messageText=t;messageKind=kind;announce(t);}
+  function totalScore(){return listenCorrect.size+matchCorrect[0].size+matchCorrect[1].size+writeCorrect.size;}
+  function stageComplete(s){return s===0?listenCorrect.size===LISTEN.length:s===1?matchCorrect.every(x=>x.size===5):writeCorrect.size===WRITE.length;}
+  function unlocked(s){return s===0 || (s===1&&stageComplete(0)) || (s===2&&stageComplete(0)&&stageComplete(1));}
+  function drawTabs(){
+    const names=[['8','Listen & Choose','Listen carefully'],['9','Match','Words and digits'],['10','Write','Check spelling']];
+    $('tabs').replaceChildren();
+    names.forEach(([num,name,sub],i)=>{
+      const b=el('button','tab'+(stageComplete(i)?' done':''));
+      b.type='button';b.disabled=!unlocked(i);b.setAttribute('aria-current',stage===i?'step':'false');
+      const index=el('span','tab-index',stageComplete(i)?'✓':num);
+      const words=el('span');words.append(el('span','',name),el('small','',sub));
+      b.append(index,words);b.addEventListener('click',()=>goStage(i));$('tabs').append(b);
+    });
+    $('total-score').textContent=`${totalScore()} / 30`;
+  }
+  function goStage(i){if(!unlocked(i))return;stopAudio();stage=i;finished=false;feedback();render();}
+  function updateHeader(title,kicker,label,n,max){
+    $('stage-title').textContent=title;
+    $('stage-kicker').textContent=kicker;
+    $('question-count').textContent=label;
+    $('stage-progress').setAttribute('aria-valuenow',String(n));
+    $('stage-progress').setAttribute('aria-valuemax',String(max));
+    $('stage-fill').style.width=`${n/max*100}%`;
+  }
+  function render(){
+    drawTabs();$('board-heading').hidden=finished;$('footer').hidden=finished;
+    if (finished){renderFinish();return;}
+    if(stage===0)renderListen();
+    else if(stage===1)renderMatch();
+    else renderWrite();
+  }
+  function setFooter(text,buttons){
+    $('foot-note').textContent=text;
+    $('footer-buttons').replaceChildren(...buttons);
+  }
+  function makeStatus(initial,kind=''){
+    return el('div','status'+(kind?' '+kind:''),initial);
+  }
+  function replayButton(text,slow=false){
+    const b=btn('Listen again','inline-listen',()=>speak(text,slow));
+    b.insertAdjacentHTML('afterbegin',icons.volume);return b;
+  }
+  function renderListen(){
+    const item=LISTEN[listenIndex],solved=listenCorrect.has(listenIndex);
+    updateHeader('What number do you hear?','Practice 8 · Listening',`Question ${listenIndex+1} of ${LISTEN.length}`,listenCorrect.size,LISTEN.length);
+    const columns=el('div','listen-columns');
+    const hearing=el('div','hearing-panel');
+    hearing.append(el('span','tiny','PRESS TO LISTEN'));
+    const big=btn('','big-audio',()=>speak(count(item.n),listenSpeed));
+    big.setAttribute('aria-label','Hear the number');big.innerHTML=icons.volume;
+    hearing.append(big,el('h3','',solved?count(item.n):'Listen carefully'),el('p','',solved?'Great listening!':'Hear the number, then select its digit.'));
+    const actions=el('div','audio-actions');
+    const again=btn('↻ Repeat','audio-small',()=>speak(count(item.n),listenSpeed));
+    const slower=btn('Slow audio','audio-small',()=>{listenSpeed=!listenSpeed;render();speak(count(item.n),listenSpeed);});
+    slower.setAttribute('aria-pressed',String(listenSpeed));
+    actions.append(again,slower);hearing.append(actions);
+    const rhs=el('div','answer-side');rhs.append(el('div','panel-label','Choose the number you hear.'));
+    const options=el('div','options');
+    item.options.forEach(n=>{
+      const isCorrect=solved&&n===item.n;
+      const isIncorrect=n===listenBad && !solved;
+      const b=btn(n,'option'+(isCorrect?' correct':isIncorrect?' incorrect':''),()=>{
+        if(solved)return;
+        if(n===item.n){listenCorrect.add(listenIndex);listenBad=null;feedback(`Correct! ${n} is ${count(n)}.`,'good');render();speak(count(n),listenSpeed);}
+        else{listenBad=n;feedback('Not quite. Listen to the number and try again.','bad');render();}
+      },solved);
+      b.setAttribute('aria-label',`Answer ${n}`);options.append(b);
+    });
+    rhs.append(options);
+    const status=makeStatus(messageText||'Tip: Press the speaker as often as you like.',messageKind);
+    if(solved){status.textContent=`✓ Correct! ${item.n} is ${count(item.n)}.`;status.className='status good';status.append(replayButton(count(item.n),listenSpeed));}
+    rhs.append(status);columns.append(hearing,rhs);$('body').replaceChildren(columns);
+    if(solved){
+      const isLast=listenIndex===LISTEN.length-1;
+      setFooter('Great work! Listen to the word again, then continue.',[
+        btn(isLast?'Continue to Practice 9 →':'Next question →','btn primary',()=>{
+          stopAudio();feedback();listenBad=null;
+          if(isLast)goStage(1);
+          else {listenIndex++;render();}
+        })
+      ]);
+    }else{
+      setFooter('Listen to the whole number. Pay attention to tens and units.',[
+        btn('Repeat audio','btn',()=>speak(count(item.n),listenSpeed))
+      ]);
+    }
+  }
+  function renderMatch(){
+    const solved=matchCorrect[matchRound];
+    updateHeader('Match the words and numbers','Practice 9 · Matching',`Round ${matchRound+1} of 2 · ${solved.size} / 5 matched`,matchCorrect[0].size+matchCorrect[1].size,10);
+    const wrap=el('div','matching-wrap');
+    const columns=el('div','matching');
+    const wordsPanel=el('div','match-col');
+    const wordsHead=el('div','match-head');wordsHead.append(el('strong','','NUMBER WORDS'),el('span','','Select or drag a word'));wordsPanel.append(wordsHead);
+    const words=el('div','match-items');
+    MATCH[matchRound].forEach(item=>{
+      const matched=solved.has(item.n);
+      const b=btn(matched?`${count(item.n)} ✓`:count(item.n),'match-card'+(matched?' matched':matchSelected===item.n?' active':''),()=>{
+        if(matched)return;
+        matchSelected=matchSelected===item.n?null:item.n;matchBad=null;
+        feedback(matchSelected?`Selected “${count(item.n)}”. Choose the matching digit.`:'Selection cleared.');
+        render();
+      },matched);
+      b.draggable=!matched;
+      b.addEventListener('dragstart',event=>{
+        if(matched){event.preventDefault();return;}event.dataTransfer.setData('text/plain',String(item.n));event.dataTransfer.effectAllowed='move';
+        matchSelected=item.n;
+      });
+      b.setAttribute('aria-pressed',String(matchSelected===item.n));words.append(b);
+    });
+    wordsPanel.append(words);
+    const numsPanel=el('div','match-col');const numHead=el('div','match-head');numHead.append(el('strong','','NUMBERS'),el('span','','Choose the correct digit'));numsPanel.append(numHead);
+    const nums=el('div','match-items');
+    const digitOrder=matchRound===0?[43,24,50,38,30]:[47,21,29,40,34];
+    digitOrder.forEach(n=>{
+      const matched=solved.has(n);
+      const b=btn(matched?`${n} ✓`:String(n),'match-card digit'+(matched?' matched':matchBad===n?' wrong':''),()=>handleMatch(n),matched);
+      b.addEventListener('dragover',event=>{if(!matched){event.preventDefault();event.dataTransfer.dropEffect='move';}});
+      b.addEventListener('drop',event=>{
+        event.preventDefault();
+        const token=event.dataTransfer.getData('text/plain');
+        const source=Number(token);
+        if(Number.isInteger(source)&&MATCH[matchRound].some(p=>p.n===source)){
+          matchSelected=source;handleMatch(n);
         }
-        timeLabel.textContent = `${formatTime(video.currentTime)} / ${formatTime(duration)}`;
-      }
-
-      function updatePlayState() {
-        const playing = !video.paused && !video.ended;
-        playIcon.hidden = playing;
-        pauseIcon.hidden = !playing;
-        playButton.setAttribute('aria-label', playing ? 'Pause video' : 'Play video');
-        centerPlay.hidden = playing || hasError;
-        centerPlay.setAttribute('aria-label', video.ended ? 'Replay video' : 'Play video');
-        cover.hidden = hasStarted || hasError;
-      }
-
-      function updateVolume() {
-        const muted = video.muted || video.volume === 0;
-        muteButton.setAttribute('aria-label', muted ? 'Unmute video' : 'Mute video');
-        muteButton.setAttribute('aria-pressed', String(muted));
-        soundWave.hidden = muted;
-        muteCross.hidden = !muted;
-        volume.value = muted ? '0' : String(video.volume);
-      }
-
-      async function togglePlayback() {
-        if (hasError) return;
-        if (!video.paused && !video.ended) {
-          video.pause();
-          return;
-        }
-        try {
-          await video.play();
-        } catch (error) {
-          if (error.name !== 'AbortError') {
-            status.textContent = 'Playback could not start. Please try again.';
-          }
-        }
-      }
-
-      function showError() {
-        hasError = true;
-        video.pause();
-        errorBox.hidden = false;
-        cover.hidden = true;
-        centerPlay.hidden = true;
-        centerPlay.disabled = true;
-        playButton.disabled = true;
-        seek.disabled = true;
-        updatePlayState();
-        status.textContent = '';
-      }
-
-      video.addEventListener('loadedmetadata', () => {
-        if (hasError) return;
-        const available = Number.isFinite(video.duration) && video.duration > 0;
-        playButton.disabled = !available;
-        centerPlay.disabled = !available;
-        seek.disabled = !available;
-        status.textContent = '';
-        updateTime();
-        updatePlayState();
       });
-      video.addEventListener('canplay', () => {
-        if (hasError) return;
-        playButton.disabled = false;
-        centerPlay.disabled = false;
-      });
-      video.addEventListener('play', () => {
-        hasStarted = true;
-        status.textContent = '';
-        updatePlayState();
-      });
-      video.addEventListener('pause', updatePlayState);
-      video.addEventListener('ended', () => {
-        updateTime();
-        updatePlayState();
-      });
-      video.addEventListener('timeupdate', updateTime);
-      video.addEventListener('durationchange', updateTime);
-      video.addEventListener('volumechange', updateVolume);
-      video.addEventListener('error', () => {
-        // The bundled MP4 is supplied separately; show an explicit missing-media message.
-        if (video.error) showError();
-      });
-
-      centerPlay.addEventListener('click', togglePlayback);
-      playButton.addEventListener('click', togglePlayback);
-      video.addEventListener('click', togglePlayback);
-
-      seek.addEventListener('input', () => {
-        if (!Number.isFinite(video.duration) || video.duration <= 0) return;
-        isSeeking = true;
-        const percent = Number(seek.value) / 1000;
-        seek.style.setProperty('--seek', `${percent * 100}%`);
-        timeLabel.textContent = `${formatTime(percent * video.duration)} / ${formatTime(video.duration)}`;
-        video.currentTime = percent * video.duration;
-      });
-      seek.addEventListener('change', () => {
-        isSeeking = false;
-        updateTime();
-      });
-      seek.addEventListener('pointerup', () => { isSeeking = false; updateTime(); });
-
-      volume.addEventListener('input', () => {
-        const value = Number(volume.value);
-        video.volume = value;
-        video.muted = value === 0;
-        if (value > 0) lastVolume = value;
-      });
-      muteButton.addEventListener('click', () => {
-        if (video.muted || video.volume === 0) {
-          video.muted = false;
-          video.volume = lastVolume > 0 ? lastVolume : 1;
-        } else {
-          lastVolume = video.volume;
-          video.muted = true;
-        }
-        updateVolume();
-      });
-
-      fullscreenButton.addEventListener('click', async () => {
-        try {
-          if (document.fullscreenElement === stage) await document.exitFullscreen();
-          else await stage.requestFullscreen();
-        } catch (_) {
-          status.textContent = 'Fullscreen is unavailable in this reader.';
-        }
-      });
-      document.addEventListener('fullscreenchange', () => {
-        const expanded = document.fullscreenElement === stage;
-        fullscreenButton.setAttribute('aria-label', expanded ? 'Exit video fullscreen' : 'Enter video fullscreen');
-      });
-
-      function stopAudio() {
-        video.pause();
-        updatePlayState();
-      }
-      function resetSlide() {
-        video.pause();
-        try { video.currentTime = 0; } catch (_) {}
-        hasStarted = false;
-        isSeeking = false;
-        status.textContent = '';
-        updateTime();
-        updatePlayState();
-      }
-      window.stopSlideAudio = stopAudio;
-      window.resetSlide = resetSlide;
-      window.addEventListener('pagehide', stopAudio);
-      document.addEventListener('visibilitychange', () => { if (document.hidden) stopAudio(); });
-
-      updateVolume();
-      updateTime();
-      updatePlayState();
-    })();
-  </script>
+      b.setAttribute('aria-label',`Match with ${n}`);nums.append(b);
+    });
+    numsPanel.append(nums);columns.append(wordsPanel,numsPanel);wrap.append(columns);
+    const status=makeStatus(messageText||'Select a number word on the left, then select its matching digit on the right.',messageKind);
+    if(solved.size===5){status.textContent='✓ All five pairs matched. Well done!';status.className='status good';}
+    wrap.append(status);$('body').replaceChildren(wrap);
+    const next=btn(matchRound===0?'Next matching round →':'Continue to Practice 10 →','btn primary',()=>{
+      if(solved.size<5)return;
+      stopAudio();matchSelected=null;matchBad=null;feedback();
+      if(matchRound===0){matchRound=1;render();}else{goStage(2);}
+    },solved.size<5);
+    setFooter('Drag a word to its digit, or select a word and then click the matching digit.',[
+      btn('Clear selection','btn',()=>{matchSelected=null;matchBad=null;feedback();render();},!matchSelected),next
+    ]);
+  }
+  function handleMatch(number){
+    if(matchCorrect[matchRound].has(number))return;
+    if(matchSelected===null){feedback('Select a word on the left first.');render();return;}
+    if(matchSelected!==number){matchBad=number;feedback('Not a match. Try another number.','bad');render();return;}
+    const word=count(number);
+    matchCorrect[matchRound].add(number);matchSelected=null;matchBad=null;
+    feedback(`Correct! ${word} matches ${number}.`,'good');render();speak(word);
+  }
+  function renderWrite(){
+    const number=WRITE[writeIndex],solved=writeCorrect.has(writeIndex);
+    updateHeader('Write the number in English','Practice 10 · Spelling',`Question ${writeIndex+1} of ${WRITE.length}`,writeCorrect.size,WRITE.length);
+    const writing=el('div','writing');const display=el('div','number-display');
+    display.append(el('span','','SPELL THIS NUMBER'),el('strong','',number));
+    display.append(btn('Hear the pronunciation','btn',()=>speak(count(number))));
+    const rhs=el('div','write-side');
+    const label=el('label','',"Write the number in words:");label.htmlFor='write-answer';rhs.append(label);
+    const input=el('input','write-input');input.type='text';input.id='write-answer';input.name='spelling';input.autocomplete='off';
+    input.autocapitalize='off';input.spellcheck=false;input.placeholder='Type the English word…';
+    input.value=answers[writeIndex];input.disabled=solved;input.setAttribute('aria-describedby','spelling-note');
+    input.addEventListener('input',()=>{answers[writeIndex]=input.value;writeBad=false;messageText='';messageKind='';
+      const s=$('write-status');if(s){s.textContent='Press “Check answer” when you are ready.';s.className='status';}
+    });
+    input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!solved){e.preventDefault();checkWriting();}});
+    rhs.append(input);
+    rhs.append(el('div','writing-hint','Hyphens are optional (e.g. twenty-one or twenty one).'));
+    const actions=el('div','write-actions');
+    actions.append(btn('Hint','btn',()=>{writeHint=true;feedback();render();},solved));
+    if(solved)actions.append(replayButton(count(number)));
+    rhs.append(actions);
+    if(writeHint&&!solved){rhs.append(el('div','writing-hint',`Hint: It starts with “${count(number)[0].toUpperCase()}” and has ${count(number).replace('-','').length} letters (not counting the hyphen).`));}
+    const status=makeStatus(messageText||'Take your time and check the spelling.',messageKind);
+    status.id='write-status';
+    if(solved){status.textContent=`✓ Correct! ${number} is spelled ${count(number)}.`;status.className='status good';}
+    rhs.append(status);writing.append(display,rhs);$('body').replaceChildren(writing);
+    if(solved){
+      const last=writeIndex===WRITE.length-1;
+      setFooter('Great spelling! Listen again before moving on.',[
+        btn(last?'See your results →':'Next question →','btn primary',()=>{
+          stopAudio();feedback();writeBad=false;writeHint=false;
+          if(last){finished=true;render();}
+          else{writeIndex++;render();}
+        })
+      ]);
+    }else{
+      setFooter('Write the full English word. “Forty” is spelled without a “u”.',[
+        btn('Check answer','btn primary',checkWriting)
+      ]);
+    }
+  }
+  function checkWriting(){
+    const n=WRITE[writeIndex];
+    const got=canon(answers[writeIndex]);
+    if(!got){feedback('Type your answer first.','bad');render();$('write-answer')?.focus();return;}
+    if(got===canon(count(n))){
+      writeCorrect.add(writeIndex);writeBad=false;feedback(`Correct! ${count(n)}.`,'good');render();speak(count(n));
+    } else {
+      writeBad=true;feedback('Not quite. Check the spelling and try again.','bad');render();$('write-answer')?.focus();
+    }
+  }
+  function renderFinish(){
+    const wrap=el('div','finish');
+    wrap.append(el('div','finish-icon','★'),el('h2','','You Did It!'),
+      el('p','','Excellent work! You listened to, matched, and spelled numbers from 20 to 50. Keep practicing to remember them.'));
+    const stats=el('div','finish-stats');
+    for(const [label,value] of [['Listen',listenCorrect.size],['Match',matchCorrect[0].size+matchCorrect[1].size],['Write',writeCorrect.size]]){
+      const stat=el('div','finish-stat');stat.append(el('strong','',`${value}/10`),el('span','',label));stats.append(stat);
+    }
+    wrap.append(stats,btn('Practice Again ↻','btn primary',resetAll));
+    $('body').replaceChildren(wrap);
+  }
+  function resetAll(){
+    stopAudio();stage=0;listenIndex=0;listenCorrect.clear();listenBad=null;listenSpeed=false;
+    matchRound=0;matchCorrect=[new Set(),new Set()];matchSelected=null;matchBad=null;
+    writeIndex=0;writeCorrect.clear();writeBad=false;writeHint=false;answers=Array(WRITE.length).fill('');
+    finished=false;feedback();render();
+  }
+  window.resetSlide=resetAll;
+  window.stopSlideAudio=stopAudio;
+  window.addEventListener('pagehide',stopAudio);
+  window.addEventListener('blur',stopAudio);
+  document.addEventListener('visibilitychange',()=>{if(document.hidden)stopAudio();});
+  render();
+})();
+</script>
 </body>
 </html>
