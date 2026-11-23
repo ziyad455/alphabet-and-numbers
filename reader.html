@@ -8,7 +8,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <title>ABC and 123 | Boston English Center</title>
+    <title>Boston English Center | Lesson Reader</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -988,6 +988,12 @@
 
             </button>
 
+            <a href="index.html" onclick="stopAllIframeAudio()" class="icon-btn" aria-label="Home — choose a chapter" title="Home — choose a chapter">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z"/>
+                </svg>
+            </a>
+
             </div>
         </div>
 
@@ -1042,6 +1048,12 @@
 
         <!-- ---- RIGHT (Mobile < lg): Theme toggle + hamburger ---- -->
         <div class="flex lg:hidden items-center gap-2">
+
+            <a href="index.html" onclick="stopAllIframeAudio()" class="icon-btn" aria-label="Home — choose a chapter" title="Home — choose a chapter">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1V10Z"/>
+                </svg>
+            </a>
 
             <!-- Mobile theme toggle -->
             <button id="theme-toggle-btn-mobile" onclick="toggleThemePreference()"
@@ -1150,21 +1162,21 @@
     <!-- Mobile Sidebar Overlay -->
     <div id="mobile-sidebar-overlay"
 
-         class="fixed inset-0 bg-black/50 z-[60] lg:hidden opacity-0 pointer-events-none backdrop-blur-sm"></div>
+         class="fixed inset-0 bg-black/50 z-[86] lg:hidden opacity-0 pointer-events-none backdrop-blur-sm"></div>
 
     <!-- Right Sidebar -->
     <aside id="sidebar-drawer"
 
-           class="fixed lg:static inset-y-0 right-0 z-[70] w-[85%] max-w-[320px] lg:w-[320px] lg:max-w-none xl:w-[340px] bg-[var(--bg-card)] border-l border-[var(--border-ui)] flex flex-col translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none h-full">
+           class="fixed lg:static inset-y-0 right-0 z-[90] w-[85%] max-w-[320px] lg:w-[320px] lg:max-w-none xl:w-[340px] bg-[var(--bg-card)] border-l border-[var(--border-ui)] flex flex-col translate-x-full lg:translate-x-0 shadow-2xl lg:shadow-none h-full">
 
         <!-- Sidebar header -->
         <div class="flex items-center justify-start gap-3 p-4 border-b border-[var(--border-ui)]">
 
             <div class="flex flex-col gap-0.5 flex-1 min-w-0">
 
-                <span class="font-black text-[0.6rem] uppercase tracking-[0.2em] text-[var(--text-secondary)]">Level A0 · Unit 1</span>
+                <span id="chapter-meta" class="font-black text-[0.6rem] uppercase tracking-[0.2em] text-[var(--text-secondary)]">Level A0 · Unit 1</span>
 
-                <p class="text-sm font-bold text-[var(--text-primary)]">Slide Navigation</p>
+                <p id="chapter-heading" class="text-sm font-bold text-[var(--text-primary)]">Slide Navigation</p>
 
             </div>
 
@@ -1201,7 +1213,28 @@
 // ----------------------------------------------------------------
 // DATA
 // ----------------------------------------------------------------
-const slideData = [
+const chapterSlides = {
+    1: [
+        { title: "ABC and 123", src: "chapter-1/slide-1/index.html" },
+        { title: "Learning Objectives", src: "chapter-1/slide-2/index.html" },
+        { title: "Practice 1 — Warm-Up", src: "chapter-1/slide-3/index.html" },
+        { title: "Let's Learn the English Alphabet", src: "chapter-1/slide-4/index.html" },
+        { title: "The English Alphabet", src: "chapter-1/slide-5/index.html" },
+        { title: "Practice 3 — Match the Letters", src: "chapter-1/slide-6/index.html" },
+        { title: "Practice 4 — Complete the Alphabet", src: "chapter-1/slide-7/index.html" },
+        { title: "Let's Learn the Numbers", src: "chapter-1/slide-8/index.html" },
+        { title: "Numbers 1–10 — Listen and Repeat", src: "chapter-1/slide-9/index.html" },
+        { title: "Listening and Writing", src: "chapter-1/slide-10/index.html" },
+        { title: "Match the Numbers", src: "chapter-1/slide-11/index.html" },
+        { title: "Numbers 11–20", src: "chapter-1/slide-12/index.html" },
+        { title: "Numbers 11–20 — Listen and Write", src: "chapter-1/slide-13/index.html" },
+        { title: "Numbers 11–20 — Matching Exercise", src: "chapter-1/slide-14/index.html" },
+        { title: "Write Your Name", src: "chapter-1/slide-15/index.html" },
+        { title: "Writing Practice", src: "chapter-1/slide-16/index.html" },
+        { title: "Trace the Letters", src: "chapter-1/slide-17/index.html" },
+        { title: "Lesson Complete", src: "chapter-1/slide-18/index.html" }
+    ],
+    2: [
 
     {
 
@@ -1311,7 +1344,16 @@ const slideData = [
 
     { title: "Lesson Complete — You Did It!", src: "chapter-2/slide-15/index.html" }
 
-];
+    ]
+};
+
+const requestedChapter = new URLSearchParams(window.location.search).get('chapter');
+const activeChapter = requestedChapter === '2' ? 2 : 1;
+const slideData = chapterSlides[activeChapter];
+const chapterName = activeChapter === 1 ? 'ABC and 123' : "Hello, I'm...";
+document.title = `${chapterName} | Boston English Center`;
+document.getElementById('chapter-meta').textContent = `Chapter ${activeChapter} · Unit 1 · Lesson ${activeChapter}`;
+document.getElementById('chapter-heading').textContent = chapterName;
 
 const PRELOAD_AHEAD_COUNT = 2;
 
@@ -1716,6 +1758,8 @@ window.goToSlidePath = function(path) {
 };
 
 function goToSlide(index) {
+
+    if (!Number.isInteger(index) || index < 0 || index >= slideData.length) return;
 
     stopAllIframeAudio();
 

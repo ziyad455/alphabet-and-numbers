@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choose a Chapter | Boston English Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    const themeKey = 'editor-theme-preference';
+    try {
+      const saved = localStorage.getItem(themeKey);
+      const theme = saved === 'dark' || saved === 'light'
+        ? saved : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    } catch {
+      document.documentElement.classList.toggle('dark', matchMedia('(prefers-color-scheme: dark)').matches);
+    }
+  </script>
+  <style>
+    :root { color-scheme: light; --page: #f8fafc; --surface: #fff; --text: #14223a; --muted: #52617c; --border: #d9e1ef; --accent: #4f46e5; --accent-text: #fff; }
+    :root.dark { color-scheme: dark; --page: #0f172a; --surface: #152139; --text: #f7f9ff; --muted: #c0cbe0; --border: #34435f; --accent: #665cf1; --accent-text: #fff; }
+    * { box-sizing: border-box; }
+    html, body { min-height: 100%; }
+    body { margin: 0; background: var(--page); color: var(--text); font-family: 'Plus Jakarta Sans', system-ui, sans-serif; }
+    body::before { content: ''; position: fixed; inset: 0 0 auto; height: 3px; background: linear-gradient(90deg, #3477ef, #7048e8); }
+    button, a { font: inherit; }
+    .shell { width: min(100% - 40px, 1060px); margin: 0 auto; }
+    .site-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 86px; }
+    .brand { display: inline-flex; align-items: center; gap: 12px; color: var(--text); text-decoration: none; font-weight: 800; letter-spacing: -.04em; }
+    .brand-mark { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 12px; background: #4f46e5; color: #fff; }
+    .brand-mark svg { width: 21px; height: 21px; }
+    .theme-toggle { display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; flex: none; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); color: var(--text); cursor: pointer; }
+    .theme-toggle:hover { border-color: var(--accent); }
+    .theme-toggle svg { width: 20px; height: 20px; }
+    .moon { display: block; } .sun { display: none; }
+    .dark .moon { display: none; } .dark .sun { display: block; }
+    main { padding: clamp(48px, 10vh, 110px) 0 80px; }
+    .intro { max-width: 760px; margin-bottom: clamp(36px, 6vw, 64px); }
+    .intro h1 { margin: 0 0 18px; font-size: clamp(38px, 5.4vw, 68px); line-height: 1.1; letter-spacing: -.055em; font-weight: 800; }
+    .intro h1 span { background: linear-gradient(105deg, #4f46e5, #3475e8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .dark .intro h1 span { background-image: linear-gradient(105deg, #8179ff, #65a0ff); }
+    .intro p { margin: 0; color: var(--muted); font-size: clamp(17px, 2vw, 21px); line-height: 1.5; }
+    .chapters { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+    .chapter { display: flex; flex-direction: column; min-height: 300px; padding: clamp(24px, 3.2vw, 36px); border: 1px solid var(--border); border-radius: 24px; background: var(--surface); }
+    .chapter:hover { border-color: #7e89ed; }
+    .chapter-number { margin: 0 0 26px; color: #445ace; font-size: 13px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .dark .chapter-number { color: #a6b3ff; }
+    .chapter h2 { margin: 0 0 12px; font-size: clamp(25px, 3vw, 34px); line-height: 1.18; letter-spacing: -.04em; }
+    .chapter p:not(.chapter-number) { margin: 0 0 28px; color: var(--muted); font-size: 16px; line-height: 1.6; }
+    .chapter a { display: inline-flex; align-items: center; justify-content: center; width: fit-content; min-height: 48px; margin-top: auto; padding: 11px 20px; border-radius: 12px; background: var(--accent); color: var(--accent-text); text-decoration: none; font-weight: 800; }
+    .chapter a:hover { background: #3835ad; }
+    .dark .chapter a:hover { background: #554bd8; }
+    :focus-visible { outline: 3px solid #f59e0b; outline-offset: 3px; }
+    @media (max-width: 690px) { .chapters { grid-template-columns: 1fr; } .chapter { min-height: 0; } .chapter-number { margin-bottom: 18px; } main { padding-top: 48px; } }
+    @media (max-width: 390px) { .shell { width: min(100% - 28px, 1060px); } .brand { font-size: 14px; } .brand-mark { width: 36px; height: 36px; } }
+  </style>
+</head>
+<body>
+  <header class="site-header shell">
+    <a class="brand" href="index.html" aria-label="Boston English Center home">
+      <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2 2 7l10 5 10-5-10-5ZM2 12l10 5 10-5M2 17l10 5 10-5"/></svg></span>
+      <span>Boston English Center</span>
+    </a>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode" title="Switch theme">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.42 1.42m11.3 11.3 1.42 1.42M2 12h2m16 0h2M4.93 19.07l1.42-1.42m11.3-11.3 1.42-1.42"/></svg>
+    </button>
+  </header>
+  <main class="shell">
+    <div class="intro"><h1>Welcome to <span>Boston English Center</span></h1><p>Choose a lesson to start learning.</p></div>
+    <div class="chapters" aria-label="Chapters">
+      <section class="chapter" aria-labelledby="chapter-1-title"><p class="chapter-number">Chapter 1</p><h2 id="chapter-1-title">ABC and 123</h2><p>Learn the English alphabet, numbers 1–20, and basic spelling.</p><a href="reader.html?chapter=1">Start Chapter 1</a></section>
+      <section class="chapter" aria-labelledby="chapter-2-title"><p class="chapter-number">Chapter 2</p><h2 id="chapter-2-title">Hello, I'm...</h2><p>Practice greetings, introductions, personal information, and numbers 20–50.</p><a href="reader.html?chapter=2">Start Chapter 2</a></section>
+    </div>
+  </main>
+  <script>
+    const themeButton = document.querySelector('.theme-toggle');
+    function updateThemeLabel() {
+      themeButton.setAttribute('aria-label', document.documentElement.classList.contains('dark') ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+    updateThemeLabel();
+    themeButton.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      try { localStorage.setItem(themeKey, dark ? 'dark' : 'light'); } catch {}
+      updateThemeLabel();
+    });
+  </script>
+</body>
+</html>

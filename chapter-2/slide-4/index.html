@@ -83,9 +83,7 @@
     .progress-group .count { white-space: nowrap; font-weight: 800; font-size: 12px; color: var(--muted); }
     .progress-track { width: min(220px,100%); height: 10px; border-radius: 999px; background: var(--border); overflow: hidden; }
     .progress-fill { width: 0%; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#4e75ef,#8349e8); transition: width .35s ease; }
-    .music-btn { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; border: 1px solid var(--border); background: var(--surface-2); color: var(--text); border-radius: 11px; min-height: 36px; padding: 7px 11px; font-size: 12px; font-weight: 800; }
-    .music-btn svg { width: 16px; height: 16px; }
-    .music-btn[aria-pressed="true"] { background: var(--indigo-light); color: var(--indigo); border-color: #7771e8; }
+
     .play-area { display: grid; grid-template-columns: minmax(0, .94fr) minmax(0, 1.06fr); gap: 16px; align-items: stretch; }
     .panel { border: 1px solid var(--border); border-radius: 21px; background: var(--surface); box-shadow: var(--shadow); min-width: 0; padding: 15px; }
     .panel-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 0 0 12px; }
@@ -194,16 +192,12 @@
         <p class="subtitle">Let's review numbers <strong>1–20</strong>. Drag a number onto its matching English word, or tap a number and then tap its word.</p>
       </header>
 
-      <section class="topbar" aria-label="Game progress and sound settings">
+      <section class="topbar" aria-label="Game progress">
         <div class="round-label"><span class="round-dot" aria-hidden="true"></span><span id="round-display">Round 1 of 4</span></div>
         <div class="progress-group">
           <span class="count" id="matched-count">0 / 20 matched</span>
           <div class="progress-track" id="progressbar" role="progressbar" aria-label="Numbers matched" aria-valuemin="0" aria-valuemax="20" aria-valuenow="0"><div class="progress-fill" id="progress-fill"></div></div>
         </div>
-        <button id="music-toggle" class="music-btn" type="button" aria-pressed="false" aria-label="Turn background music on">
-          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-          <span id="music-label">Music: Off</span>
-        </button>
       </section>
 
       <div id="game-view">
@@ -211,7 +205,7 @@
           <section class="panel" aria-labelledby="numbers-heading">
             <div class="panel-title">
               <h2 id="numbers-heading">Your Numbers</h2>
-              <span class="micro">Pick, drag or listen</span>
+              <span class="micro">Click to hear or drag to match</span>
             </div>
             <div id="number-grid" class="number-grid" aria-label="Numbers available to match"></div>
           </section>
@@ -224,7 +218,7 @@
           </section>
         </div>
         <div class="bottom-bar">
-          <div class="feedback" id="feedback" role="status" aria-live="polite">Choose a number to begin. You can also press its speaker icon to hear it.</div>
+          <div class="feedback" id="feedback" role="status" aria-live="polite">Click a number to hear it and select it, or drag it to a matching word.</div>
           <div class="buttons">
             <button class="action" type="button" id="hint-btn">
               <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6m-5 4h4m-7-13a5 5 0 0 1 10 0c0 2.6-2 3.6-2 6H9c0-2.4-2-3.4-2-6Z"/></svg>Hint
@@ -261,8 +255,6 @@
       const wordGrid = $('word-grid');
       const feedback = $('feedback');
       const nextButton = $('next-btn');
-      const musicButton = $('music-toggle');
-      const musicLabel = $('music-label');
       const progressBar = $('progressbar');
       const progressFill = $('progress-fill');
       const roundDisplay = $('round-display');
@@ -276,9 +268,6 @@
       let selected = null;
       let drag = null;
       let suppressClickFor = null;
-      let musicOn = false;
-      let musicTimer = null;
-      let musicStep = 0;
       let audioContext = null;
       let hintTimer = null;
       let finished = false;
@@ -327,7 +316,7 @@
           btn.dataset.number=number;
           btn.style.setProperty('--tile-accent',color);
           btn.style.setProperty('--tile-dark',dark);
-          btn.setAttribute('aria-label',`Select number ${number}`);
+          btn.setAttribute('aria-label',`Hear and select number ${number}`);
           btn.setAttribute('aria-pressed',String(selected===number));
           btn.innerHTML=STAR_ICON;
           btn.append(make('span','num-glyph',String(number)));
@@ -336,6 +325,9 @@
             selected=selected===number?null:number;
             setFeedback(selected!==null?`Number ${selected} selected. Choose its English word.`:'Selection cleared.');
             updateSelection();
+            // A simple click both selects the tile and pronounces its number.
+            // Pointer dragging is handled separately and does not trigger speech.
+            speak(number, false);
           });
           btn.addEventListener('pointerdown',e=>startDrag(e,number,btn));
           const sound=make('button','speak-btn');
@@ -479,23 +471,8 @@
           [523.25,659.25,783.99,1046.5].forEach((f,i)=>tone(f,i*.15,.3,.033,'sine'));
         }
       }
-      function musicTick(){
-        // An original, quiet eight-note tune generated in the browser; no external media.
-        const notes=[392,493.88,587.33,493.88,440,523.25,493.88,392];
-        tone(notes[musicStep%notes.length],0,.31,.008,'sine');
-        musicStep++;
-      }
-      function setMusic(enabled){
-        musicOn=!!enabled;
-        if(musicTimer!==null){clearInterval(musicTimer);musicTimer=null;}
-        if(musicOn){musicTick();musicTimer=setInterval(musicTick,480);}
-        musicButton.setAttribute('aria-pressed',String(musicOn));
-        musicButton.setAttribute('aria-label',musicOn?'Turn background music off':'Turn background music on');
-        musicLabel.textContent=musicOn?'Music: On':'Music: Off';
-      }
-      musicButton.addEventListener('click',()=>setMusic(!musicOn));
 
-      function speak(number){
+      function speak(number, showFeedback = true){
         if(!('speechSynthesis' in window)){
           setFeedback('This browser does not support spoken pronunciation.');return;
         }
@@ -506,7 +483,7 @@
         const preferred=voices.find(v=>v.lang==='en-GB')||voices.find(v=>v.lang.startsWith('en'));
         if(preferred)utterance.voice=preferred;
         utterance.onerror=e=>{if(e.error!=='canceled'&&e.error!=='interrupted')setFeedback('Pronunciation playback is unavailable.');};
-        setFeedback(`Listen and repeat: ${number} — ${WORDS[number-1]}.`);
+        if (showFeedback) setFeedback(`Listen and repeat: ${number} — ${WORDS[number-1]}.`);
         window.speechSynthesis.speak(utterance);
       }
 
@@ -546,12 +523,11 @@
         order=shuffled(tileNum());
         gameView.hidden=false;doneView.hidden=true;doneView.classList.remove('show');
         render();
-        setFeedback('Choose a number to begin. You can also press its speaker icon to hear it.');
+        setFeedback('Click a number to hear it and select it, or drag it to a matching word.');
       }
       $('reset-btn').addEventListener('click',reset);
       $('play-again').addEventListener('click',reset);
       function stopSlideAudio(){
-        setMusic(false);
         try{window.speechSynthesis?.cancel();}catch(_){}
         if(audioContext){const old=audioContext;audioContext=null;old.close().catch(()=>{});}
       }
