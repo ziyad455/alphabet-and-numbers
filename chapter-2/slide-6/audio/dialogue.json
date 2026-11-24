@@ -1,0 +1,153 @@
+{
+  "source_video": "introducing-yourself.mp4",
+  "source_video_has_audio": false,
+  "model": "eleven_multilingual_v2",
+  "voices": {
+    "ahmed": {
+      "name": "George",
+      "id": "JBFqnCBsd6RMkjVDRZzb"
+    },
+    "sara": {
+      "name": "Lily",
+      "id": "pFZP5JQG7iQjIQuC4Bku"
+    }
+  },
+  "photo_sources": {
+    "ahmed": "https://www.pexels.com/photo/man-in-blue-dress-shirt-6481907/",
+    "sara": "https://www.pexels.com/photo/a-woman-wearing-a-hijab-4728683/"
+  },
+  "lines": [
+    {
+      "id": "D01",
+      "speaker": "ahmed",
+      "text": "Hello! I'm Ahmed.",
+      "visual_start_seconds": 16.35,
+      "visual_end_seconds": 18.6,
+      "audio_file": "ahmed-01.mp3",
+      "audio_duration_seconds": 1.46,
+      "voice_name": "George",
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb"
+    },
+    {
+      "id": "D02",
+      "speaker": "sara",
+      "text": "Hi, Ahmed! I'm Sara.",
+      "visual_start_seconds": 19.35,
+      "visual_end_seconds": 22.6,
+      "audio_file": "sara-01.mp3",
+      "audio_duration_seconds": 2.276,
+      "voice_name": "Lily",
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku"
+    },
+    {
+      "id": "D03",
+      "speaker": "ahmed",
+      "text": "Nice to meet you.",
+      "visual_start_seconds": 22.85,
+      "visual_end_seconds": 24.35,
+      "audio_file": "ahmed-02.mp3",
+      "audio_duration_seconds": 1.115,
+      "voice_name": "George",
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb"
+    },
+    {
+      "id": "D04",
+      "speaker": "sara",
+      "text": "Nice to meet you, too.",
+      "visual_start_seconds": 24.85,
+      "visual_end_seconds": 27.1,
+      "audio_file": "sara-02.mp3",
+      "audio_duration_seconds": 1.33,
+      "voice_name": "Lily",
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku"
+    },
+    {
+      "id": "D05",
+      "speaker": "ahmed",
+      "text": "Where are you from?",
+      "visual_start_seconds": 27.6,
+      "visual_end_seconds": 28.85,
+      "audio_file": "ahmed-03.mp3",
+      "audio_duration_seconds": 1.327,
+      "voice_name": "George",
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb"
+    },
+    {
+      "id": "D06",
+      "speaker": "sara",
+      "text": "I'm from Egypt. And you?",
+      "visual_start_seconds": 29.35,
+      "visual_end_seconds": 32.35,
+      "audio_file": "sara-03.mp3",
+      "audio_duration_seconds": 1.828,
+      "voice_name": "Lily",
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku"
+    },
+    {
+      "id": "D07",
+      "speaker": "ahmed",
+      "text": "I'm from Jordan.",
+      "visual_start_seconds": 32.85,
+      "visual_end_seconds": 34.35,
+      "audio_file": "ahmed-04.mp3",
+      "audio_duration_seconds": 0.99,
+      "voice_name": "George",
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb"
+    },
+    {
+      "id": "D08",
+      "speaker": "sara",
+      "text": "What's your job?",
+      "visual_start_seconds": 34.6,
+      "visual_end_seconds": 35.85,
+      "audio_file": "sara-04.mp3",
+      "audio_duration_seconds": 1.141,
+      "voice_name": "Lily",
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku"
+    },
+    {
+      "id": "D09",
+      "speaker": "ahmed",
+      "text": "I'm a teacher. And you?",
+      "visual_start_seconds": 36.35,
+      "visual_end_seconds": 38.85,
+      "audio_file": "ahmed-05.mp3",
+      "audio_duration_seconds": 1.54,
+      "voice_name": "George",
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb"
+    },
+    {
+      "id": "D10",
+      "speaker": "sara",
+      "text": "I'm an engineer.",
+      "visual_start_seconds": 39.35,
+      "visual_end_seconds": 40.85,
+      "audio_file": "sara-05.mp3",
+      "audio_duration_seconds": 1.06,
+      "voice_name": "Lily",
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku"
+    },
+    {
+      "id": "D11",
+      "speaker": "ahmed",
+      "text": "Goodbye, Sara!",
+      "visual_start_seconds": 41.1,
+      "visual_end_seconds": 42.85,
+      "audio_file": "ahmed-06.mp3",
+      "audio_duration_seconds": 1.38,
+      "voice_name": "George",
+      "voice_id": "JBFqnCBsd6RMkjVDRZzb"
+    },
+    {
+      "id": "D12",
+      "speaker": "sara",
+      "text": "Bye! See you!",
+      "visual_start_seconds": 43.35,
+      "visual_end_seconds": 45.35,
+      "audio_file": "sara-06.mp3",
+      "audio_duration_seconds": 1.06,
+      "voice_name": "Lily",
+      "voice_id": "pFZP5JQG7iQjIQuC4Bku"
+    }
+  ]
+}
