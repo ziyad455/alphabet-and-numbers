@@ -88,22 +88,6 @@
       "tempo_adjustment": 1.0
     },
     {
-      "id": "tens_twenty_2",
-      "section": "the_tens",
-      "text": "Twenty.",
-      "visual_start_seconds": 10.07,
-      "visual_end_seconds": 12.87,
-      "start_seconds": 11.77,
-      "end_seconds": 12.87,
-      "max_duration_seconds": 1.1,
-      "speed": 1.0,
-      "note": "",
-      "audio_file": "f401ab0f22f26594.mp3",
-      "generated_duration_seconds": 0.51,
-      "final_duration_seconds": 0.51,
-      "tempo_adjustment": 1.0
-    },
-    {
       "id": "tens_thirty_1",
       "section": "the_tens",
       "text": "Thirty.",
@@ -112,22 +96,6 @@
       "start_seconds": 13.57,
       "end_seconds": 14.92,
       "max_duration_seconds": 1.35,
-      "speed": 1.0,
-      "note": "",
-      "audio_file": "0b13b4aa7147ec77.mp3",
-      "generated_duration_seconds": 0.5,
-      "final_duration_seconds": 0.5,
-      "tempo_adjustment": 1.0
-    },
-    {
-      "id": "tens_thirty_2",
-      "section": "the_tens",
-      "text": "Thirty.",
-      "visual_start_seconds": 13.47,
-      "visual_end_seconds": 16.17,
-      "start_seconds": 15.07,
-      "end_seconds": 16.17,
-      "max_duration_seconds": 1.1,
       "speed": 1.0,
       "note": "",
       "audio_file": "0b13b4aa7147ec77.mp3",
@@ -152,22 +120,6 @@
       "tempo_adjustment": 1.0
     },
     {
-      "id": "tens_forty_2",
-      "section": "the_tens",
-      "text": "Forty.",
-      "visual_start_seconds": 16.669999999999998,
-      "visual_end_seconds": 19.470000000000002,
-      "start_seconds": 18.37,
-      "end_seconds": 19.470000000000002,
-      "max_duration_seconds": 1.1,
-      "speed": 1.0,
-      "note": "",
-      "audio_file": "2075953dd73dda53.mp3",
-      "generated_duration_seconds": 0.57,
-      "final_duration_seconds": 0.57,
-      "tempo_adjustment": 1.0
-    },
-    {
       "id": "tens_fifty_1",
       "section": "the_tens",
       "text": "Fifty.",
@@ -176,22 +128,6 @@
       "start_seconds": 20.37,
       "end_seconds": 21.520000000000003,
       "max_duration_seconds": 1.15,
-      "speed": 1.0,
-      "note": "",
-      "audio_file": "af7c7f7f21febcbd.mp3",
-      "generated_duration_seconds": 0.55,
-      "final_duration_seconds": 0.55,
-      "tempo_adjustment": 1.0
-    },
-    {
-      "id": "tens_fifty_2",
-      "section": "the_tens",
-      "text": "Fifty.",
-      "visual_start_seconds": 20.27,
-      "visual_end_seconds": 22.770000000000003,
-      "start_seconds": 21.67,
-      "end_seconds": 22.770000000000003,
-      "max_duration_seconds": 1.1,
       "speed": 1.0,
       "note": "",
       "audio_file": "af7c7f7f21febcbd.mp3",
@@ -1111,5 +1047,6 @@
       "final_duration_seconds": 0.57,
       "tempo_adjustment": 1.0
     }
-  ]
+  ],
+  "repair": "Removed the second pronunciation within each tens presentation; all other cues retained."
 }

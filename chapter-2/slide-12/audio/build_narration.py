@@ -57,8 +57,6 @@ def cues() -> list[dict]:
     ):
         add("the_tens", f"tens_{word.lower()}_1", f"{word}.", first, second - .15,
             visual_start=first - .1, visual_end=second)
-        add("the_tens", f"tens_{word.lower()}_2", f"{word}.", second, second + 1.1,
-            visual_start=first - .1, visual_end=second + 1.1)
 
     add("teen_or_ty", "listen", "Listen.", 23.50, 24.18)
     add("teen_or_ty", "teen_or_ty", "Teen or ty?", 24.72, 26.05,
@@ -260,11 +258,51 @@ def assemble(cue_list, cache_dir, work_dir):
     return duration
 
 
+def repair_existing(work_dir):
+    """Remove the four redundant tens cues without regenerating unaffected speech."""
+    work_dir.mkdir(parents=True, exist_ok=True)
+    manifest = json.loads(MANIFEST.read_text())
+    duplicate_ids = {f"tens_{word}_2" for word in ("twenty", "thirty", "forty", "fifty")}
+    duplicates = [cue for cue in manifest["cues"] if cue["id"] in duplicate_ids]
+    if len(duplicates) != 4:
+        raise RuntimeError("Expected four duplicate tens cues in the existing manifest")
+    track_file = work_dir / "current-soundtrack.wav"
+    run_ffmpeg("-i", OUTPUT_VIDEO, "-map", "0:a:0", "-ac", "1", "-ar", SAMPLE_RATE, track_file)
+    samples, sample_rate = sf.read(track_file, dtype="float32")
+    if sample_rate != SAMPLE_RATE:
+        raise RuntimeError("Unexpected soundtrack sample rate")
+    for cue in duplicates:
+        beginning = round(cue["start_seconds"] * SAMPLE_RATE)
+        ending = beginning + round(cue["final_duration_seconds"] * SAMPLE_RATE)
+        # Ten-millisecond ramps prevent clicks at the boundaries.
+        fade = min(480, (ending - beginning) // 2)
+        samples[beginning:beginning + fade] *= np.linspace(1, 0, fade, dtype=np.float32)
+        samples[beginning + fade:ending - fade] = 0
+        samples[ending - fade:ending] *= np.linspace(0, 1, fade, dtype=np.float32)
+    repaired_track = work_dir / "repaired-soundtrack.wav"
+    sf.write(repaired_track, samples, SAMPLE_RATE)
+    repaired_video = OUTPUT_VIDEO.with_name("numbers-20-50-repaired.tmp.mp4")
+    run_ffmpeg("-i", SOURCE_VIDEO, "-i", repaired_track,
+               "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy", "-c:a", "aac",
+               "-b:a", "192k", "-ar", SAMPLE_RATE, "-t", manifest["video_duration_seconds"],
+               "-movflags", "+faststart", repaired_video)
+    repaired_video.replace(OUTPUT_VIDEO)
+    manifest["cues"] = [cue for cue in manifest["cues"] if cue["id"] not in duplicate_ids]
+    manifest["repair"] = "Removed the second pronunciation within each tens presentation; all other cues retained."
+    MANIFEST.write_text(json.dumps(manifest, indent=2) + "\n")
+    print(f"Repaired {len(duplicates)} duplicate cues: {OUTPUT_VIDEO}")
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--cache-dir", type=Path, default=Path("/tmp/ch2-12-elevenlabs-cache"))
     parser.add_argument("--work-dir", type=Path, default=Path("/tmp/ch2-12-elevenlabs-work"))
+    parser.add_argument("--repair-existing", action="store_true",
+                        help="Remove redundant tens cues from the current MP4 without API requests")
     arguments = parser.parse_args()
+    if arguments.repair_existing:
+        repair_existing(arguments.work_dir)
+        return
     cue_list = cues()
     assert len({cue["id"] for cue in cue_list}) == len(cue_list)
     assert all(cue_list[i]["end_seconds"] <= cue_list[i + 1]["start_seconds"] for i in range(len(cue_list) - 1))
